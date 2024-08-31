@@ -31,13 +31,18 @@ public class TetraLeagueController : ControllerBase
 
         var stats = await _api.GetTetraLeagueStats(username);
 
-        if (stats == null)
+        switch (stats)
         {
-            return NotFound($"No stats found for {username}");
+            case null:
+                return NotFound($"No stats found for {username}");
+            case { Glicko: -1 } or { Tr: -1 }:
+                return NotFound($"{username} is not yet ranked");
+            default:
+            {
+                var statsImage = ImageGenerator.GenerateStatsImage(username, stats, textcolor, backgroundColor);
+
+                return File(statsImage.ToArray(), "image/png");
+            }
         }
-
-        var statsImage = ImageGenerator.GenerateStatsImage(username, stats, textcolor, backgroundColor);
-
-        return File(statsImage.ToArray(), "image/png");
     }
 }

@@ -1,3 +1,4 @@
+using System.Globalization;
 using TetraLeagueOverlay.Api;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddMvc(options => options.EnableEndpointRouting = false).AddControllersAsServices();
 
 var app = builder.Build();
+
+// Configure the desired culture
+var cultureInfo = new CultureInfo("en-US");
+cultureInfo.NumberFormat.NumberDecimalSeparator = ".";
+
+// Set default culture
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

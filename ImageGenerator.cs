@@ -23,7 +23,7 @@ public static class ImageGenerator
             TextSize = 64,
             FakeBoldText = true,
             IsAntialias = true,
-            Typeface = typeFace,
+            Typeface = typeFace
         };
 
         var statsPaint = new SKPaint
@@ -47,9 +47,9 @@ public static class ImageGenerator
             Typeface = typeFace
         };
 
-        var rectBg = new SKPaint
+        var progressBarBg = new SKPaint
         {
-            Color = SKColors.Gray,
+            Color = SKColor.Parse("DD000000"),
             Style = SKPaintStyle.Fill,
             TextSize = 32,
             FakeBoldText = true,
@@ -57,9 +57,9 @@ public static class ImageGenerator
             Typeface = typeFace
         };
 
-        var rectBgAlt = new SKPaint
+        var progressBarBgAlt = new SKPaint
         {
-            Color = SKColors.Gold,
+            Color = SKColor.Parse($"FF{textColor}"),
             Style = SKPaintStyle.Fill,
             TextSize = 32,
             FakeBoldText = true,
@@ -89,31 +89,51 @@ public static class ImageGenerator
         var rankBitmap = GetBitmap($"Resources/{stats.Rank}.png");
         var toprankBitmap = GetBitmap($"Resources/{stats.TopRank}.png");
 
-        var prevRank = stats.PrevRank == null ? GetBitmap($"Resources/{stats.Rank}.png") : GetBitmap($"Resources/{stats.PrevRank}.png");
-        var nextRank = stats.NextRank == null ? GetBitmap($"Resources/{stats.Rank}.png") : GetBitmap($"Resources/{stats.NextRank}.png");
+        var prevRank = stats.PrevRank == null ? null : GetBitmap($"Resources/{stats.PrevRank}.png");
+        var nextRank = stats.NextRank == null ? null : GetBitmap($"Resources/{stats.NextRank}.png");
 
-        surface.Canvas.DrawBitmap(rankBitmap, 10, 20);
+        // Big Rank Letter
+        surface.Canvas.DrawBitmap(ResizeBitmap(rankBitmap, 200, 200), 40, 40);
+
         // Username
         surface.Canvas.DrawText(username.ToUpper(), 275, 75, namePaint);
 
-        // Stats
+        // TR
         surface.Canvas.DrawText($"{stats.Tr:#.##} TR", 275, 140, namePaint);
+
+        // Stats
+        surface.Canvas.DrawRect(462, 162, 3, 85, statsPaint);
+
+        // Left Side
         surface.Canvas.DrawText($"{stats.Apm}", 275, 185, statsPaint); surface.Canvas.DrawText($"APM", 385, 185, statsPaintAlt);
         surface.Canvas.DrawText($"{stats.Pps}", 275, 215, statsPaint); surface.Canvas.DrawText($"PPS", 385, 215, statsPaintAlt);
         surface.Canvas.DrawText($"{stats.Vs}", 275, 245, statsPaint); surface.Canvas.DrawText($"VS", 385, 245, statsPaintAlt);
 
-        surface.Canvas.DrawText($"TOP RANK", 475, 185, statsPaint); surface.Canvas.DrawBitmap(ResizeBitmap(toprankBitmap, 32, 32), 630, 158);
+        // Right Side
+        surface.Canvas.DrawText($"GLOBAL", 475, 185, statsPaint); surface.Canvas.DrawText($"# {stats.StandingGlobal!.Value}", 630, 185, statsPaint);
+        surface.Canvas.DrawText($"COUNTRY", 475, 215, statsPaint);surface.Canvas.DrawText($"# {stats.StandingLocal!.Value}", 630, 215, statsPaint);
+        surface.Canvas.DrawText($"TOP RANK", 475, 245, statsPaint); surface.Canvas.DrawBitmap(ResizeBitmap(toprankBitmap, 32, 32), 630, 218);
 
         // Progressbar
-        double range = stats.PrevAt - stats.NextAt;
-        double distance = stats.PrevAt - stats.StandingGlobal;
-        double rankPercentage = distance / range * 100;
+        if (stats.PrevAt.HasValue && stats.NextAt.HasValue && stats.StandingGlobal.HasValue)
+        {
+            double range = stats.PrevAt.Value - stats.NextAt.Value;
+            double distance = stats.PrevAt.Value - stats.StandingGlobal.Value;
+            double rankPercentage = distance / range * 100;
 
-        surface.Canvas.DrawRect(100, 275, width - 200, 10, rectBg);
-        surface.Canvas.DrawRect(100, 275, (int)(rankPercentage / 100 * (width - 200)), 10, rectBgAlt);
+            var highlight = (int)(rankPercentage / 100 * (width - 200));
 
-        surface.Canvas.DrawBitmap(ResizeBitmap(prevRank, 32, 32), 60, 265);
-        surface.Canvas.DrawBitmap(ResizeBitmap(nextRank, 32, 32), width - 90, 265);
+            highlight = highlight > width-200 ? width - 200 : highlight;
+
+            surface.Canvas.DrawRect(100, 275, width - 200, 10, progressBarBg);
+            surface.Canvas.DrawRect(100, 275, highlight, 10, progressBarBgAlt);
+
+            if(stats.PrevRank != null && prevRank != null)
+                surface.Canvas.DrawBitmap(ResizeBitmap(prevRank, 32, 32), 60, 265);
+
+            if(stats.NextRank != null && nextRank != null)
+                surface.Canvas.DrawBitmap(ResizeBitmap(nextRank, 32, 32), width - 90, 265);
+        }
 
         using var data = surface.Snapshot().Encode(SKEncodedImageFormat.Png, 80);
 
@@ -163,11 +183,16 @@ public static class ImageGenerator
 
         using var canvas = new SKCanvas(resizedBitmap);
 
+        using var paint = new SKPaint();
+
+        paint.IsAntialias = true;
+        paint.FilterQuality = SKFilterQuality.High;
+
         canvas.Clear(SKColors.Transparent);
 
         var destRect = new SKRect(0, 0, width, height);
 
-        canvas.DrawBitmap(bitmap, destRect);
+        canvas.DrawBitmap(bitmap, destRect, paint);
 
         return resizedBitmap;
     }
