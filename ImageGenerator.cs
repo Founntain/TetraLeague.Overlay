@@ -16,7 +16,7 @@ public static class ImageGenerator
 
         textColor ??= "FFFFFF";
 
-        var namePaint = new SKPaint
+        var bigTextPaint = new SKPaint
         {
             Color = SKColor.Parse(textColor),
             Style = SKPaintStyle.Fill,
@@ -26,9 +26,30 @@ public static class ImageGenerator
             Typeface = typeFace
         };
 
-        var statsPaint = new SKPaint
+        var bigTextShadowPaint = new SKPaint
+        {
+            Color = SKColors.Black,
+            Style = SKPaintStyle.Fill,
+            TextSize = 64,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace
+        };
+
+        var normalTextPaint = new SKPaint
         {
             Color = SKColor.Parse(textColor),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Left,
+        };
+
+        var normalTextShadowPaint = new SKPaint
+        {
+            Color = SKColors.Black,
             Style = SKPaintStyle.Fill,
             TextSize = 32,
             FakeBoldText = true,
@@ -96,23 +117,23 @@ public static class ImageGenerator
         surface.Canvas.DrawBitmap(ResizeBitmap(rankBitmap, 200, 200), 40, 40);
 
         // Username
-        surface.Canvas.DrawText(username.ToUpper(), 275, 75, namePaint);
+        DrawTextWithShadow(surface, username.ToUpper(), 275, 75, bigTextPaint, bigTextShadowPaint);
 
         // TR
-        surface.Canvas.DrawText($"{stats.Tr:#.##} TR", 275, 140, namePaint);
+        DrawTextWithShadow(surface, $"{stats.Tr:#.##} TR", 275, 140, bigTextPaint, bigTextShadowPaint);
 
         // Stats
-        surface.Canvas.DrawRect(462, 162, 3, 85, statsPaint);
+        surface.Canvas.DrawRect(462, 162, 3, 85, normalTextPaint);
 
         // Left Side
-        surface.Canvas.DrawText($"{stats.Apm}", 275, 185, statsPaint); surface.Canvas.DrawText($"APM", 385, 185, statsPaintAlt);
-        surface.Canvas.DrawText($"{stats.Pps}", 275, 215, statsPaint); surface.Canvas.DrawText($"PPS", 385, 215, statsPaintAlt);
-        surface.Canvas.DrawText($"{stats.Vs}", 275, 245, statsPaint); surface.Canvas.DrawText($"VS", 385, 245, statsPaintAlt);
+        DrawTextWithShadow(surface, $"{stats.Apm}", 275, 185, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"APM", 385, 185, statsPaintAlt, normalTextShadowPaint);
+        DrawTextWithShadow(surface, $"{stats.Pps}", 275, 215, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"PPS", 385, 215, statsPaintAlt, normalTextShadowPaint);
+        DrawTextWithShadow(surface, $"{stats.Vs}", 275, 245, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"VS", 385, 245, statsPaintAlt, normalTextShadowPaint);
 
         // Right Side
-        surface.Canvas.DrawText($"GLOBAL", 475, 185, statsPaint); surface.Canvas.DrawText($"# {stats.StandingGlobal!.Value}", 630, 185, statsPaint);
-        surface.Canvas.DrawText($"COUNTRY", 475, 215, statsPaint);surface.Canvas.DrawText($"# {stats.StandingLocal!.Value}", 630, 215, statsPaint);
-        surface.Canvas.DrawText($"TOP RANK", 475, 245, statsPaint); surface.Canvas.DrawBitmap(ResizeBitmap(toprankBitmap, 32, 32), 630, 218);
+        DrawTextWithShadow(surface, $"GLOBAL", 475, 185, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"# {stats.StandingGlobal!.Value}", 630, 185, normalTextPaint, normalTextShadowPaint);
+        DrawTextWithShadow(surface, $"COUNTRY", 475, 215, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"# {stats.StandingLocal!.Value}", 630, 215, normalTextPaint, normalTextShadowPaint);
+        DrawTextWithShadow(surface, $"TOP RANK", 475, 245, normalTextPaint, normalTextShadowPaint); surface.Canvas.DrawBitmap(ResizeBitmap(toprankBitmap, 32, 32), 630, 218);
 
         // Progressbar
         if (stats.PrevAt.HasValue && stats.NextAt.HasValue && stats.StandingGlobal.HasValue)
@@ -147,7 +168,7 @@ public static class ImageGenerator
         var currentDirectory = Directory.GetCurrentDirectory();
         var fullPath = Path.Combine(currentDirectory, relativePath);
 
-        if (!System.IO.File.Exists(fullPath))
+        if (!File.Exists(fullPath))
         {
             throw new FileNotFoundException($"The file {fullPath} does not exist.");
         }
@@ -160,9 +181,7 @@ public static class ImageGenerator
             throw new UnauthorizedAccessException($"The file {fullPath} is not accessible for reading.");
         }
 
-        Console.WriteLine($"Loading bitmap from {fullPath}");
-
-        using var stream = System.IO.File.OpenRead(fullPath);
+        using var stream = File.OpenRead(fullPath);
         using var managedStream = new SKManagedStream(stream);
 
         var bitmap = SKBitmap.Decode(managedStream);
@@ -171,8 +190,6 @@ public static class ImageGenerator
         {
             throw new ArgumentException($"Failed to decode the bitmap from {fullPath}");
         }
-
-        Console.WriteLine($"Loaded bitmap from {fullPath} successfully");
 
         return bitmap;
     }
@@ -195,5 +212,11 @@ public static class ImageGenerator
         canvas.DrawBitmap(bitmap, destRect, paint);
 
         return resizedBitmap;
+    }
+
+    private static void DrawTextWithShadow(SKSurface surface, string text, float x, float y, SKPaint textPaint, SKPaint shawdowPaint)
+    {
+        surface.Canvas.DrawText(text, x + 2, y + 2, shawdowPaint);
+        surface.Canvas.DrawText(text, x, y, textPaint);
     }
 }

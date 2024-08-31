@@ -6,7 +6,9 @@ public class ApiResponse<T>
 {
     public bool Success { get; set; }
     public object Error { get; set; }
+    [JsonPropertyName("cache")]
     public CacheResponse Cache { get; set; }
+    [JsonPropertyName("data")]
     public T? Data { get; set; }
 }
 
@@ -16,6 +18,6 @@ public class CacheResponse
     public string Status { get; set; }
     [JsonPropertyName("cached_at")]
     public long CachedAt { get; set; }
-    [JsonPropertyName("cache_until")]
+    [JsonPropertyName("cached_until")]
     public long CacheUntil { get; set; }
 }
