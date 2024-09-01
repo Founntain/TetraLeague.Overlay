@@ -53,6 +53,13 @@ public class TetraLeagueApi : ApiBase
 
         Console.WriteLine("Updating cache and returning");
 
+        if (_cache.ContainsKey(username))
+        {
+            _cache[username] = (DateTimeOffset.FromUnixTimeMilliseconds(apiResponse.Cache.CacheUntil), apiResponse.Data);
+
+            return _cache[username].Item2;
+        }
+
         _cache.TryAdd(username, (DateTimeOffset.FromUnixTimeMilliseconds(apiResponse.Cache.CacheUntil), apiResponse.Data));
 
         return apiResponse.Data;
