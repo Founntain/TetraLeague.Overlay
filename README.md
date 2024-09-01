@@ -9,6 +9,8 @@ You can access it by using the following url:
 - For the live view: `https://tetrio.founntain.dev/tetraleague/stats/founntain/web`
 - For a simple image: `https://tetrio.founntain.dev/tetraleague/stats/founntain`
 
+For OBS use the live view one. Create a new Browser Source and paste it in and you are good to go
+
 > The data is cached, so don't expect changes immediately the live view we updates every 60 seconds, but it only fetches the tetra channel API when the cache expired.
 
 ## Contributing
