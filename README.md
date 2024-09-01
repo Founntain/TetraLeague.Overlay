@@ -6,10 +6,10 @@ If you like the overlay I would really appreciate it if you drop a ⭐ and show 
 
 ## Usage
 You can access it by using the following url:
-- For the live view: `https://tetrio.founntain.dev/tetraleague/stats/founntain/web`
-- For a simple image: `https://tetrio.founntain.dev/tetraleague/stats/founntain`
+- For the live view: `https://tetrio.founntain.dev/tetraleague/stats/<username>/web`
+- For a simple image: `https://tetrio.founntain.dev/tetraleague/stats/<username>`
 
-For OBS use the live view one. Create a new Browser Source and paste it in and you are good to go
+For OBS use the live view one. Create a new Browser Source and paste it in and you are good to go. Just replace <username> with your tetr.io username
 
 > The data is cached, so don't expect changes immediately the live view we updates every 60 seconds, but it only fetches the tetra channel API when the cache expired.
 
