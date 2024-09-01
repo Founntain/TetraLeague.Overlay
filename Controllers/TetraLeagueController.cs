@@ -1,14 +1,11 @@
-﻿using System.Collections.Concurrent;
-using Microsoft.AspNetCore.Mvc;
-using SkiaSharp;
+﻿using Microsoft.AspNetCore.Mvc;
 using TetraLeagueOverlay.Api;
-using TetraLeagueOverlay.Api.Models;
 
 namespace TetraLeagueOverlay.Controllers;
 
 [ApiController]
 [Produces("application/json")]
-[Route("api/[controller]")]
+[Route("[controller]")]
 public class TetraLeagueController : ControllerBase
 {
     private readonly TetraLeagueApi _api;
@@ -46,13 +43,13 @@ public class TetraLeagueController : ControllerBase
             }
         }
     }
-    
+
     [HttpGet]
     [Route("stats/{username}/web")]
     public async Task<ActionResult> Web(string username, string? textcolor = null, string? backgroundColor = null)
     {
         username = username.ToLower();
-        
+
         var html = await System.IO.File.ReadAllTextAsync("Web/index.html");
 
         html = html.Replace("{username}", username);

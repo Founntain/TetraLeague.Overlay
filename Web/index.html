@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>test</title>
-    
+    <title>Live for {username}</title>
+
     <style>
         body{
             background: transparent;
         }
-        
+
         img{
             image-rendering: high-quality;
         }
-        
+
         .hidden{
             position: absolute;
             color: transparent;
@@ -41,7 +41,7 @@
         var image = document.getElementById("imagecontainer")
 
         function updateImg(){
-            let url = `https://localhost:7053/api/TetraLeague/stats/{username}?backgroundColor={backgroundColor}&textColor={textColor}`;
+            let url = `https://tetrio.founntain.dev/TetraLeague/stats/{username}?backgroundColor={backgroundColor}&textColor={textColor}`;
 
             console.log(url)
 
@@ -68,7 +68,7 @@
         updateImg();
 
         setInterval(updateImg, interval);
-        
+
     </script>
 </footer>
 </html>
