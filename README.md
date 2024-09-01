@@ -11,7 +11,7 @@ You can access it by using the following url:
 
 For OBS use the live view one. Create a new Browser Source and paste it in and you are good to go. Just replace <username> with your tetr.io username
 
-> The data is cached, so don't expect changes immediately the live view we updates every 60 seconds, but it only fetches the tetra channel API when the cache expired.
+> The data is cached, so don't expect changes immediately the live view we updates every 60 seconds, but it only fetches the tetra channel API when the cache expired. Tetra League data is cached for 5 minutes, which means worst update time is 6 minutes
 
 ## Contributing
 Feel free to open issues and request features, send feedback or report bugs or even contribute to the code base as well.
