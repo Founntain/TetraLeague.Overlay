@@ -3,8 +3,19 @@ using TetraLeagueOverlay.Api.Models;
 
 namespace TetraLeagueOverlay;
 
+/// <summary>
+/// Provides functionality for generating images based on TetraLeague statistics.
+/// </summary>
 public static class ImageGenerator
 {
+    /// <summary>
+    /// Generates an image containing the statistics for a specified user.
+    /// </summary>
+    /// <param name="username">The username of the player whose statistics are to be displayed.</param>
+    /// <param name="stats">An object containing the player's TetraLeague statistics.</param>
+    /// <param name="textColor">Optional. The color of the text in the image. Defaults to null.</param>
+    /// <param name="backgroundColor">Optional. The background color of the image. Defaults to null.</param>
+    /// <returns>A memory stream containing the generated image with the player's statistics.</returns>
     public static MemoryStream GenerateStatsImage(string username, TetraLeague stats, string? textColor = null, string? backgroundColor = null)
     {
         var width = 800;

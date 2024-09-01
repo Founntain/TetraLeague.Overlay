@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    
+    <style>
+        body{
+            background: transparent;
+        }
+        
+        img{
+            image-rendering: high-quality;
+        }
+        
+        .hidden{
+            position: absolute;
+            color: transparent;
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+    <img id="imagecontainer" />
+    <p class="hidden" id="username">{username}</p>
+    <p class="hidden" id="backgroundColor">{backgroundColor}</p>
+    <p class="hidden" id="textColor">{textColor}</p>
+</body>
+
+<footer>
+    <script>
+
+        console.log("starting update...")
+
+        var username = document.getElementById("username").value;
+        var textColor = document.getElementById("textColor").value;
+        var backgroundColor = document.getElementById("backgroundColor").value;
+
+        const interval = 60000;
+        var image = document.getElementById("imagecontainer")
+
+        function updateImg(){
+            let url = `https://localhost:7053/api/TetraLeague/stats/{username}?backgroundColor={backgroundColor}&textColor={textColor}`;
+
+            console.log(url)
+
+            fetch(url)
+                .then(response => {
+                    // Ensure the response is ok
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    // Return the response as a blob
+                    return response.blob();
+                })
+                .then(blob => {
+                    // Create a URL for the blob
+                    const imageUrl = URL.createObjectURL(blob);
+                    // Set the URL as the src of the img element
+                    image.src = imageUrl;
+                })
+                .catch(error => {
+                    console.error('There has been a problem with your fetch operation:', error);
+                });
+        }
+
+        updateImg();
+
+        setInterval(updateImg, interval);
+        
+    </script>
+</footer>
+</html>

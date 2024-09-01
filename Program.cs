@@ -11,6 +11,14 @@ builder.Services.AddScoped<TetraLeagueApi>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddMvc(options => options.EnableEndpointRouting = false).AddControllersAsServices();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAnyOrigin",
+        b => b.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
 var app = builder.Build();
 
 // Configure the desired culture
@@ -28,6 +36,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+    app.UseCors("AllowAnyOrigin");
 app.UseHttpsRedirection();
 
 app.MapControllers();
