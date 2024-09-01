@@ -9,9 +9,14 @@ You can access it by using the following url:
 - For the live view: `https://tetrio.founntain.dev/tetraleague/stats/<username>/web`
 - For a simple image: `https://tetrio.founntain.dev/tetraleague/stats/<username>`
 
-For OBS use the live view one. Create a new Browser Source and paste it in and you are good to go. Just replace <username> with your tetr.io username
+For OBS use the live view one. Create a new Browser Source and paste it in and you are good to go. Just replace <username> with your tetr.io username (don't forget to remove the <>).
 
 > The data is cached, so don't expect changes immediately the live view we updates every 60 seconds, but it only fetches the tetra channel API when the cache expired. Tetra League data is cached for 5 minutes, which means worst update time is 6 minutes
+
+### Parameters
+- `backgroundColor`: this changes the background color (in case you don't feel transparent); default is `00FFFFFF`
+- `textColor`: Changes the text color and color of the progress bar; default is `FFFFFF`
+> Example: `https://tetrio.founntain.dev/tetraleague/stats/<username>/web?backgroundColor=FF0000&textColor=00FF00`
 
 ## Contributing
 Feel free to open issues and request features, send feedback or report bugs or even contribute to the code base as well.
