@@ -24,6 +24,10 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <None Remove="Web\main.js" />
+      <None Remove="Resources\leaderboard1.png" />
+      <Content Include="Resources\leaderboard1.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>

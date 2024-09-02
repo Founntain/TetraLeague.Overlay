@@ -122,7 +122,7 @@ public static class ImageGenerator
         var toprankBitmap = GetBitmap($"Resources/{stats.TopRank}.png");
 
         var prevRank = stats.PrevRank == null ? null : GetBitmap($"Resources/{stats.PrevRank}.png");
-        var nextRank = stats.NextRank == null ? null : GetBitmap($"Resources/{stats.NextRank}.png");
+        var nextRank = stats.NextRank == null ? GetBitmap("Resources/leaderboard1.png") : GetBitmap($"Resources/{stats.NextRank}.png");
 
         // Big Rank Letter
         surface.Canvas.DrawBitmap(ResizeBitmap(rankBitmap, 200, 200), 40, 40);
@@ -143,7 +143,7 @@ public static class ImageGenerator
 
         // Right Side
         DrawTextWithShadow(surface, $"GLOBAL", 475, 185, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"# {stats.StandingGlobal!.Value}", 630, 185, normalTextPaint, normalTextShadowPaint);
-        DrawTextWithShadow(surface, $"COUNTRY", 475, 215, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"# {stats.StandingLocal!.Value}", 630, 215, normalTextPaint, normalTextShadowPaint);
+        DrawTextWithShadow(surface, $"COUNTRY", 475, 215, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, stats.StandingLocal!.Value == -1 ? "HIDDEN" : $"# {stats.StandingLocal!.Value}", 630, 215, normalTextPaint, normalTextShadowPaint);
         DrawTextWithShadow(surface, $"TOP RANK", 475, 245, normalTextPaint, normalTextShadowPaint); surface.Canvas.DrawBitmap(ResizeBitmap(toprankBitmap, 32, 32), 630, 218);
 
         // Progressbar
@@ -165,8 +165,11 @@ public static class ImageGenerator
             if(stats.PrevRank != null && prevRank != null)
                 surface.Canvas.DrawBitmap(ResizeBitmap(prevRank, 32, 32), 60, 265);
 
-            if(stats.NextRank != null && nextRank != null)
+            if (stats.NextRank == null)
+                surface.Canvas.DrawBitmap(ResizeBitmap(nextRank, 32, 32), width - 90, 262);
+            else
                 surface.Canvas.DrawBitmap(ResizeBitmap(nextRank, 32, 32), width - 90, 265);
+
         }
 
         using var data = surface.Snapshot().Encode(SKEncodedImageFormat.Png, 80);
