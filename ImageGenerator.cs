@@ -18,7 +18,7 @@ public static class ImageGenerator
     /// <returns>A memory stream containing the generated image with the player's statistics.</returns>
     public static MemoryStream GenerateStatsImage(string username, TetraLeague stats, string? textColor = null, string? backgroundColor = null)
     {
-        var width = 800;
+        var width = 900;
         var height = 300;
         var stream = new MemoryStream();
         var typeFace = SKTypeface.FromFile("Resources/cr.ttf");
@@ -154,6 +154,8 @@ public static class ImageGenerator
             double rankPercentage = distance / range * 100;
 
             var highlight = (int)(rankPercentage / 100 * (width - 200));
+
+            if (highlight < 0) highlight = 0;
 
             highlight = highlight > width-200 ? width - 200 : highlight;
 
