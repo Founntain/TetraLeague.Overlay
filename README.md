@@ -18,6 +18,11 @@ For OBS use the live view one. Create a new Browser Source and paste it in and y
 - `textColor`: Changes the text color and color of the progress bar; default is `FFFFFF`
 > Example: `https://tetrio.founntain.dev/tetraleague/stats/<username>/web?backgroundColor=FF0000&textColor=00FF00`
 
+## Running localy
+If you don't want to use the hosted version provided by me, you have some alternatives.
+- Pull, build and run the project and access it via `localhost`
+- Pull the ![docker image](https://hub.docker.com/repository/docker/founntain/tetraleague.overlay.api/general) and run it with docker and also access it via `localhost` and your given port
+
 ## Contributing
 Feel free to open issues and request features, send feedback or report bugs or even contribute to the code base as well.
 If unsure we can talk about it. Thanks
