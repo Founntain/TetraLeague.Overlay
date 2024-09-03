@@ -9,7 +9,8 @@ You can access it by using the following url:
 - For the live view: `https://tetrio.founntain.dev/tetraleague/stats/<username>/web`
 - For a simple image: `https://tetrio.founntain.dev/tetraleague/stats/<username>`
 
-For OBS use the live view one. Create a new Browser Source and paste it in and you are good to go. Just replace <username> with your tetr.io username (don't forget to remove the <>).
+### OBS
+For OBS use the live view one. Create a new Browser Source and paste it in and you are good to go. Just replace <username> with your tetr.io username (don't forget to remove the <>). ***Make sure that you use the one that ends with `/web` otherwise it won't auto update***
 
 > The data is cached, so don't expect changes immediately the live view we updates every 60 seconds, but it only fetches the tetra channel API when the cache expired. Tetra League data is cached for 5 minutes, which means worst update time is 6 minutes
 
