@@ -2,7 +2,7 @@
 A simple overlay to display your TL stats in OBS via Browser Source.
 You can either get your stats as an image or as a live view that updates every 60 seconds.
 
-If you like the overlay I would really appreciate it if you drop a ⭐ and show me that you like the work! Thanks for using it!
+If you like the overlay I would really appreciate it if you drop a ⭐ and show me that you like the work or by telling others to use it to! Thanks for using it!
 
 ## Usage
 You can access it by using the following url:
