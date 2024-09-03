@@ -33,11 +33,9 @@ public class TetraLeagueController : ControllerBase
         {
             case null:
                 return NotFound($"No stats found for {username}");
-            case { Glicko: -1 } or { Tr: -1 }:
-                return NotFound($"{username} is not yet ranked");
             default:
             {
-                var statsImage = ImageGenerator.GenerateStatsImage(username, stats, textcolor, backgroundColor);
+                var statsImage = ImageGenerator.GenerateTetraLeagueStatsImage(username, stats, textcolor, backgroundColor);
 
                 return File(statsImage.ToArray(), "image/png");
             }

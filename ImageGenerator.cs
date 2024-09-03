@@ -16,12 +16,14 @@ public static class ImageGenerator
     /// <param name="textColor">Optional. The color of the text in the image. Defaults to null.</param>
     /// <param name="backgroundColor">Optional. The background color of the image. Defaults to null.</param>
     /// <returns>A memory stream containing the generated image with the player's statistics.</returns>
-    public static MemoryStream GenerateStatsImage(string username, TetraLeague stats, string? textColor = null, string? backgroundColor = null)
+    public static MemoryStream GenerateTetraLeagueStatsImage(string username, TetraLeague stats, string? textColor = null, string? backgroundColor = null)
     {
         var width = 900;
         var height = 300;
         var stream = new MemoryStream();
         var typeFace = SKTypeface.FromFile("Resources/cr.ttf");
+
+        var unranked = stats.Gamesplayed < 10;
 
         #region Paints
 
@@ -140,8 +142,8 @@ public static class ImageGenerator
             surface.Canvas.DrawRect(0, 0, width, height, backgroundColorPaint);
         }
 
-        var rankBitmap = GetBitmap($"Resources/{stats.Rank}.png");
-        var toprankBitmap = GetBitmap($"Resources/{stats.TopRank}.png");
+        var rankBitmap = unranked ? GetBitmap($"Resources/z.png") : GetBitmap($"Resources/{stats.Rank}.png");
+        var toprankBitmap = unranked ? GetBitmap($"Resources/z.png") : GetBitmap($"Resources/{stats.TopRank}.png");
 
         var prevRank = stats.PrevRank == null ? null : GetBitmap($"Resources/{stats.PrevRank}.png");
         var nextRank = stats.NextRank == null ? GetBitmap("Resources/leaderboard1.png") : GetBitmap($"Resources/{stats.NextRank}.png");
@@ -153,23 +155,37 @@ public static class ImageGenerator
         DrawTextWithShadow(surface, username.ToUpper(), 275, 75, bigTextPaint, bigTextShadowPaint);
 
         // TR
-        DrawTextWithShadow(surface, $"{stats.Tr:#.##} TR", 275, 140, bigTextPaint, bigTextShadowPaint);
+        if(!unranked)
+            DrawTextWithShadow(surface, $"{stats.Tr:#.##} TR", 275, 140, bigTextPaint, bigTextShadowPaint);
+        else
+            DrawTextWithShadow(surface, $"{stats.Gamesplayed} / 10 placements", 275, 140, bigTextPaint, bigTextShadowPaint);
 
         // Stats
         surface.Canvas.DrawRect(462, 162, 3, 85, normalTextPaint);
 
         // Left Side
-        DrawTextWithShadow(surface, $"{stats.Apm}", 275, 185, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"APM", 385, 185, statsPaintAlt, normalTextShadowPaint);
-        DrawTextWithShadow(surface, $"{stats.Pps}", 275, 215, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"PPS", 385, 215, statsPaintAlt, normalTextShadowPaint);
-        DrawTextWithShadow(surface, $"{stats.Vs}", 275, 245, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"VS", 385, 245, statsPaintAlt, normalTextShadowPaint);
+        var apm = stats.Apm ?? 0;
+        var pps = stats.Pps ?? 0;
+        var vs = stats.Vs ?? 0;
+
+        DrawTextWithShadow(surface, $"{apm}", 275, 185, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"APM", 385, 185, statsPaintAlt, normalTextShadowPaint);
+        DrawTextWithShadow(surface, $"{pps}", 275, 215, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"PPS", 385, 215, statsPaintAlt, normalTextShadowPaint);
+        DrawTextWithShadow(surface, $"{vs}", 275, 245, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"VS", 385, 245, statsPaintAlt, normalTextShadowPaint);
 
         // Right Side
-        DrawTextWithShadow(surface, $"GLOBAL", 475, 185, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"# {stats.StandingGlobal!.Value}", 630, 185, normalTextPaint, normalTextShadowPaint);
-        DrawTextWithShadow(surface, $"COUNTRY", 475, 215, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, stats.StandingLocal!.Value == -1 ? "HIDDEN" : $"# {stats.StandingLocal!.Value}", 630, 215, normalTextPaint, normalTextShadowPaint);
-        DrawTextWithShadow(surface, $"TOP RANK", 475, 245, normalTextPaint, normalTextShadowPaint); surface.Canvas.DrawBitmap(ResizeBitmap(toprankBitmap, 32, 32), 630, 218);
+        var globalRank = stats.StandingGlobal == -1 ? "UNRANKED" : $"# {stats.StandingGlobal!.Value}";
+        var localRank = unranked ? "UNRANKED" : stats.StandingLocal!.Value == -1 ? "HIDDEN" : $"# {stats.StandingLocal!.Value}";
+
+        DrawTextWithShadow(surface, $"GLOBAL", 475, 185, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, globalRank, 630, 185, normalTextPaint, normalTextShadowPaint);
+        DrawTextWithShadow(surface, $"COUNTRY", 475, 215, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, localRank, 630, 215, normalTextPaint, normalTextShadowPaint);
+
+        if (!unranked)
+        {
+            DrawTextWithShadow(surface, $"TOP RANK", 475, 245, normalTextPaint, normalTextShadowPaint); surface.Canvas.DrawBitmap(ResizeBitmap(toprankBitmap, 32, 32), 630, 218);
+        }
 
         // Progressbar
-        if (stats.PrevAt.HasValue && stats.NextAt.HasValue && stats.StandingGlobal.HasValue)
+        if (stats.PrevAt.HasValue && stats.NextAt.HasValue && stats.StandingGlobal.HasValue && !unranked)
         {
             double range = stats.PrevAt.Value - stats.NextAt.Value;
             double distance = stats.PrevAt.Value - stats.StandingGlobal.Value;
@@ -192,7 +208,7 @@ public static class ImageGenerator
                 DrawTextWithShadow(surface, $"#{stats.PrevAt}", 90, 286, smallTextPaint, smallTextShadowPaint);
             }
 
-            if (stats.NextRank == null)
+            if (stats.NextRank == null )
                 surface.Canvas.DrawBitmap(ResizeBitmap(nextRank, 32, 32), width - 90, 262);
             else
                 surface.Canvas.DrawBitmap(ResizeBitmap(nextRank, 32, 32), width - 90, 265);
