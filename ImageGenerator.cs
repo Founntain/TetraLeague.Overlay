@@ -69,6 +69,28 @@ public static class ImageGenerator
             TextAlign = SKTextAlign.Left,
         };
 
+        var smallTextPaint = new SKPaint
+        {
+            Color = SKColor.Parse(textColor),
+            Style = SKPaintStyle.Fill,
+            TextSize = 20,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Right,
+        };
+
+        var smallTextShadowPaint = new SKPaint
+        {
+            Color = SKColors.Black,
+            Style = SKPaintStyle.Fill,
+            TextSize = 20,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Right,
+        };
+
         var statsPaintAlt = new SKPaint
         {
             Color = SKColor.Parse(textColor),
@@ -165,11 +187,15 @@ public static class ImageGenerator
             if(stats.PrevRank != null && prevRank != null)
                 surface.Canvas.DrawBitmap(ResizeBitmap(prevRank, 32, 32), 60, 265);
 
+            if (stats.Rank == "d" && stats.PrevAt != -1)
+            {
+                DrawTextWithShadow(surface, $"#{stats.PrevAt}", 90, 286, smallTextPaint, smallTextShadowPaint);
+            }
+
             if (stats.NextRank == null)
                 surface.Canvas.DrawBitmap(ResizeBitmap(nextRank, 32, 32), width - 90, 262);
             else
                 surface.Canvas.DrawBitmap(ResizeBitmap(nextRank, 32, 32), width - 90, 265);
-
         }
 
         using var data = surface.Snapshot().Encode(SKEncodedImageFormat.Png, 80);
