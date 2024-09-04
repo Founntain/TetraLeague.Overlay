@@ -41,10 +41,10 @@ Contributions are welcome! Feel free to open issues, request features, provide f
 
 ## 🧡Special Thanks
 
-- **![osk](https://tetr.io)**: for creating Tetr.io and providing an amazing, well-structured API.
-- **![Veggie_Dog](https://www.twitch.tv/theveggiedog)**: motivating to make this project a reality, testing and feedback
-- **![PixelAtc](https://www.twitch.tv/pixelatc)**: providing feedback, ideas and spreading the word
-- **![ZaptorZap](https://zaptorz.app/)**: for giving feedback and some incredible ideas
+- **[osk](https://tetr.io)**: for creating Tetr.io and providing an amazing, well-structured API.
+- **[Veggie_Dog](https://www.twitch.tv/theveggiedog)**: motivating to make this project a reality, testing and feedback
+- **[PixelAtc](https://www.twitch.tv/pixelatc)**: providing feedback, ideas and spreading the word
+- **[ZaptorZap](https://zaptorz.app/)**: for giving feedback and some incredible ideas
 
 ## Example
 
