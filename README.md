@@ -8,25 +8,40 @@ If you find this overlay useful, please consider giving it a ⭐ to show your su
 
 To use the overlay, simply use one of the following URLs:
 
-- **Live View** (auto-updates every 60 seconds): `https://tetrio.founntain.dev/tetraleague/stats/<username>/web`
-- **Static Image**: `https://tetrio.founntain.dev/tetraleague/stats/<username>`
+**Base URL**: `https://tetrio.founntain.dev/<mode>/<username>/web`
+
+### Tetra League
+- **Live View** (auto-updates every 30 seconds): `https://tetrio.founntain.dev/tetraleague/<username>/web`
+- **Static Image**: `https://tetrio.founntain.dev/tetraleague/<username>`
+
+### 40 Lines
+- **Live View** (auto-updates every 30 seconds): `https://tetrio.founntain.dev/sprint/<username>/web`
+- **Static Image**: `https://tetrio.founntain.dev/sprint/<username>`
+
+### Blitz
+- **Live View** (auto-updates every 30 seconds): `https://tetrio.founntain.dev/blitz/<username>/web`
+- **Static Image**: `https://tetrio.founntain.dev/blitz/<username>`
 
 ### 📽️ OBS Setup
 
 For OBS, it is recommended to use the live view URL. To set it up:
 
 1. Create a new Browser Source in OBS.
-2. Paste the live view URL into the Browser Source settings, replacing `<username>` with your Tetr.io username (make sure to remove the `<` and `>`).
-3. Make sure the width and height is **900 x 300**
+2. Paste the live view URL into the Browser Source settings, replacing `<username>` with your Tetr.io username (make sure to remove the `<` and `>`), the same goes for `<mode>`.
+3. Make sure the width and height is correct check below what sizes are best for each overlay:
+   - Tetra League: 900 x 300
+   - 40 Lines: 700 x 225
+   - Blitz: 700 x 225
 
-> **Note:** Ensure you use the URL ending with `/web` for live updates. The data is cached and refreshes every 60 seconds. Tetra League data is cached for 5 minutes, so the maximum delay before updates is approximately 6 minutes.
+> **Note:** Ensure you use the URL ending with `/web` for live updates. The data is cached and refreshes every 30 seconds. For 40 Lines and Blitz the default cache is used which is **5 minutes**.
 
 ### 🛠️ Customization Parameters
 
 - **`backgroundColor`**: Adjusts the background color (useful if you don’t want a transparent background). Default is `00FFFFFF`.
 - **`textColor`**: Changes the text color and the color of the progress bar. Default is `FFFFFF`.
+- **displayUsername**: This only works for 40L and Blitz if set to `false` it will hide the username.
 
-> **Example:** `https://tetrio.founntain.dev/tetraleague/stats/<username>/web?backgroundColor=FF0000&textColor=00FF00`
+> **Example:** `https://tetrio.founntain.dev/tetraleague/<username>/web?backgroundColor=FF0000&textColor=00FF00`
 
 ## 🏠 Running Locally
 
