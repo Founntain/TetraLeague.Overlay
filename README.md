@@ -36,6 +36,7 @@ For OBS, it is recommended to use the live view URL. To set it up:
 > **Note:** Ensure you use the URL ending with `/web` for live updates. The data is cached and refreshes every 30 seconds. For 40 Lines and Blitz the default cache is used which is **5 minutes**.
 
 ### 🛠️ Customization Parameters
+You can put any parameters at the end of the url. ***The order does not matter, however spelling is!***
 
 - **`backgroundColor`**: Adjusts the background color (useful if you don’t want a transparent background). Default is `00FFFFFF`.
 - **`textColor`**: Changes the text color and the color of the progress bar. Default is `FFFFFF`.
