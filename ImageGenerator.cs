@@ -572,6 +572,179 @@ public static class ImageGenerator
         return stream;
     }
 
+     public static async Task<MemoryStream> GenerateZenithImage(string username, QuickPlay stats, string? textColor, string? backgroundColor, bool displayUsername)
+    {
+        var width = 900;
+        var height = 300;
+
+        var center = (float) width / 2;
+
+        var stream = new MemoryStream();
+
+        var typeFace = SKTypeface.FromFile("Resources/cr.ttf");
+
+        #region Paints
+
+        textColor ??= "FFFFFF";
+
+        var bigTextPaint = new SKPaint
+        {
+            Color = SKColor.Parse(textColor),
+            Style = SKPaintStyle.Fill,
+            TextSize = 64,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var bigTextShadowPaint = new SKPaint
+        {
+            Color = SKColors.Black,
+            Style = SKPaintStyle.Fill,
+            TextSize = 64,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var normalTextPaint = new SKPaint
+        {
+            Color = SKColor.Parse(textColor),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var normalTextShadowPaint = new SKPaint
+        {
+            Color = SKColors.Black,
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var smallTextPaint = new SKPaint
+        {
+            Color = SKColor.Parse(textColor),
+            Style = SKPaintStyle.Fill,
+            TextSize = 20,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var smallTextShadowPaint = new SKPaint
+        {
+            Color = SKColors.Black,
+            Style = SKPaintStyle.Fill,
+            TextSize = 20,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var statsPaintAlt = new SKPaint
+        {
+            Color = SKColor.Parse(textColor),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace
+        };
+
+        var progressBarBg = new SKPaint
+        {
+            Color = SKColor.Parse("DD000000"),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace
+        };
+
+        var progressBarBgAlt = new SKPaint
+        {
+            Color = SKColor.Parse($"FF{textColor}"),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace
+        };
+
+        #endregion
+
+        using var surface = SKSurface.Create(new SKImageInfo(width, height, SKColorType.Bgra8888, SKAlphaType.Unpremul));
+
+        SetBackground(surface, width, height, backgroundColor);
+
+        var offset = 0;
+
+        // USERNAME
+        if (displayUsername)
+        {
+            DrawTextWithShadow(surface, username.ToUpper(), center, 55, bigTextPaint, bigTextShadowPaint);
+
+            offset += 65;
+        }
+
+        // CURRENT WEEKS RECORD
+        var currentWeekPps = $"{stats.Record.Results.Aggregatestats.Pps:#.##} PPS";
+        var currentWeekApm = $"{stats.Record.Results.Aggregatestats.Apm:#.##} APM";
+        var currentWeekVs = $"{stats.Record.Results.Aggregatestats.Vsscore:#.##} VS";
+
+        DrawTextWithShadow(surface, $"{stats.Record!.Results.Stats.Zenith.Altitude:F2} m", center / 2, 55 + offset, bigTextPaint, bigTextShadowPaint);
+        DrawTextWithShadow(surface, $"{currentWeekPps} | {currentWeekApm} | {currentWeekVs}", center / 2, 80 + offset, smallTextPaint, smallTextShadowPaint);
+        DrawTextWithShadow(surface, $"CURRENT WEEK", center / 2, 105 + offset, smallTextPaint, smallTextShadowPaint);
+
+        var modsCurrentWeek = stats.Record.Extras.Zenith.Mods;
+        var modsPersonalBest = stats.Best.Record.Extras.Zenith.Mods;
+
+        var modSize = 48;
+        int modCanvasWidthCurrentWeek = (modSize * modsCurrentWeek.Length) + (10 * (modsCurrentWeek.Length - 1));
+        int modCanvasWidthPersonalBest = (modSize * modsPersonalBest.Length) + (10 * (modsPersonalBest.Length - 1));
+
+        if (modsCurrentWeek.Length > 0)
+        {
+            var currentWeekModsImage = GenerateModImage(ref modCanvasWidthCurrentWeek, modSize, modsCurrentWeek);
+
+            surface.Canvas.DrawImage(currentWeekModsImage, (center / 2) - modCanvasWidthCurrentWeek / 2, 120 + offset);
+        }
+
+        // ALL TIME BEST
+        var personalBestPps = $"{stats.Best.Record.Results.Aggregatestats.Pps:#.##} PPS";
+        var personalBestApm = $"{stats.Best.Record.Results.Aggregatestats.Apm:#.##} APM";
+        var personalBestVs = $"{stats.Best.Record.Results.Aggregatestats.Vsscore:#.##} VS";
+
+        DrawTextWithShadow(surface, $"{stats.Best.Record.Results.Stats.Zenith.Altitude:F2} m", (center / 2) * 3, 55 + offset, bigTextPaint, bigTextShadowPaint);
+        DrawTextWithShadow(surface, $"{personalBestPps} | {personalBestApm} | {personalBestVs}", (center / 2) * 3, 80 + offset, smallTextPaint, smallTextShadowPaint);
+        DrawTextWithShadow(surface, $"ALL TIME BEST", (center / 2) * 3, 105 + offset, smallTextPaint, smallTextShadowPaint);
+
+        if (modsPersonalBest.Length > 0)
+        {
+            var personalBestModsImage = GenerateModImage(ref modCanvasWidthPersonalBest, modSize, modsPersonalBest);
+
+            surface.Canvas.DrawImage(personalBestModsImage, 3 * (center / 2) - modCanvasWidthPersonalBest / 2, 120 + offset);
+        }
+
+        using var data = surface.Snapshot().Encode(SKEncodedImageFormat.Png, 80);
+
+        data.SaveTo(stream);
+
+        return stream;
+    }
+
     private static SKBitmap GetBitmap(string relativePath)
     {
         var currentDirectory = Directory.GetCurrentDirectory();
@@ -644,5 +817,42 @@ public static class ImageGenerator
 
             surface.Canvas.DrawRect(0, 0, width, height, backgroundColorPaint);
         }
+    }
+
+    private static SKImage GenerateModImage(ref int modCanvasWidth, int modSize, string[] mods)
+    {
+        var height = mods.Length > 4 ? modSize * 2 : modSize;
+
+        var factor = mods.Length > 4 ? 4 : mods.Length;
+
+        modCanvasWidth = (modSize * factor) + (10 * (factor - 1));
+
+        using var modSurface = SKSurface.Create(new SKImageInfo(modCanvasWidth, height + 5, SKColorType.Bgra8888, SKAlphaType.Unpremul));
+
+        for (var i = 0; i < mods.Length; i++)
+        {
+            var mod = mods[i];
+
+            var modBitmap = ResizeBitmap(GetBitmap($"Resources/{mod}.png"), modSize, modSize);
+
+            if (i >= 4)
+            {
+                var subImageWidth = modSize * (mod.Length - i) + (10 * (mod.Length - i - 1));
+
+                var image = GenerateModImage(ref subImageWidth, modSize, mods.Skip(i).ToArray());
+                // (center / 2) - modCanvasWidthCurrentWeek / 2
+                modSurface.Canvas.DrawImage(image, modCanvasWidth / 2 - subImageWidth / 2, modSize + 5);
+
+                break;
+            }
+
+            var offset = modSize * i + 10 * i;
+
+            modSurface.Canvas.DrawBitmap(modBitmap, offset, 0);
+        }
+
+        var modImage = modSurface.Snapshot();
+
+        return modImage;
     }
 }

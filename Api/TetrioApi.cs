@@ -9,6 +9,7 @@ public class TetrioApi : ApiBase
     private static ConcurrentDictionary<string, (DateTimeOffset, TetraLeague?)> _leagueCache = new();
     private static ConcurrentDictionary<string, (DateTimeOffset, Sprint?)> _sprintCache = new();
     private static ConcurrentDictionary<string, (DateTimeOffset, Blitz?)> _blitzCache = new();
+    private static ConcurrentDictionary<string, (DateTimeOffset, QuickPlay?)> _zenithCache = new();
 
     private string LeagueUrl => ApiBaseUrl + "users/{0}/summaries/league";
     private string SprintUrl => ApiBaseUrl + "users/{0}/summaries/40l";
@@ -195,6 +196,69 @@ public class TetrioApi : ApiBase
             }
 
             _blitzCache.TryAdd(username, (cacheValidUntil, apiResponse.Data));
+
+            return apiResponse.Data;
+        }
+        catch (Exception _)
+        {
+            return default;
+        }
+    }
+
+     public async Task<QuickPlay?> GetZenithStats(string username)
+    {
+        // Let's check the cache first
+        if (_zenithCache.TryGetValue(username, out var data))
+        {
+            Console.WriteLine($"[QP] Found {username} in cache");
+
+            // If the cache is still valid we return that
+            if (data.Item1 >= DateTimeOffset.UtcNow)
+            {
+                Console.WriteLine("[QP] Found valid cache data to return");
+
+                return data.Item2;
+            }
+        }
+
+        Console.WriteLine($"[QP] Getting Blitz stats for {username}, as nothing was found in the cache");
+
+        try
+        {
+            var responseFromApi = await GetString(string.Format(ZenithUrl, username));
+
+            if (responseFromApi == null) return default;
+
+            var apiResponse = JsonSerializer.Deserialize<ApiResponse<QuickPlay>>(responseFromApi, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (apiResponse == null) return default;
+            if (!apiResponse.Success) return default;
+
+            if (apiResponse.Cache.Status == "hit")
+            {
+                Console.WriteLine("[QP] Cache hit... returning cache");
+
+                _zenithCache.TryGetValue(username, out var result);
+
+                if(result.Item2 != null) return result.Item2;
+
+                Console.WriteLine("[QP] Cache hit, but nothing in there, fetching data again...");
+            }
+
+            if (apiResponse.Data == default) return default;
+
+            Console.WriteLine("[QP] Updating cache and returning");
+
+            var cacheValidUntil = DateTimeOffset.FromUnixTimeMilliseconds(apiResponse.Cache.CacheUntil);
+
+            if (_zenithCache.ContainsKey(username))
+            {
+                _zenithCache[username] = (cacheValidUntil, apiResponse.Data);
+
+                return _zenithCache[username].Item2;
+            }
+
+            _zenithCache.TryAdd(username, (cacheValidUntil, apiResponse.Data));
 
             return apiResponse.Data;
         }

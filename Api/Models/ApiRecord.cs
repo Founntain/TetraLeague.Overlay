@@ -6,95 +6,102 @@ public class ApiRecord
 {
     [JsonPropertyName("record")] public Record? Record { get; set; }
 
-    [JsonPropertyName("rank")] public int? Rank { get; set; }
+    [JsonPropertyName("rank")] public double? Rank { get; set; }
 
-    [JsonPropertyName("rank_local")] public int? RankLocal { get; set; }
+    [JsonPropertyName("rank_local")] public double? RankLocal { get; set; }
+
+    [JsonPropertyName("best")] public ApiRecord? Best { get; set; }
 }
 
 public class Aggregatestats
 {
-    [JsonPropertyName("apm")] public int? Apm { get; set; }
+    [JsonPropertyName("apm")] public double? Apm { get; set; }
 
     [JsonPropertyName("pps")] public double? Pps { get; set; }
 
-    [JsonPropertyName("vsscore")] public int? Vsscore { get; set; }
+    [JsonPropertyName("vsscore")] public double? Vsscore { get; set; }
 }
 
 public class Clears
 {
-    [JsonPropertyName("singles")] public int? Singles { get; set; }
+    [JsonPropertyName("singles")] public double? Singles { get; set; }
 
-    [JsonPropertyName("doubles")] public int? Doubles { get; set; }
+    [JsonPropertyName("doubles")] public double? Doubles { get; set; }
 
-    [JsonPropertyName("triples")] public int? Triples { get; set; }
+    [JsonPropertyName("triples")] public double? Triples { get; set; }
 
-    [JsonPropertyName("quads")] public int? Quads { get; set; }
+    [JsonPropertyName("quads")] public double? Quads { get; set; }
 
-    [JsonPropertyName("pentas")] public int? Pentas { get; set; }
+    [JsonPropertyName("pentas")] public double? Pentas { get; set; }
 
-    [JsonPropertyName("realtspins")] public int? Realtspins { get; set; }
+    [JsonPropertyName("realtspins")] public double? Realtspins { get; set; }
 
-    [JsonPropertyName("minitspins")] public int? Minitspins { get; set; }
+    [JsonPropertyName("minitspins")] public double? Minitspins { get; set; }
 
-    [JsonPropertyName("minitspinsingles")] public int? Minitspinsingles { get; set; }
+    [JsonPropertyName("minitspinsingles")] public double? Minitspinsingles { get; set; }
 
-    [JsonPropertyName("tspinsingles")] public int? Tspinsingles { get; set; }
+    [JsonPropertyName("tspinsingles")] public double? Tspinsingles { get; set; }
 
-    [JsonPropertyName("minitspindoubles")] public int? Minitspindoubles { get; set; }
+    [JsonPropertyName("minitspindoubles")] public double? Minitspindoubles { get; set; }
 
-    [JsonPropertyName("tspindoubles")] public int? Tspindoubles { get; set; }
+    [JsonPropertyName("tspindoubles")] public double? Tspindoubles { get; set; }
 
-    [JsonPropertyName("minitspintriples")] public int? Minitspintriples { get; set; }
+    [JsonPropertyName("minitspdoubleriples")] public double? Minitspdoubleriples { get; set; }
 
-    [JsonPropertyName("tspintriples")] public int? Tspintriples { get; set; }
+    [JsonPropertyName("tspdoubleriples")] public double? Tspdoubleriples { get; set; }
 
-    [JsonPropertyName("minitspinquads")] public int? Minitspinquads { get; set; }
+    [JsonPropertyName("minitspinquads")] public double? Minitspinquads { get; set; }
 
-    [JsonPropertyName("tspinquads")] public int? Tspinquads { get; set; }
+    [JsonPropertyName("tspinquads")] public double? Tspinquads { get; set; }
 
-    [JsonPropertyName("tspinpentas")] public int? Tspinpentas { get; set; }
+    [JsonPropertyName("tspinpentas")] public double? Tspinpentas { get; set; }
 
-    [JsonPropertyName("allclear")] public int? Allclear { get; set; }
+    [JsonPropertyName("allclear")] public double? Allclear { get; set; }
 }
 
 public class Extras
 {
     public object League { get; set; }
     public object Result { get; set; }
-    public object Zenith { get; set; }
+    public ZenithExtra Zenith { get; set; }
+}
+
+public class ZenithExtra
+{
+    [JsonPropertyName("mods")] public string[] Mods { get; set; }
 }
 
 public class Finesse
 {
-    [JsonPropertyName("combo")] public int? Combo { get; set; }
+    [JsonPropertyName("combo")] public double? Combo { get; set; }
 
-    [JsonPropertyName("faults")] public int? Faults { get; set; }
+    [JsonPropertyName("faults")] public double? Faults { get; set; }
 
-    [JsonPropertyName("perfectpieces")] public int? Perfectpieces { get; set; }
+    [JsonPropertyName("perfectpieces")] public double? Perfectpieces { get; set; }
 }
 
 public class Garbage
 {
-    [JsonPropertyName("sent")] public int? Sent { get; set; }
+    [JsonPropertyName("sent")] public double? Sent { get; set; }
 
-    [JsonPropertyName("sent_nomult")] public int? SentNomult { get; set; }
+    [JsonPropertyName("sent_nomult")] public double? SentNomult { get; set; }
 
-    [JsonPropertyName("maxspike")] public int? Maxspike { get; set; }
+    [JsonPropertyName("maxspike")] public double? Maxspike { get; set; }
 
-    [JsonPropertyName("maxspike_nomult")] public int? MaxspikeNomult { get; set; }
+    [JsonPropertyName("maxspike_nomult")] public double? MaxspikeNomult { get; set; }
 
-    [JsonPropertyName("received")] public int? Received { get; set; }
+    [JsonPropertyName("received")] public double? Received { get; set; }
 
-    [JsonPropertyName("attack")] public int? Attack { get; set; }
+    [JsonPropertyName("attack")] public double? Attack { get; set; }
 
-    [JsonPropertyName("cleared")] public int? Cleared { get; set; }
+    [JsonPropertyName("cleared")] public double? Cleared { get; set; }
 }
 
 public class P
 {
     [JsonPropertyName("pri")] public double? Pri { get; set; }
 
-    [JsonPropertyName("sec")] public int? Sec { get; set; }
+    [JsonPropertyName("sec")] public double? Sec { get; set; }
 
     [JsonPropertyName("ter")] public double? Ter { get; set; }
 }
@@ -143,46 +150,46 @@ public class Results
 
 public class Stats
 {
-    [JsonPropertyName("lines")] public int? Lines { get; set; }
+    [JsonPropertyName("lines")] public double? Lines { get; set; }
 
-    [JsonPropertyName("level_lines")] public int? LevelLines { get; set; }
+    [JsonPropertyName("level_lines")] public double? LevelLines { get; set; }
 
     [JsonPropertyName("level_lines_needed")]
-    public int? LevelLinesNeeded { get; set; }
+    public double? LevelLinesNeeded { get; set; }
 
-    [JsonPropertyName("inputs")] public int? Inputs { get; set; }
+    [JsonPropertyName("inputs")] public double? Inputs { get; set; }
 
-    [JsonPropertyName("holds")] public int? Holds { get; set; }
+    [JsonPropertyName("holds")] public double? Holds { get; set; }
 
-    [JsonPropertyName("score")] public int? Score { get; set; }
+    [JsonPropertyName("score")] public double? Score { get; set; }
 
-    [JsonPropertyName("zenlevel")] public int? Zenlevel { get; set; }
+    [JsonPropertyName("zenlevel")] public double? Zenlevel { get; set; }
 
-    [JsonPropertyName("zenprogress")] public int? Zenprogress { get; set; }
+    [JsonPropertyName("zenprogress")] public double? Zenprogress { get; set; }
 
-    [JsonPropertyName("level")] public int? Level { get; set; }
+    [JsonPropertyName("level")] public double? Level { get; set; }
 
-    [JsonPropertyName("combo")] public int? Combo { get; set; }
+    [JsonPropertyName("combo")] public double? Combo { get; set; }
 
-    [JsonPropertyName("topcombo")] public int? Topcombo { get; set; }
+    [JsonPropertyName("topcombo")] public double? Topcombo { get; set; }
 
-    [JsonPropertyName("combopower")] public int? Combopower { get; set; }
+    [JsonPropertyName("combopower")] public double? Combopower { get; set; }
 
-    [JsonPropertyName("btb")] public int? Btb { get; set; }
+    [JsonPropertyName("btb")] public double? Btb { get; set; }
 
-    [JsonPropertyName("topbtb")] public int? Topbtb { get; set; }
+    [JsonPropertyName("topbtb")] public double? Topbtb { get; set; }
 
-    [JsonPropertyName("btbpower")] public int? Btbpower { get; set; }
+    [JsonPropertyName("btbpower")] public double? Btbpower { get; set; }
 
-    [JsonPropertyName("tspins")] public int? Tspins { get; set; }
+    [JsonPropertyName("tspins")] public double? Tspins { get; set; }
 
-    [JsonPropertyName("piecesplaced")] public int? Piecesplaced { get; set; }
+    [JsonPropertyName("piecesplaced")] public double? Piecesplaced { get; set; }
 
     [JsonPropertyName("clears")] public Clears Clears { get; set; }
 
     [JsonPropertyName("garbage")] public Garbage Garbage { get; set; }
 
-    [JsonPropertyName("kills")] public int? Kills { get; set; }
+    [JsonPropertyName("kills")] public double? Kills { get; set; }
 
     [JsonPropertyName("finesse")] public Finesse Finesse { get; set; }
 
@@ -208,29 +215,29 @@ public class User
 
 public class Zenith
 {
-    [JsonPropertyName("altitude")] public int? Altitude { get; set; }
+    [JsonPropertyName("altitude")] public double? Altitude { get; set; }
 
-    [JsonPropertyName("rank")] public int? Rank { get; set; }
+    [JsonPropertyName("rank")] public double? Rank { get; set; }
 
-    [JsonPropertyName("peakrank")] public int? Peakrank { get; set; }
+    [JsonPropertyName("peakrank")] public double? Peakrank { get; set; }
 
-    [JsonPropertyName("avgrankpts")] public int? Avgrankpts { get; set; }
+    [JsonPropertyName("avgrankpts")] public double? Avgrankpts { get; set; }
 
-    [JsonPropertyName("floor")] public int? Floor { get; set; }
+    [JsonPropertyName("floor")] public double? Floor { get; set; }
 
-    [JsonPropertyName("targetingfactor")] public int? Targetingfactor { get; set; }
+    [JsonPropertyName("targetingfactor")] public double? Targetingfactor { get; set; }
 
-    [JsonPropertyName("targetinggrace")] public int? Targetinggrace { get; set; }
+    [JsonPropertyName("targetinggrace")] public double? Targetinggrace { get; set; }
 
-    [JsonPropertyName("totalbonus")] public int? Totalbonus { get; set; }
+    [JsonPropertyName("totalbonus")] public double? Totalbonus { get; set; }
 
-    [JsonPropertyName("revives")] public int? Revives { get; set; }
+    [JsonPropertyName("revives")] public double? Revives { get; set; }
 
-    [JsonPropertyName("revivesTotal")] public int? RevivesTotal { get; set; }
+    [JsonPropertyName("revivesTotal")] public double? RevivesTotal { get; set; }
 
     [JsonPropertyName("speedrun")] public bool? Speedrun { get; set; }
 
     [JsonPropertyName("speedrun_seen")] public bool? SpeedrunSeen { get; set; }
 
-    [JsonPropertyName("splits")] public List<int?> Splits { get; set; }
+    [JsonPropertyName("splits")] public List<double?> Splits { get; set; }
 }

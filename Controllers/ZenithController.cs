@@ -3,15 +3,14 @@ using TetraLeagueOverlay.Api;
 
 namespace TetraLeagueOverlay.Controllers;
 
-[Route("[controller]")]
-public class BlitzController : BaseController
+public class ZenithController : BaseController
 {
-    public BlitzController(TetrioApi api) : base(api) { }
+    public ZenithController(TetrioApi api) : base(api) { }
 
     [HttpGet]
     public ActionResult<string> Get()
     {
-        return Ok("This Endpoint is for Blitz Overlays");
+        return Ok("This Endpoint is for Quick Play Overlays");
     }
 
     [HttpGet]
@@ -20,7 +19,7 @@ public class BlitzController : BaseController
     {
         username = username.ToLower();
 
-        var stats = await _api.GetBlitzStats(username);
+        var stats = await _api.GetZenithStats(username);
 
         MemoryStream? notFoundImage = null;
 
@@ -39,7 +38,7 @@ public class BlitzController : BaseController
                     return File(notFoundImage.ToArray(), "image/png");
                 }
 
-                var statsImage = ImageGenerator.GenerateBlitzImage(username, stats, textcolor, backgroundColor, displayUsername);
+                var statsImage = await ImageGenerator.GenerateZenithImage(username, stats, textcolor, backgroundColor, displayUsername);
 
                 return File(statsImage.ToArray(), "image/png");
             }
