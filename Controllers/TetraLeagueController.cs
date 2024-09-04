@@ -3,22 +3,14 @@ using TetraLeagueOverlay.Api;
 
 namespace TetraLeagueOverlay.Controllers;
 
-[ApiController]
-[Produces("application/json")]
-[Route("[controller]")]
-public class TetraLeagueController : ControllerBase
+public class TetraLeagueController : BaseController
 {
-    private readonly TetraLeagueApi _api;
-
-    public TetraLeagueController(TetraLeagueApi api)
-    {
-        _api = api;
-    }
+    public TetraLeagueController(TetrioApi api) : base(api) { }
 
     [HttpGet]
     public ActionResult<string> Get()
     {
-        return Ok("Tetra League API");
+        return Ok("This Endpoint is for Tetra League Overlays");
     }
 
     [HttpGet]
@@ -37,11 +29,18 @@ public class TetraLeagueController : ControllerBase
                 return File(notFoundImage.ToArray(), "image/png");
             default:
             {
-                var statsImage = ImageGenerator.GenerateTetraLeagueStatsImage(username, stats, textcolor, backgroundColor);
+                var statsImage = ImageGenerator.GenerateTetraLeagueImage(username, stats, textcolor, backgroundColor);
 
                 return File(statsImage.ToArray(), "image/png");
             }
         }
+    }
+
+    [HttpGet]
+    [Route("{username}")]
+    public async Task<ActionResult> StatsAlt(string username, string? textcolor = null, string? backgroundColor = null)
+    {
+        return await Stats(username, textcolor, backgroundColor);
     }
 
     [HttpGet]
@@ -57,5 +56,12 @@ public class TetraLeagueController : ControllerBase
         html = html.Replace("{backgroundColor}", backgroundColor ?? "00FFFFFF");
 
         return Content(html, "text/html");
+    }
+
+    [HttpGet]
+    [Route("{username}/web")]
+    public async Task<ActionResult> WebAlt(string username, string? textcolor = null, string? backgroundColor = null)
+    {
+        return await Web(username, textcolor, backgroundColor);
     }
 }

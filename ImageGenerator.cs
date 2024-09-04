@@ -16,7 +16,7 @@ public static class ImageGenerator
     /// <param name="textColor">Optional. The color of the text in the image. Defaults to null.</param>
     /// <param name="backgroundColor">Optional. The background color of the image. Defaults to null.</param>
     /// <returns>A memory stream containing the generated image with the player's statistics.</returns>
-    public static MemoryStream GenerateTetraLeagueStatsImage(string username, TetraLeague stats, string? textColor = null, string? backgroundColor = null)
+    public static MemoryStream GenerateTetraLeagueImage(string username, TetraLeague stats, string? textColor = null, string? backgroundColor = null)
     {
         var width = 900;
         var height = 300;
@@ -127,20 +127,7 @@ public static class ImageGenerator
 
         using var surface = SKSurface.Create(new SKImageInfo(width, height, SKColorType.Bgra8888, SKAlphaType.Unpremul));
 
-        if (backgroundColor != null)
-        {
-            var backgroundColorPaint = new SKPaint
-            {
-                Color = SKColor.Parse(backgroundColor),
-                Style = SKPaintStyle.Fill,
-                TextSize = 32,
-                FakeBoldText = true,
-                IsAntialias = true,
-                Typeface = typeFace
-            };
-
-            surface.Canvas.DrawRect(0, 0, width, height, backgroundColorPaint);
-        }
+        SetBackground(surface, width, height, backgroundColor);
 
         var rankBitmap = unranked ? GetBitmap($"Resources/z.png") : GetBitmap($"Resources/{stats.Rank}.png");
         var toprankBitmap = unranked ? GetBitmap($"Resources/z.png") : GetBitmap($"Resources/{stats.TopRank}.png");
@@ -230,17 +217,6 @@ public static class ImageGenerator
 
         #region Paints
 
-        var backgroundPaint = new SKPaint
-        {
-            Color = SKColor.Parse("0f160d"),
-            Style = SKPaintStyle.Fill,
-            TextSize = 64,
-            FakeBoldText = true,
-            IsAntialias = true,
-            Typeface = typeFace,
-            TextAlign = SKTextAlign.Center,
-        };
-
         var bigTextPaint = new SKPaint
         {
             Color = SKColor.Parse("5a6e49"),
@@ -291,13 +267,303 @@ public static class ImageGenerator
 
         var errorBitmap = GetBitmap("Resources/error.png");
 
-        surface.Canvas.DrawRect(0, 0, width, height, backgroundPaint);
+        SetBackground(surface, width, height, "0f160d");
 
         DrawTextWithShadow(surface, "No such user", (float) width / 2, 60, bigTextPaint, bigTextShadowPaint);
         DrawTextWithShadow(surface, $"Either you mistyped something", (float) width / 2, 100, normalTextPaint, normalTextShadowPaint);
         DrawTextWithShadow(surface, $"or the account no longer exists.", (float) width / 2, 130, normalTextPaint, normalTextShadowPaint);
 
         surface.Canvas.DrawBitmap(errorBitmap, (float) ((width / 2) - (errorBitmap.Width / 2)), 140);
+
+        using var data = surface.Snapshot().Encode(SKEncodedImageFormat.Png, 80);
+
+        data.SaveTo(stream);
+
+        return stream;
+    }
+
+    public static MemoryStream GenerateSprintImage(string username, Sprint stats, string? textColor, string? backgroundColor, bool displayUsername = true)
+    {
+        var width = 700;
+        var height = 225;
+
+        var center = (float) width / 2;
+
+        var stream = new MemoryStream();
+
+        var typeFace = SKTypeface.FromFile("Resources/cr.ttf");
+
+        #region Paints
+
+        textColor ??= "FFFFFF";
+
+        var bigTextPaint = new SKPaint
+        {
+            Color = SKColor.Parse(textColor),
+            Style = SKPaintStyle.Fill,
+            TextSize = 64,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var bigTextShadowPaint = new SKPaint
+        {
+            Color = SKColors.Black,
+            Style = SKPaintStyle.Fill,
+            TextSize = 64,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var normalTextPaint = new SKPaint
+        {
+            Color = SKColor.Parse(textColor),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var normalTextShadowPaint = new SKPaint
+        {
+            Color = SKColors.Black,
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var smallTextPaint = new SKPaint
+        {
+            Color = SKColor.Parse(textColor),
+            Style = SKPaintStyle.Fill,
+            TextSize = 20,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Right,
+        };
+
+        var smallTextShadowPaint = new SKPaint
+        {
+            Color = SKColors.Black,
+            Style = SKPaintStyle.Fill,
+            TextSize = 20,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Right,
+        };
+
+        var statsPaintAlt = new SKPaint
+        {
+            Color = SKColor.Parse(textColor),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace
+        };
+
+        var progressBarBg = new SKPaint
+        {
+            Color = SKColor.Parse("DD000000"),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace
+        };
+
+        var progressBarBgAlt = new SKPaint
+        {
+            Color = SKColor.Parse($"FF{textColor}"),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace
+        };
+
+        #endregion
+
+        using var surface = SKSurface.Create(new SKImageInfo(width, height, SKColorType.Bgra8888, SKAlphaType.Unpremul));
+
+        SetBackground(surface, width, height, backgroundColor);
+
+        var offset = 0;
+
+        if (displayUsername)
+        {
+            DrawTextWithShadow(surface, username.ToUpper(), center, 65, bigTextPaint, bigTextShadowPaint);
+
+            offset += 60;
+        }
+
+        var pps = $"{stats.Record!.Results.Aggregatestats.Pps!.Value:#.##}  PPS";
+        var kpp = $"{(double) stats.Record.Results.Stats.Inputs! / (double) stats.Record.Results.Stats.Piecesplaced!:F2}  KPP";
+        var kps = $"{stats.Record.Results.Stats.Inputs / (stats.Record.Results.Stats.Finaltime / 1000):F2}  KPS";
+        var finesse = $"{stats.Record.Results.Stats.Finesse.Faults}F";
+
+        // TIME
+        DrawTextWithShadow(surface, TimeSpan.FromMilliseconds(Math.Round(stats.Record.Results.Stats.Finaltime!.Value, MidpointRounding.ToEven)).ToString(@"m\:ss\.fff"), center, 65 + offset, bigTextPaint, bigTextShadowPaint);
+        // STATS
+        DrawTextWithShadow(surface, $"{pps} | {kpp} | {kps} | {finesse}", center, 105 + offset, normalTextPaint, normalTextShadowPaint);
+        // PLACEMENTS
+        DrawTextWithShadow(surface, $"# {stats.Rank} | # {stats.RankLocal}", center, 140 + offset, normalTextPaint, normalTextShadowPaint);
+
+        using var data = surface.Snapshot().Encode(SKEncodedImageFormat.Png, 80);
+
+        data.SaveTo(stream);
+
+        return stream;
+    }
+
+    public static MemoryStream GenerateBlitzImage(string username, Blitz stats, string? textColor, string? backgroundColor, bool displayUsername = true)
+    {
+        var width = 700;
+        var height = 225;
+
+        var center = (float) width / 2;
+
+        var stream = new MemoryStream();
+
+        var typeFace = SKTypeface.FromFile("Resources/cr.ttf");
+
+        #region Paints
+
+        textColor ??= "FFFFFF";
+
+        var bigTextPaint = new SKPaint
+        {
+            Color = SKColor.Parse(textColor),
+            Style = SKPaintStyle.Fill,
+            TextSize = 64,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var bigTextShadowPaint = new SKPaint
+        {
+            Color = SKColors.Black,
+            Style = SKPaintStyle.Fill,
+            TextSize = 64,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var normalTextPaint = new SKPaint
+        {
+            Color = SKColor.Parse(textColor),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var normalTextShadowPaint = new SKPaint
+        {
+            Color = SKColors.Black,
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var smallTextPaint = new SKPaint
+        {
+            Color = SKColor.Parse(textColor),
+            Style = SKPaintStyle.Fill,
+            TextSize = 20,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Right,
+        };
+
+        var smallTextShadowPaint = new SKPaint
+        {
+            Color = SKColors.Black,
+            Style = SKPaintStyle.Fill,
+            TextSize = 20,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Right,
+        };
+
+        var statsPaintAlt = new SKPaint
+        {
+            Color = SKColor.Parse(textColor),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace
+        };
+
+        var progressBarBg = new SKPaint
+        {
+            Color = SKColor.Parse("DD000000"),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace
+        };
+
+        var progressBarBgAlt = new SKPaint
+        {
+            Color = SKColor.Parse($"FF{textColor}"),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace
+        };
+
+        #endregion
+
+        using var surface = SKSurface.Create(new SKImageInfo(width, height, SKColorType.Bgra8888, SKAlphaType.Unpremul));
+
+        SetBackground(surface, width, height, backgroundColor);
+
+        var offset = 0;
+
+        if (displayUsername)
+        {
+            DrawTextWithShadow(surface, username.ToUpper(), center, 65, bigTextPaint, bigTextShadowPaint);
+
+            offset += 60;
+        }
+
+        var pps = $"{stats.Record!.Results.Aggregatestats.Pps!.Value:#.##}  PPS";
+        var kpp = $"{(double) stats.Record.Results.Stats.Inputs! / (double) stats.Record.Results.Stats.Piecesplaced!:F2}  KPP";
+        var sps = $"{(double) stats.Record.Results.Stats.Score! / (double) stats.Record.Results.Stats.Piecesplaced:F2}  SPS";
+        var finesse = $"{stats.Record.Results.Stats.Finesse.Faults}F";
+
+        // SCORE
+        DrawTextWithShadow(surface, stats.Record.Results.Stats.Score!.Value.ToString("###,###")!, center, 65 + offset, bigTextPaint, bigTextShadowPaint);
+        // STATS
+        DrawTextWithShadow(surface, $"{pps} | {kpp} | {sps} | {finesse}", center, 105 + offset, normalTextPaint, normalTextShadowPaint);
+        // PLACEMENTS
+        DrawTextWithShadow(surface, $"# {stats.Rank} | # {stats.RankLocal}", center, 140 + offset, normalTextPaint, normalTextShadowPaint);
 
         using var data = surface.Snapshot().Encode(SKEncodedImageFormat.Png, 80);
 
@@ -361,5 +627,22 @@ public static class ImageGenerator
     {
         surface.Canvas.DrawText(text, x + 2, y + 2, shawdowPaint);
         surface.Canvas.DrawText(text, x, y, textPaint);
+    }
+
+    private static void SetBackground(SKSurface surface, float width, float height, string? backgroundColor)
+    {
+        if (backgroundColor != null)
+        {
+            var backgroundColorPaint = new SKPaint
+            {
+                Color = SKColor.Parse(backgroundColor),
+                Style = SKPaintStyle.Fill,
+                TextSize = 32,
+                FakeBoldText = true,
+                IsAntialias = true,
+            };
+
+            surface.Canvas.DrawRect(0, 0, width, height, backgroundColorPaint);
+        }
     }
 }
