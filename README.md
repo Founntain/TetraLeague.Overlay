@@ -39,7 +39,7 @@ For OBS, it is recommended to use the live view URL. To set it up:
 
 - **`backgroundColor`**: Adjusts the background color (useful if you don’t want a transparent background). Default is `00FFFFFF`.
 - **`textColor`**: Changes the text color and the color of the progress bar. Default is `FFFFFF`.
-- **displayUsername**: This only works for 40L and Blitz if set to `false` it will hide the username.
+- **`displayUsername`**: This only works for 40L and Blitz if set to `false` it will hide the username.
 
 > **Example:** `https://tetrio.founntain.dev/tetraleague/<username>/web?backgroundColor=FF0000&textColor=00FF00`
 
