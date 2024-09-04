@@ -32,7 +32,9 @@ public class TetraLeagueController : ControllerBase
         switch (stats)
         {
             case null:
-                return NotFound($"No stats found for {username}");
+                var notFoundImage = ImageGenerator.GenerateUserNotFound(username);
+
+                return File(notFoundImage.ToArray(), "image/png");
             default:
             {
                 var statsImage = ImageGenerator.GenerateTetraLeagueStatsImage(username, stats, textcolor, backgroundColor);

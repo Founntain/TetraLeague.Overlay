@@ -28,40 +28,53 @@ public class TetraLeagueApi : ApiBase
 
         Console.WriteLine($"Getting league stats for {username}, as nothing was found in the cache");
 
-        using var client = new HttpClient();
-
-        var uri = new Uri(string.Format(Url, username));
-
-        var responseFromApi = await client.GetStringAsync(uri);
-        var apiResponse = JsonSerializer.Deserialize<ApiResponse<TetraLeague>>(responseFromApi, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-        if (apiResponse == null) return default;
-        if (!apiResponse.Success) return default;
-
-        if (apiResponse.Cache.Status == "hit")
+        try
         {
-            Console.WriteLine("We hit the cache again, so we return that instead");
+            using var client = new HttpClient();
 
-            _cache.TryGetValue(username, out var result);
+            var uri = new Uri(string.Format(Url, username));
 
-            if(result.Item2 != null) return result.Item2;
+            client.DefaultRequestHeaders.Add("X-Session-ID", Guid.NewGuid().ToString());
 
-            Console.WriteLine("We hit the cache, but we don't have something stored in there. So we update it.");
+            var responseFromApi = await client.GetStringAsync(uri);
+            var apiResponse = JsonSerializer.Deserialize<ApiResponse<TetraLeague>>(responseFromApi, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (apiResponse == null) return default;
+            if (!apiResponse.Success) return default;
+
+            if (apiResponse.Cache.Status == "hit")
+            {
+                Console.WriteLine("We hit the cache again, so we return that instead");
+
+                _cache.TryGetValue(username, out var result);
+
+                if(result.Item2 != null) return result.Item2;
+
+                Console.WriteLine("We hit the cache, but we don't have something stored in there. So we update it.");
+            }
+
+            if (apiResponse.Data == default) return default;
+
+            Console.WriteLine("Updating cache and returning");
+
+            var cacheValidUntil = DateTimeOffset.UtcNow.AddSeconds(30);
+
+            if (_cache.ContainsKey(username))
+            {
+                // _cache[username] = (DateTimeOffset.FromUnixTimeMilliseconds(apiResponse.Cache.CacheUntil), apiResponse.Data);
+                _cache[username] = (cacheValidUntil, apiResponse.Data);
+
+                return _cache[username].Item2;
+            }
+
+            // _cache.TryAdd(username, (DateTimeOffset.FromUnixTimeMilliseconds(apiResponse.Cache.CacheUntil), apiResponse.Data));
+            _cache.TryAdd(username, (cacheValidUntil, apiResponse.Data));
+
+            return apiResponse.Data;
         }
-
-        if (apiResponse.Data == default) return default;
-
-        Console.WriteLine("Updating cache and returning");
-
-        if (_cache.ContainsKey(username))
+        catch (Exception _)
         {
-            _cache[username] = (DateTimeOffset.FromUnixTimeMilliseconds(apiResponse.Cache.CacheUntil), apiResponse.Data);
-
-            return _cache[username].Item2;
+            return default;
         }
-
-        _cache.TryAdd(username, (DateTimeOffset.FromUnixTimeMilliseconds(apiResponse.Cache.CacheUntil), apiResponse.Data));
-
-        return apiResponse.Data;
     }
 }

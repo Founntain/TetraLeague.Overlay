@@ -221,6 +221,91 @@ public static class ImageGenerator
         return stream;
     }
 
+    public static MemoryStream GenerateUserNotFound(string username)
+    {
+        var width = 900;
+        var height = 300;
+        var stream = new MemoryStream();
+        var typeFace = SKTypeface.FromFile("Resources/cr.ttf");
+
+        #region Paints
+
+        var backgroundPaint = new SKPaint
+        {
+            Color = SKColor.Parse("0f160d"),
+            Style = SKPaintStyle.Fill,
+            TextSize = 64,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var bigTextPaint = new SKPaint
+        {
+            Color = SKColor.Parse("5a6e49"),
+            Style = SKPaintStyle.Fill,
+            TextSize = 64,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var bigTextShadowPaint = new SKPaint
+        {
+            Color = SKColors.Black,
+            Style = SKPaintStyle.Fill,
+            TextSize = 64,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var normalTextPaint = new SKPaint
+        {
+            Color = SKColor.Parse("8bca95"),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var normalTextShadowPaint = new SKPaint
+        {
+            Color = SKColors.Black,
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        #endregion
+
+        using var surface = SKSurface.Create(new SKImageInfo(width, height, SKColorType.Bgra8888, SKAlphaType.Unpremul));
+
+        var errorBitmap = GetBitmap("Resources/error.png");
+
+        surface.Canvas.DrawRect(0, 0, width, height, backgroundPaint);
+
+        DrawTextWithShadow(surface, "No such user", (float) width / 2, 60, bigTextPaint, bigTextShadowPaint);
+        DrawTextWithShadow(surface, $"Either you mistyped something", (float) width / 2, 100, normalTextPaint, normalTextShadowPaint);
+        DrawTextWithShadow(surface, $"or the account no longer exists.", (float) width / 2, 130, normalTextPaint, normalTextShadowPaint);
+
+        surface.Canvas.DrawBitmap(errorBitmap, (float) ((width / 2) - (errorBitmap.Width / 2)), 140);
+
+        using var data = surface.Snapshot().Encode(SKEncodedImageFormat.Png, 80);
+
+        data.SaveTo(stream);
+
+        return stream;
+    }
+
     private static SKBitmap GetBitmap(string relativePath)
     {
         var currentDirectory = Directory.GetCurrentDirectory();
