@@ -18,7 +18,7 @@ For OBS, it is recommended to use the live view URL. To set it up:
 1. Create a new Browser Source in OBS.
 2. Paste the live view URL into the Browser Source settings, replacing `<username>` with your Tetr.io username (make sure to remove the `<` and `>`).
 3. Make sure the widht and height is **900 x 300**
-4. 
+
 > **Note:** Ensure you use the URL ending with `/web` for live updates. The data is cached and refreshes every 60 seconds. Tetra League data is cached for 5 minutes, so the maximum delay before updates is approximately 6 minutes.
 
 ### Customization Parameters
