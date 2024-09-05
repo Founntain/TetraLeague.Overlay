@@ -572,15 +572,12 @@ public static class ImageGenerator
         return stream;
     }
 
-     public static async Task<MemoryStream> GenerateZenithImage(string username, QuickPlay stats, string? textColor, string? backgroundColor, bool displayUsername)
+     public static MemoryStream GenerateZenithImage(string username, QuickPlay stats, string? textColor, string? backgroundColor, bool displayUsername)
     {
         var width = 900;
         var height = 300;
-
         var center = (float) width / 2;
-
         var stream = new MemoryStream();
-
         var typeFace = SKTypeface.FromFile("Resources/cr.ttf");
 
         #region Paints
@@ -781,7 +778,6 @@ public static class ImageGenerator
         var resizedBitmap = new SKBitmap(width, height);
 
         using var canvas = new SKCanvas(resizedBitmap);
-
         using var paint = new SKPaint();
 
         paint.IsAntialias = true;
@@ -804,25 +800,23 @@ public static class ImageGenerator
 
     private static void SetBackground(SKSurface surface, float width, float height, string? backgroundColor)
     {
-        if (backgroundColor != null)
-        {
-            var backgroundColorPaint = new SKPaint
-            {
-                Color = SKColor.Parse(backgroundColor),
-                Style = SKPaintStyle.Fill,
-                TextSize = 32,
-                FakeBoldText = true,
-                IsAntialias = true,
-            };
+        if (backgroundColor == null) return;
 
-            surface.Canvas.DrawRect(0, 0, width, height, backgroundColorPaint);
-        }
+        var backgroundColorPaint = new SKPaint
+        {
+            Color = SKColor.Parse(backgroundColor),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+        };
+
+        surface.Canvas.DrawRect(0, 0, width, height, backgroundColorPaint);
     }
 
     private static SKImage GenerateModImage(ref int modCanvasWidth, int modSize, string[] mods)
     {
         var height = mods.Length > 4 ? modSize * 2 : modSize;
-
         var factor = mods.Length > 4 ? 4 : mods.Length;
 
         modCanvasWidth = (modSize * factor) + (10 * (factor - 1));
@@ -832,15 +826,13 @@ public static class ImageGenerator
         for (var i = 0; i < mods.Length; i++)
         {
             var mod = mods[i];
-
             var modBitmap = ResizeBitmap(GetBitmap($"Resources/{mod}.png"), modSize, modSize);
 
             if (i >= 4)
             {
                 var subImageWidth = modSize * (mod.Length - i) + (10 * (mod.Length - i - 1));
-
                 var image = GenerateModImage(ref subImageWidth, modSize, mods.Skip(i).ToArray());
-                // (center / 2) - modCanvasWidthCurrentWeek / 2
+
                 modSurface.Canvas.DrawImage(image, modCanvasWidth / 2 - subImageWidth / 2, modSize + 5);
 
                 break;
