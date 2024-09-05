@@ -1,6 +1,6 @@
 # TetraLeague Overlay
 
-A simple overlay for displaying your Tetra League (TL) stats in OBS using a Browser Source. You can choose to display your stats as a static image or a live view that updates every 60 seconds.
+A simple overlay for displaying your Tetra League (TL) stats in OBS using a Browser Source. You can choose to display your stats as a static image or a live view that updates every 30 seconds.
 
 If you find this overlay useful, please consider giving it a ⭐ to show your support, or share it with others who might enjoy it. Thank you for using it!
 
@@ -14,6 +14,10 @@ To use the overlay, simply use one of the following URLs:
 - **Live View**: `https://tetrio.founntain.dev/tetraleague/<username>/web`
 - **Static Image**: `https://tetrio.founntain.dev/tetraleague/<username>`
 
+### Quick Play
+- **Live View**: `https://tetrio.founntain.dev/zenith/<username>/web`
+- **Static Image**: `https://tetrio.founntain.dev/zenith/<username>`
+
 ### 40 Lines
 - **Live View**: `https://tetrio.founntain.dev/sprint/<username>/web`
 - **Static Image**: `https://tetrio.founntain.dev/sprint/<username>`
@@ -21,10 +25,6 @@ To use the overlay, simply use one of the following URLs:
 ### Blitz
 - **Live View**: `https://tetrio.founntain.dev/blitz/<username>/web`
 - **Static Image**: `https://tetrio.founntain.dev/blitz/<username>`
-
-### Quick Play
-- **Live View**: `https://tetrio.founntain.dev/zenith/<username>/web`
-- **Static Image**: `https://tetrio.founntain.dev/zenith/<username>`
 
 ## Slide
 
@@ -95,11 +95,11 @@ Contributions are welcome! Feel free to open issues, request features, provide f
 #### Tetra League
 ![founntain](https://github.com/user-attachments/assets/ee8e60e9-de03-4b89-b197-cee5d3e7f8c8)
 
+#### Quick Play
+![founntain](https://github.com/user-attachments/assets/8c6cd129-5a58-4d05-a00a-8ea995d8080f)
+
 #### Sprint
 ![founntain](https://github.com/user-attachments/assets/d7f00e47-326a-477f-9d74-0f8c46f66845)
 
 #### Blitz
 ![founntain](https://github.com/user-attachments/assets/51ac5ca5-27be-465d-8b48-07b1e4e029e3)
-
-#### Quick Play
-![founntain](https://github.com/user-attachments/assets/8c6cd129-5a58-4d05-a00a-8ea995d8080f)
