@@ -22,6 +22,10 @@ To use the overlay, simply use one of the following URLs:
 - **Live View** (auto-updates every 30 seconds): `https://tetrio.founntain.dev/blitz/<username>/web`
 - **Static Image**: `https://tetrio.founntain.dev/blitz/<username>`
 
+### Quick Play
+- **Live View** (auto-updates every 30 seconds): `https://tetrio.founntain.dev/zenith/<username>/web`
+- **Static Image**: `https://tetrio.founntain.dev/zenith/<username>`
+
 ### 📽️ OBS Setup
 
 For OBS, it is recommended to use the live view URL. To set it up:
@@ -63,5 +67,17 @@ Contributions are welcome! Feel free to open issues, request features, provide f
 - **[ZaptorZap](https://zaptorz.app/)**: for giving feedback and some incredible ideas
 
 ## Example
+> *added for all examples a simple transparent dark background so those are readable for light github users aswell Parameter used `backgroundColor=AA000000`*
+#### Tetra League
+![founntain](https://github.com/user-attachments/assets/ee8e60e9-de03-4b89-b197-cee5d3e7f8c8)
 
-![founntain](https://github.com/user-attachments/assets/0cd8dd02-c4cb-47ba-baec-f52a1ea062db)
+#### Sprint
+![founntain](https://github.com/user-attachments/assets/d7f00e47-326a-477f-9d74-0f8c46f66845)
+
+#### Blitz
+![founntain](https://github.com/user-attachments/assets/51ac5ca5-27be-465d-8b48-07b1e4e029e3)
+
+#### Quick Play
+![founntain](https://github.com/user-attachments/assets/ef55ea23-82c6-4f24-acc1-75ee8f0853c7)
+
+
