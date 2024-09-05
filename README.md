@@ -11,19 +11,19 @@ To use the overlay, simply use one of the following URLs:
 **Base URL**: `https://tetrio.founntain.dev/<mode>/<username>/web`
 
 ### Tetra League
-- **Live View** (auto-updates every 30 seconds): `https://tetrio.founntain.dev/tetraleague/<username>/web`
+- **Live View**: `https://tetrio.founntain.dev/tetraleague/<username>/web`
 - **Static Image**: `https://tetrio.founntain.dev/tetraleague/<username>`
 
 ### 40 Lines
-- **Live View** (auto-updates every 30 seconds): `https://tetrio.founntain.dev/sprint/<username>/web`
+- **Live View**: `https://tetrio.founntain.dev/sprint/<username>/web`
 - **Static Image**: `https://tetrio.founntain.dev/sprint/<username>`
 
 ### Blitz
-- **Live View** (auto-updates every 30 seconds): `https://tetrio.founntain.dev/blitz/<username>/web`
+- **Live View**: `https://tetrio.founntain.dev/blitz/<username>/web`
 - **Static Image**: `https://tetrio.founntain.dev/blitz/<username>`
 
 ### Quick Play
-- **Live View** (auto-updates every 30 seconds): `https://tetrio.founntain.dev/zenith/<username>/web`
+- **Live View**: `https://tetrio.founntain.dev/zenith/<username>/web`
 - **Static Image**: `https://tetrio.founntain.dev/zenith/<username>`
 
 ### 📽️ OBS Setup
@@ -36,6 +36,7 @@ For OBS, it is recommended to use the live view URL. To set it up:
    - Tetra League: 900 x 300
    - 40 Lines: 700 x 225
    - Blitz: 700 x 225
+   - Quick Play: 900 x 300
 
 > **Note:** Ensure you use the URL ending with `/web` for live updates. The data is cached and refreshes every 30 seconds. For 40 Lines and Blitz the default cache is used which is **5 minutes**.
 
