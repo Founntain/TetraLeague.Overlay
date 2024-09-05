@@ -11,16 +11,20 @@ To use the overlay, simply use one of the following URLs:
 **Base URL**: `https://tetrio.founntain.dev/<mode>/<username>/web`
 
 ### Tetra League
-- **Live View** (auto-updates every 30 seconds): `https://tetrio.founntain.dev/tetraleague/<username>/web`
+- **Live View**: `https://tetrio.founntain.dev/tetraleague/<username>/web`
 - **Static Image**: `https://tetrio.founntain.dev/tetraleague/<username>`
 
 ### 40 Lines
-- **Live View** (auto-updates every 30 seconds): `https://tetrio.founntain.dev/sprint/<username>/web`
+- **Live View**: `https://tetrio.founntain.dev/sprint/<username>/web`
 - **Static Image**: `https://tetrio.founntain.dev/sprint/<username>`
 
 ### Blitz
-- **Live View** (auto-updates every 30 seconds): `https://tetrio.founntain.dev/blitz/<username>/web`
+- **Live View**: `https://tetrio.founntain.dev/blitz/<username>/web`
 - **Static Image**: `https://tetrio.founntain.dev/blitz/<username>`
+
+### Quick Play
+- **Live View**: `https://tetrio.founntain.dev/zenith/<username>/web`
+- **Static Image**: `https://tetrio.founntain.dev/zenith/<username>`
 
 ### 📽️ OBS Setup
 
@@ -32,6 +36,7 @@ For OBS, it is recommended to use the live view URL. To set it up:
    - Tetra League: 900 x 300
    - 40 Lines: 700 x 225
    - Blitz: 700 x 225
+   - Quick Play: 900 x 300
 
 > **Note:** Ensure you use the URL ending with `/web` for live updates. The data is cached and refreshes every 30 seconds. For 40 Lines and Blitz the default cache is used which is **5 minutes**.
 
@@ -40,9 +45,9 @@ You can put any parameters at the end of the url. ***The order does not matter, 
 
 - **`backgroundColor`**: Adjusts the background color (useful if you don’t want a transparent background). Default is `00FFFFFF`.
 - **`textColor`**: Changes the text color and the color of the progress bar. Default is `FFFFFF`.
-- **`displayUsername`**: This only works for 40L and Blitz if set to `false` it will hide the username.
+- **`displayUsername`**: This only works for 40L, Blitz and Quick Play if set to `false` it will hide the username.
 
-> **Example:** `https://tetrio.founntain.dev/tetraleague/<username>/web?backgroundColor=FF0000&textColor=00FF00`
+> **Example:** `https://tetrio.founntain.dev/tetraleague/founntain/web?backgroundColor=FF0000&textColor=00FF00`
 
 ## 🏠 Running Locally
 
@@ -63,5 +68,15 @@ Contributions are welcome! Feel free to open issues, request features, provide f
 - **[ZaptorZap](https://zaptorz.app/)**: for giving feedback and some incredible ideas
 
 ## Example
+> *added for all examples a simple transparent dark background so those are readable for light github users aswell Parameter used `backgroundColor=AA000000`*
+#### Tetra League
+![founntain](https://github.com/user-attachments/assets/ee8e60e9-de03-4b89-b197-cee5d3e7f8c8)
 
-![founntain](https://github.com/user-attachments/assets/0cd8dd02-c4cb-47ba-baec-f52a1ea062db)
+#### Sprint
+![founntain](https://github.com/user-attachments/assets/d7f00e47-326a-477f-9d74-0f8c46f66845)
+
+#### Blitz
+![founntain](https://github.com/user-attachments/assets/51ac5ca5-27be-465d-8b48-07b1e4e029e3)
+
+#### Quick Play
+![founntain](https://github.com/user-attachments/assets/8c6cd129-5a58-4d05-a00a-8ea995d8080f)
