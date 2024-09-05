@@ -572,7 +572,7 @@ public static class ImageGenerator
         return stream;
     }
 
-     public static MemoryStream GenerateZenithImage(string username, QuickPlay stats, string? textColor, string? backgroundColor, bool displayUsername)
+     public static MemoryStream GenerateZenithImage(string username, QuickPlay stats, QuickPlay? expert, string? textColor, string? backgroundColor, bool displayUsername)
     {
         var width = 900;
         var height = 300;
@@ -696,43 +696,73 @@ public static class ImageGenerator
             offset += 65;
         }
 
-        // CURRENT WEEKS RECORD
-        var currentWeekPps = $"{stats.Record.Results.Aggregatestats.Pps:#.##} PPS";
-        var currentWeekApm = $"{stats.Record.Results.Aggregatestats.Apm:#.##} APM";
-        var currentWeekVs = $"{stats.Record.Results.Aggregatestats.Vsscore:#.##} VS";
+        var normalCenterValue = expert.Record == null ? center : center / 2;
 
-        DrawTextWithShadow(surface, $"{stats.Record!.Results.Stats.Zenith.Altitude:F2} m", center / 2, 55 + offset, bigTextPaint, bigTextShadowPaint);
-        DrawTextWithShadow(surface, $"{currentWeekPps} | {currentWeekApm} | {currentWeekVs}", center / 2, 80 + offset, smallTextPaint, smallTextShadowPaint);
-        DrawTextWithShadow(surface, $"CURRENT WEEK", center / 2, 105 + offset, smallTextPaint, smallTextShadowPaint);
+        // NORMAL
+        var currentWeekPps = $"{stats.Record.Results.Aggregatestats.Pps:F2} PPS";
+        var currentWeekApm = $"{stats.Record.Results.Aggregatestats.Apm:F2} APM";
+        var currentWeekVs = $"{stats.Record.Results.Aggregatestats.Vsscore:F2} VS";
+
+        // We only draw the NORMAL text if we have an expert record as well
+        if(expert.Record != null)
+            DrawTextWithShadow(surface, $"NORMAL", normalCenterValue, 15 + offset, smallTextPaint, smallTextShadowPaint);
+
+        DrawTextWithShadow(surface, $"{stats.Record!.Results.Stats.Zenith.Altitude:F2} m", normalCenterValue, 65 + offset, bigTextPaint, bigTextShadowPaint);
+        DrawTextWithShadow(surface, $"{currentWeekPps} | {currentWeekApm} | {currentWeekVs}", normalCenterValue, 88 + offset, smallTextPaint, smallTextShadowPaint);
+        // We only draw the personal best when it exists AND is better than the current week
+        if (stats.Best?.Record != null && stats.Best.Record.Results.Stats.Zenith.Altitude != stats.Record.Results.Stats.Zenith.Altitude)
+        {
+            DrawTextWithShadow(surface, $"PB {stats.Best.Record.Results.Stats.Zenith.Altitude:F2} m", normalCenterValue, 120 + offset, normalTextPaint, normalTextShadowPaint);
+        }
+        else
+        {
+            offset -= 30;
+        }
 
         var modsCurrentWeek = stats.Record.Extras.Zenith.Mods;
-        var modsPersonalBest = stats.Best.Record.Extras.Zenith.Mods;
+        // modsCurrentWeek = new []{"allspin", "allspin", "allspin", "allspin", "allspin", "allspin", "allspin", "allspin", "allspin", "allspin"};
 
         var modSize = 48;
-        int modCanvasWidthCurrentWeek = (modSize * modsCurrentWeek.Length) + (10 * (modsCurrentWeek.Length - 1));
-        int modCanvasWidthPersonalBest = (modSize * modsPersonalBest.Length) + (10 * (modsPersonalBest.Length - 1));
+        var modCanvasWidthCurrentWeek = (modSize * modsCurrentWeek.Length) + (10 * (modsCurrentWeek.Length - 1));
 
         if (modsCurrentWeek.Length > 0)
         {
             var currentWeekModsImage = GenerateModImage(ref modCanvasWidthCurrentWeek, modSize, modsCurrentWeek);
 
-            surface.Canvas.DrawImage(currentWeekModsImage, (center / 2) - modCanvasWidthCurrentWeek / 2, 120 + offset);
+            surface.Canvas.DrawImage(currentWeekModsImage, normalCenterValue - modCanvasWidthCurrentWeek / 2, 130 + offset);
         }
 
-        // ALL TIME BEST
-        var personalBestPps = $"{stats.Best.Record.Results.Aggregatestats.Pps:#.##} PPS";
-        var personalBestApm = $"{stats.Best.Record.Results.Aggregatestats.Apm:#.##} APM";
-        var personalBestVs = $"{stats.Best.Record.Results.Aggregatestats.Vsscore:#.##} VS";
-
-        DrawTextWithShadow(surface, $"{stats.Best.Record.Results.Stats.Zenith.Altitude:F2} m", (center / 2) * 3, 55 + offset, bigTextPaint, bigTextShadowPaint);
-        DrawTextWithShadow(surface, $"{personalBestPps} | {personalBestApm} | {personalBestVs}", (center / 2) * 3, 80 + offset, smallTextPaint, smallTextShadowPaint);
-        DrawTextWithShadow(surface, $"ALL TIME BEST", (center / 2) * 3, 105 + offset, smallTextPaint, smallTextShadowPaint);
-
-        if (modsPersonalBest.Length > 0)
+        // EXPERT
+        if(expert.Record != null)
         {
-            var personalBestModsImage = GenerateModImage(ref modCanvasWidthPersonalBest, modSize, modsPersonalBest);
+            var modsExpert = expert.Record.Extras.Zenith.Mods;
+            int modCanvasWidthPersonalBest = (modSize * modsExpert.Length) + (10 * (modsExpert.Length - 1));
 
-            surface.Canvas.DrawImage(personalBestModsImage, 3 * (center / 2) - modCanvasWidthPersonalBest / 2, 120 + offset);
+            var expertPps = $"{expert.Record.Results.Aggregatestats.Pps:F2} PPS";
+            var expertApm = $"{expert.Record.Results.Aggregatestats.Apm:F2} APM";
+            var expertVs = $"{expert.Record.Results.Aggregatestats.Vsscore:F2} VS";
+
+            DrawTextWithShadow(surface, $"EXPERT", (normalCenterValue) * 3, 15 + offset, smallTextPaint, smallTextShadowPaint);
+            DrawTextWithShadow(surface, $"{expert.Record.Results.Stats.Zenith.Altitude:F2} m", (normalCenterValue) * 3, 65 + offset, bigTextPaint, bigTextShadowPaint);
+            DrawTextWithShadow(surface, $"{expertPps} | {expertApm} | {expertVs}", (normalCenterValue) * 3, 88 + offset, smallTextPaint, smallTextShadowPaint);
+
+            // We only draw the personal best when it exists AND is better than the current week
+            if (expert.Best?.Record != null && expert.Best.Record.Results.Stats.Zenith.Altitude != expert.Record.Results.Stats.Zenith.Altitude)
+            {
+                DrawTextWithShadow(surface, $"PB {expert.Best.Record.Results.Stats.Zenith.Altitude:F2} m", (normalCenterValue) * 3, 120 + offset, normalTextPaint, normalTextShadowPaint);
+            }
+            else
+            {
+                offset -= 30;
+            }
+
+            if (modsExpert.Length > 0)
+            {
+                var personalBestModsImage = GenerateModImage(ref modCanvasWidthPersonalBest, modSize, modsExpert);
+
+                surface.Canvas.DrawImage(personalBestModsImage, 3 * (center / 2) - modCanvasWidthPersonalBest / 2, 130 + offset);
+            }
+
         }
 
         using var data = surface.Snapshot().Encode(SKEncodedImageFormat.Png, 80);
@@ -741,6 +771,8 @@ public static class ImageGenerator
 
         return stream;
     }
+
+    #region Private Methods
 
     private static SKBitmap GetBitmap(string relativePath)
     {
@@ -847,4 +879,6 @@ public static class ImageGenerator
 
         return modImage;
     }
+
+    #endregion
 }

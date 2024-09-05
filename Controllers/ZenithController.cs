@@ -20,6 +20,7 @@ public class ZenithController : BaseController
         username = username.ToLower();
 
         var stats = await _api.GetZenithStats(username);
+        var expert = await _api.GetZenithStats(username, true);
 
         MemoryStream? notFoundImage = null;
 
@@ -38,7 +39,7 @@ public class ZenithController : BaseController
                     return File(notFoundImage.ToArray(), "image/png");
                 }
 
-                var statsImage = ImageGenerator.GenerateZenithImage(username, stats, textcolor, backgroundColor, displayUsername);
+                var statsImage = ImageGenerator.GenerateZenithImage(username, stats, expert, textcolor, backgroundColor, displayUsername);
 
                 return File(statsImage.ToArray(), "image/png");
             }
