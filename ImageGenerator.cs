@@ -269,7 +269,7 @@ public static class ImageGenerator
 
         SetBackground(surface, width, height, "0f160d");
 
-        DrawTextWithShadow(surface, "No such user", (float) width / 2, 60, bigTextPaint, bigTextShadowPaint);
+        DrawTextWithShadow(surface, "No such user / record", (float) width / 2, 60, bigTextPaint, bigTextShadowPaint);
         DrawTextWithShadow(surface, $"Either you mistyped something", (float) width / 2, 100, normalTextPaint, normalTextShadowPaint);
         DrawTextWithShadow(surface, $"or the account no longer exists.", (float) width / 2, 130, normalTextPaint, normalTextShadowPaint);
 

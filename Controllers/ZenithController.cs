@@ -34,9 +34,17 @@ public class ZenithController : BaseController
             {
                 if (stats.Record == null)
                 {
-                    notFoundImage = ImageGenerator.GenerateUserNotFound(username);
+                    // If the user didn't play this week yet, but played before we show the pb instead
+                    if (stats.Record == null && stats.Best?.Record != null)
+                    {
+                        stats.Record = stats.Best.Record;
+                    }
+                    else
+                    {
+                        notFoundImage = ImageGenerator.GenerateUserNotFound(username);
 
-                    return File(notFoundImage.ToArray(), "image/png");
+                        return File(notFoundImage.ToArray(), "image/png");
+                    }
                 }
 
                 var statsImage = ImageGenerator.GenerateZenithImage(username, stats, expert, textcolor, backgroundColor, displayUsername);
