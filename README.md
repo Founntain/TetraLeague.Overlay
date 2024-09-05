@@ -1,6 +1,6 @@
 # TetraLeague Overlay
 
-A simple overlay for displaying your Tetra League (TL) stats in OBS using a Browser Source. You can choose to display your stats as a static image or a live view that updates every 60 seconds.
+A simple overlay for displaying your Tetra League (TL) stats in OBS using a Browser Source. You can choose to display your stats as a static image or a live view that updates every 30 seconds.
 
 If you find this overlay useful, please consider giving it a ⭐ to show your support, or share it with others who might enjoy it. Thank you for using it!
 
