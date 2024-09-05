@@ -79,6 +79,4 @@ Contributions are welcome! Feel free to open issues, request features, provide f
 ![founntain](https://github.com/user-attachments/assets/51ac5ca5-27be-465d-8b48-07b1e4e029e3)
 
 #### Quick Play
-![founntain](https://github.com/user-attachments/assets/ef55ea23-82c6-4f24-acc1-75ee8f0853c7)
-
-
+![founntain](https://github.com/user-attachments/assets/8c6cd129-5a58-4d05-a00a-8ea995d8080f)
