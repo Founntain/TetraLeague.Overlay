@@ -27,7 +27,7 @@ public class ZenithController : BaseController
         switch (stats)
         {
             case null:
-                notFoundImage = ImageGenerator.GenerateUserNotFound(username);
+                notFoundImage = ImageGenerator.GenerateUserNotFound();
 
                 return File(notFoundImage.ToArray(), "image/png");
             default:
@@ -41,7 +41,7 @@ public class ZenithController : BaseController
                     }
                     else
                     {
-                        notFoundImage = ImageGenerator.GenerateUserNotFound(username);
+                        notFoundImage = ImageGenerator.GenerateUserNotFound();
 
                         return File(notFoundImage.ToArray(), "image/png");
                     }

@@ -24,7 +24,7 @@ public class TetraLeagueController : BaseController
         switch (stats)
         {
             case null:
-                var notFoundImage = ImageGenerator.GenerateUserNotFound(username);
+                var notFoundImage = ImageGenerator.GenerateUserNotFound();
 
                 return File(notFoundImage.ToArray(), "image/png");
             default:

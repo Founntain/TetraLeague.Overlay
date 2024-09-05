@@ -27,14 +27,14 @@ public class SprintController : BaseController
         switch (stats)
         {
             case null:
-                notFoundImage = ImageGenerator.GenerateUserNotFound(username);
+                notFoundImage = ImageGenerator.GenerateUserNotFound();
 
                 return File(notFoundImage.ToArray(), "image/png");
             default:
             {
                 if (stats.Record == null)
                 {
-                    notFoundImage = ImageGenerator.GenerateUserNotFound(username);
+                    notFoundImage = ImageGenerator.GenerateUserNotFound();
 
                     return File(notFoundImage.ToArray(), "image/png");
                 }

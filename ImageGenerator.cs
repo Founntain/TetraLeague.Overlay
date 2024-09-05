@@ -208,7 +208,7 @@ public static class ImageGenerator
         return stream;
     }
 
-    public static MemoryStream GenerateUserNotFound(string username)
+    public static MemoryStream GenerateUserNotFound()
     {
         var width = 900;
         var height = 300;
