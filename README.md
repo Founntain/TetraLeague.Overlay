@@ -28,6 +28,9 @@ To use the overlay, simply use one of the following URLs:
 
 ## Slide
 
+> [!IMPORTANT]  
+> The slide has `displayUsername` set to `false` as the username is always visible on the Tetra League overlay so on other pages the mode is shown instead. However you can use the `displayUsername` parameter and set it to `true` to display the username except of the mode names
+
 The slide is a the same as the other browser source, the difference is that it cycles through the modes. Just one browser source to rule them all!
 To use the slide you can use the url of any mode it doesn't matter. Just replace `/web` with `/slide`. By default the slide shows all available modes if you just want to display specific modes, you can use the `modes=` parameter.
 Here are some examples of how to use the `modes=` parameter:
