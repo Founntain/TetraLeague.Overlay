@@ -39,7 +39,7 @@ public class BaseController : ControllerBase
     {
         if (modes == null)
         {
-            modes = "tetraleague,sprint,blitz,zenith";
+            modes = "tetraleague,zenith,sprint,blitz";
         }
 
         var hasValidSeperator = modes.Contains(',');
