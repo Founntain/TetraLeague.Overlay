@@ -155,20 +155,22 @@ public static class ImageGenerator
         var pps = stats.Pps ?? 0;
         var vs = stats.Vs ?? 0;
 
-        DrawTextWithShadow(surface, $"{apm}", 275, 185, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"APM", 385, 185, statsPaintAlt, normalTextShadowPaint);
-        DrawTextWithShadow(surface, $"{pps}", 275, 215, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"PPS", 385, 215, statsPaintAlt, normalTextShadowPaint);
-        DrawTextWithShadow(surface, $"{vs}", 275, 245, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"VS", 385, 245, statsPaintAlt, normalTextShadowPaint);
-
-        // Right Side
-        var globalRank = stats.StandingGlobal == -1 ? "UNRANKED" : $"# {stats.StandingGlobal!.Value}";
-        var localRank = unranked ? "UNRANKED" : stats.StandingLocal!.Value == -1 ? "HIDDEN" : $"# {stats.StandingLocal!.Value}";
-
-        DrawTextWithShadow(surface, $"GLOBAL", 475, 185, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, globalRank, 630, 185, normalTextPaint, normalTextShadowPaint);
-        DrawTextWithShadow(surface, $"COUNTRY", 475, 215, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, localRank, 630, 215, normalTextPaint, normalTextShadowPaint);
-
-        if (!unranked)
+        if (stats.Gamesplayed > 0)
         {
-            DrawTextWithShadow(surface, $"TOP RANK", 475, 245, normalTextPaint, normalTextShadowPaint); surface.Canvas.DrawBitmap(ResizeBitmap(toprankBitmap, 32, 32), 630, 218);
+            DrawTextWithShadow(surface, $"{apm}", 275, 185, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"APM", 385, 185, statsPaintAlt, normalTextShadowPaint);
+            DrawTextWithShadow(surface, $"{pps}", 275, 215, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"PPS", 385, 215, statsPaintAlt, normalTextShadowPaint);
+            DrawTextWithShadow(surface, $"{vs}", 275, 245, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"VS", 385, 245, statsPaintAlt, normalTextShadowPaint);
+
+            // Right Side
+            var globalRank = stats.StandingGlobal == -1 ? "UNRANKED" : $"# {stats.StandingGlobal!.Value}";
+            var localRank = unranked ? "UNRANKED" : stats.StandingLocal!.Value == -1 ? "HIDDEN" : $"# {stats.StandingLocal!.Value}";
+            DrawTextWithShadow(surface, $"GLOBAL", 475, 185, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, globalRank, 630, 185, normalTextPaint, normalTextShadowPaint);
+           DrawTextWithShadow(surface, $"COUNTRY", 475, 215, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, localRank, 630, 215, normalTextPaint, normalTextShadowPaint);
+
+           if (!unranked)
+           {
+               DrawTextWithShadow(surface, $"TOP RANK", 475, 245, normalTextPaint, normalTextShadowPaint); surface.Canvas.DrawBitmap(ResizeBitmap(toprankBitmap, 32, 32), 630, 218);
+           }
         }
 
         // Progressbar
@@ -272,6 +274,80 @@ public static class ImageGenerator
         DrawTextWithShadow(surface, "No such user / record", (float) width / 2, 60, bigTextPaint, bigTextShadowPaint);
         DrawTextWithShadow(surface, $"Either you mistyped something", (float) width / 2, 100, normalTextPaint, normalTextShadowPaint);
         DrawTextWithShadow(surface, $"or the account no longer exists.", (float) width / 2, 130, normalTextPaint, normalTextShadowPaint);
+
+        surface.Canvas.DrawBitmap(errorBitmap, (float) ((width / 2) - (errorBitmap.Width / 2)), 140);
+
+        using var data = surface.Snapshot().Encode(SKEncodedImageFormat.Png, 80);
+
+        data.SaveTo(stream);
+
+        return stream;
+    }
+
+    public static MemoryStream GenerateErrorImage(string title, string? subText1 = null, string? subText2 = null)
+    {
+        var width = 900;
+        var height = 300;
+        var stream = new MemoryStream();
+        var typeFace = SKTypeface.FromFile("Resources/cr.ttf");
+
+        #region Paints
+
+        var bigTextPaint = new SKPaint
+        {
+            Color = SKColor.Parse("5a6e49"),
+            Style = SKPaintStyle.Fill,
+            TextSize = 64,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var bigTextShadowPaint = new SKPaint
+        {
+            Color = SKColors.Black,
+            Style = SKPaintStyle.Fill,
+            TextSize = 64,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var normalTextPaint = new SKPaint
+        {
+            Color = SKColor.Parse("8bca95"),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var normalTextShadowPaint = new SKPaint
+        {
+            Color = SKColors.Black,
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        #endregion
+
+        using var surface = SKSurface.Create(new SKImageInfo(width, height, SKColorType.Bgra8888, SKAlphaType.Unpremul));
+
+        var errorBitmap = GetBitmap("Resources/error.png");
+
+        SetBackground(surface, width, height, "0f160d");
+
+        DrawTextWithShadow(surface, title, (float) width / 2, 60, bigTextPaint, bigTextShadowPaint);
+        DrawTextWithShadow(surface, subText1, (float) width / 2, 100, normalTextPaint, normalTextShadowPaint);
+        DrawTextWithShadow(surface, subText2, (float) width / 2, 130, normalTextPaint, normalTextShadowPaint);
 
         surface.Canvas.DrawBitmap(errorBitmap, (float) ((width / 2) - (errorBitmap.Width / 2)), 140);
 
@@ -404,9 +480,13 @@ public static class ImageGenerator
         if (displayUsername)
         {
             DrawTextWithShadow(surface, username.ToUpper(), center, 65, bigTextPaint, bigTextShadowPaint);
-
-            offset += 60;
         }
+        else
+        {
+            DrawTextWithShadow(surface, "40L", center, 65, bigTextPaint, bigTextShadowPaint);
+        }
+
+        offset += 60;
 
         var pps = $"{stats.Record!.Results.Aggregatestats.Pps!.Value:#.##}  PPS";
         var kpp = $"{(double) stats.Record.Results.Stats.Inputs! / (double) stats.Record.Results.Stats.Piecesplaced!:F2}  KPP";
@@ -549,14 +629,18 @@ public static class ImageGenerator
         if (displayUsername)
         {
             DrawTextWithShadow(surface, username.ToUpper(), center, 65, bigTextPaint, bigTextShadowPaint);
-
-            offset += 60;
         }
+        else
+        {
+            DrawTextWithShadow(surface, "BLITZ", center, 65, bigTextPaint, bigTextShadowPaint);
+        }
+
+        offset += 60;
 
         var pps = $"{stats.Record!.Results.Aggregatestats.Pps!.Value:#.##}  PPS";
         var kpp = $"{(double) stats.Record.Results.Stats.Inputs! / (double) stats.Record.Results.Stats.Piecesplaced!:F2}  KPP";
         var sps = $"{(double) stats.Record.Results.Stats.Score! / (double) stats.Record.Results.Stats.Piecesplaced:F2}  SPS";
-        var finesse = $"{stats.Record.Results.Stats.Finesse.Faults}F";
+        var finesse = $"{(stats.Record.Results.Stats.Finesse?.Faults.ToString() ?? "na")} F";
 
         // SCORE
         DrawTextWithShadow(surface, stats.Record.Results.Stats.Score!.Value.ToString("###,###")!, center, 65 + offset, bigTextPaint, bigTextShadowPaint);
@@ -692,9 +776,13 @@ public static class ImageGenerator
         if (displayUsername)
         {
             DrawTextWithShadow(surface, username.ToUpper(), center, 55, bigTextPaint, bigTextShadowPaint);
-
-            offset += 65;
         }
+        else
+        {
+            DrawTextWithShadow(surface, "QUICK PLAY", center, 55, bigTextPaint, bigTextShadowPaint);
+        }
+
+        offset += 65;
 
         var normalCenterValue = expert.Record == null ? center : center / 2;
 
@@ -733,6 +821,14 @@ public static class ImageGenerator
         }
 
         // EXPERT
+        if (stats.Best?.Record == null || stats.Best.Record.Results.Stats.Zenith.Altitude == stats.Record.Results.Stats.Zenith.Altitude)
+        {
+            offset += 30;
+        }
+        else
+        {
+        }
+
         if(expert.Record != null)
         {
             var modsExpert = expert.Record.Extras.Zenith.Mods;

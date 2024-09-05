@@ -191,7 +191,7 @@ public class Stats
 
     [JsonPropertyName("kills")] public double? Kills { get; set; }
 
-    [JsonPropertyName("finesse")] public Finesse Finesse { get; set; }
+    [JsonPropertyName("finesse")] public Finesse? Finesse { get; set; }
 
     [JsonPropertyName("zenith")] public Zenith Zenith { get; set; }
 

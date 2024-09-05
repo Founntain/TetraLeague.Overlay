@@ -19,8 +19,12 @@
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
-      <None Remove="Web\index.html" />
-      <Content Include="Web\index.html">
+      <None Remove="Web\overlay.html" />
+      <Content Include="Web\overlay.html">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Web\slide.html" />
+      <Content Include="Web\slide.html">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <None Remove="Web\main.js" />
@@ -70,6 +74,9 @@
       </Content>
       <None Remove="Resources\volatile.png" />
       <Content Include="Resources\volatile.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Update="Web\slide.html">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
     </ItemGroup>

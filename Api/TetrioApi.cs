@@ -62,7 +62,8 @@ public class TetrioApi : ApiBase
 
             Console.WriteLine("[TL] Updating cache and returning");
 
-            var cacheValidUntil = DateTimeOffset.FromUnixTimeMilliseconds(apiResponse.Cache.CacheUntil);
+            // var cacheValidUntil = DateTimeOffset.FromUnixTimeMilliseconds(apiResponse.Cache.CacheUntil);
+            var cacheValidUntil = DateTimeOffset.UtcNow.AddSeconds(30);
 
             if (_leagueCache.ContainsKey(username))
             {
@@ -238,7 +239,7 @@ public class TetrioApi : ApiBase
             }
         }
 
-        Console.WriteLine($"[{prefix}] Getting Blitz stats for {username}, as nothing was found in the cache");
+        Console.WriteLine($"[{prefix}] Getting Zenith stats for {username}, as nothing was found in the cache");
 
         try
         {
@@ -275,7 +276,8 @@ public class TetrioApi : ApiBase
 
             Console.WriteLine($"[{prefix}] Updating cache and returning");
 
-            var cacheValidUntil = DateTimeOffset.FromUnixTimeMilliseconds(apiResponse.Cache.CacheUntil);
+            // var cacheValidUntil = DateTimeOffset.FromUnixTimeMilliseconds(apiResponse.Cache.CacheUntil);
+            var cacheValidUntil = DateTimeOffset.UtcNow.AddSeconds(30);
 
             if (!expert)
             {

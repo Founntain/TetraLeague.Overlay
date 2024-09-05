@@ -26,19 +26,42 @@ To use the overlay, simply use one of the following URLs:
 - **Live View**: `https://tetrio.founntain.dev/zenith/<username>/web`
 - **Static Image**: `https://tetrio.founntain.dev/zenith/<username>`
 
-### 📽️ OBS Setup
+## Slide
+
+The slide is a the same as the other browser source, the difference is that it cycles through the modes. Just one browser source to rule them all!
+To use the slide you can use the url of any mode it doesn't matter. Just replace `/web` with `/slide`. By default the slide shows all available modes if you just want to display specific modes, you can use the `modes=` parameter.
+Here are some examples of how to use the `modes=` parameter:
+- `modes=tetraleague,zenith`
+- `modes=sprint,blitz`
+
+#### Available Modes
+| Mode         | parameter     |
+|--------------|---------------|
+| Tetra League | `tetraLeague` |
+| Quick Play   | `zenith`      |
+| 40 Lines     | `sprint`      |
+| Blitz        | `blitz`       |
+
+*Example URL that displays a slide for `founntain` with the modes `tetreaLeague` and `zenith`: `https://tetrio.founntain.dev/zenith/founntain/slide?modes=tetraleague,zenith`*
+
+> [!CAUTION]
+> The parameters need to be seperated by a single `comma` (`,`) otherwise you will receive an error.
+
+## 📽️ OBS Setup
 
 For OBS, it is recommended to use the live view URL. To set it up:
 
 1. Create a new Browser Source in OBS.
 2. Paste the live view URL into the Browser Source settings, replacing `<username>` with your Tetr.io username (make sure to remove the `<` and `>`), the same goes for `<mode>`.
 3. Make sure the width and height is correct check below what sizes are best for each overlay:
+   - Slide: 900 x 300
    - Tetra League: 900 x 300
+   - Quick Play: 900 x 300
    - 40 Lines: 700 x 225
    - Blitz: 700 x 225
-   - Quick Play: 900 x 300
 
-> **Note:** Ensure you use the URL ending with `/web` for live updates. The data is cached and refreshes every 30 seconds. For 40 Lines and Blitz the default cache is used which is **5 minutes**.
+> [!NOTE]  
+> Ensure you use the URL ending with `/web` for live updates. The data is cached and refreshes every 30 seconds. For 40 Lines and Blitz the default cache is used which is **5 minutes**.
 
 ### 🛠️ Customization Parameters
 You can put any parameters at the end of the url. ***The order does not matter, however spelling is!***
