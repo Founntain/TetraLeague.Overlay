@@ -47,6 +47,12 @@ public class ZenithController : BaseController
                     }
                 }
 
+                // Same for expert as well
+                if (expert?.Record == null && expert?.Best?.Record != null)
+                {
+                    stats.Record = expert.Best.Record;
+                }
+
                 var statsImage = ImageGenerator.GenerateZenithImage(username, stats, expert, textcolor, backgroundColor, displayUsername);
 
                 return File(statsImage.ToArray(), "image/png");
