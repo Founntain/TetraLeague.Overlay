@@ -14,6 +14,10 @@ To use the overlay, simply use one of the following URLs:
 - **Live View**: `https://tetrio.founntain.dev/tetraleague/<username>/web`
 - **Static Image**: `https://tetrio.founntain.dev/tetraleague/<username>`
 
+### Quick Play
+- **Live View**: `https://tetrio.founntain.dev/zenith/<username>/web`
+- **Static Image**: `https://tetrio.founntain.dev/zenith/<username>`
+
 ### 40 Lines
 - **Live View**: `https://tetrio.founntain.dev/sprint/<username>/web`
 - **Static Image**: `https://tetrio.founntain.dev/sprint/<username>`
@@ -21,10 +25,6 @@ To use the overlay, simply use one of the following URLs:
 ### Blitz
 - **Live View**: `https://tetrio.founntain.dev/blitz/<username>/web`
 - **Static Image**: `https://tetrio.founntain.dev/blitz/<username>`
-
-### Quick Play
-- **Live View**: `https://tetrio.founntain.dev/zenith/<username>/web`
-- **Static Image**: `https://tetrio.founntain.dev/zenith/<username>`
 
 ### 📽️ OBS Setup
 
@@ -34,9 +34,9 @@ For OBS, it is recommended to use the live view URL. To set it up:
 2. Paste the live view URL into the Browser Source settings, replacing `<username>` with your Tetr.io username (make sure to remove the `<` and `>`), the same goes for `<mode>`.
 3. Make sure the width and height is correct check below what sizes are best for each overlay:
    - Tetra League: 900 x 300
+   - Quick Play: 900 x 300
    - 40 Lines: 700 x 225
    - Blitz: 700 x 225
-   - Quick Play: 900 x 300
 
 > **Note:** Ensure you use the URL ending with `/web` for live updates. The data is cached and refreshes every 30 seconds. For 40 Lines and Blitz the default cache is used which is **5 minutes**.
 
@@ -72,11 +72,11 @@ Contributions are welcome! Feel free to open issues, request features, provide f
 #### Tetra League
 ![founntain](https://github.com/user-attachments/assets/ee8e60e9-de03-4b89-b197-cee5d3e7f8c8)
 
+#### Quick Play
+![founntain](https://github.com/user-attachments/assets/8c6cd129-5a58-4d05-a00a-8ea995d8080f)
+
 #### Sprint
 ![founntain](https://github.com/user-attachments/assets/d7f00e47-326a-477f-9d74-0f8c46f66845)
 
 #### Blitz
 ![founntain](https://github.com/user-attachments/assets/51ac5ca5-27be-465d-8b48-07b1e4e029e3)
-
-#### Quick Play
-![founntain](https://github.com/user-attachments/assets/8c6cd129-5a58-4d05-a00a-8ea995d8080f)
