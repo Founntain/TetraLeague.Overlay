@@ -656,7 +656,7 @@ public static class ImageGenerator
         return stream;
     }
 
-     public static MemoryStream GenerateZenithImage(string username, QuickPlay stats, QuickPlay? expert, string? textColor, string? backgroundColor, bool displayUsername)
+    public static MemoryStream GenerateZenithImage(string username, QuickPlay stats, QuickPlay? expert, string? textColor, string? backgroundColor, bool displayUsername)
     {
         var width = 900;
         var height = 300;
@@ -825,9 +825,6 @@ public static class ImageGenerator
         {
             offset += 30;
         }
-        else
-        {
-        }
 
         if(expert.Record != null)
         {
@@ -860,6 +857,170 @@ public static class ImageGenerator
             }
 
         }
+
+        using var data = surface.Snapshot().Encode(SKEncodedImageFormat.Png, 80);
+
+        data.SaveTo(stream);
+
+        return stream;
+    }
+
+    public static MemoryStream GenerateZenithSplitsImage(string username, ZenithRecords stats, QuickPlay careerBest, string? textColor, string? backgroundColor, bool displayUsername)
+    {
+        var width = 1500;
+        var height = 200;
+        var center = (float) width / 2;
+        var stream = new MemoryStream();
+        var typeFace = SKTypeface.FromFile("Resources/cr.ttf");
+
+        #region Paints
+
+        textColor ??= "FFFFFF";
+
+        var bigTextPaint = new SKPaint
+        {
+            Color = SKColor.Parse(textColor),
+            Style = SKPaintStyle.Fill,
+            TextSize = 64,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var bigTextShadowPaint = new SKPaint
+        {
+            Color = SKColors.Black,
+            Style = SKPaintStyle.Fill,
+            TextSize = 64,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var normalTextPaint = new SKPaint
+        {
+            Color = SKColor.Parse(textColor),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var normalTextShadowPaint = new SKPaint
+        {
+            Color = SKColors.Black,
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var smallTextPaint = new SKPaint
+        {
+            Color = SKColor.Parse(textColor),
+            Style = SKPaintStyle.Fill,
+            TextSize = 20,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var smallTextShadowPaint = new SKPaint
+        {
+            Color = SKColors.Black,
+            Style = SKPaintStyle.Fill,
+            TextSize = 20,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace,
+            TextAlign = SKTextAlign.Center,
+        };
+
+        var statsPaintAlt = new SKPaint
+        {
+            Color = SKColor.Parse(textColor),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace
+        };
+
+        var progressBarBg = new SKPaint
+        {
+            Color = SKColor.Parse("DD000000"),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace
+        };
+
+        var progressBarBgAlt = new SKPaint
+        {
+            Color = SKColor.Parse($"FF{textColor}"),
+            Style = SKPaintStyle.Fill,
+            TextSize = 32,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Typeface = typeFace
+        };
+
+        #endregion
+
+        if (!displayUsername)
+            height -= 65;
+
+        using var surface = SKSurface.Create(new SKImageInfo(width, height, SKColorType.Bgra8888, SKAlphaType.Unpremul));
+
+        SetBackground(surface, width, height, backgroundColor);
+
+        var offset = 0;
+
+        // TITLE
+        if (displayUsername)
+        {
+            DrawTextWithShadow(surface, $"{username.ToUpper()}'S SPLITS", center, 65, bigTextPaint, bigTextShadowPaint);
+
+            offset = 65;
+        }
+
+        var goldSplits = new int[9];
+
+        foreach (var entry in stats.Entries)
+        {
+            var splits = entry.Results.Stats.Zenith.Splits;
+
+            for (int i = 0; i < splits.Count; i++)
+            {
+                if (goldSplits[i] == 0)
+                {
+                    goldSplits[i] = (int) splits[i];
+                    continue;
+                }
+
+                if (goldSplits[i] > splits[i] && splits[i] != 0)
+                {
+                    goldSplits[i] = (int) splits[i];
+                }
+            }
+        }
+
+        var recentSplits = stats.Entries.First().Results.Stats.Zenith.Splits.Select(x => (int) (x ?? 0)).ToArray();
+        var careerBestSplits = careerBest.Best.Record.Results.Stats.Zenith.Splits.Select(x => (int) (x ?? 0)).ToArray();
+
+        var splitsImageWidth = 0;
+
+        var splitsImage = GenerateSplitsImage(ref splitsImageWidth, goldSplits, recentSplits, careerBestSplits, normalTextPaint, smallTextPaint, normalTextShadowPaint, smallTextShadowPaint);
+
+        surface.Canvas.DrawImage(splitsImage, center - ( splitsImageWidth / 2 ), 25 + offset);
 
         using var data = surface.Snapshot().Encode(SKEncodedImageFormat.Png, 80);
 
@@ -974,6 +1135,141 @@ public static class ImageGenerator
         var modImage = modSurface.Snapshot();
 
         return modImage;
+    }
+
+    private static SKImage GenerateSplitsImage(ref int splitsImageWidth, int[] goldSplits, int[] recentSplits, int[] careerBestSplits, SKPaint textPaint, SKPaint smallTextPain, SKPaint shawdowPaint, SKPaint smallShadowPaint)
+    {
+        var height = 85;
+        var rectWidth = 165;
+        var rectWidthHalf = rectWidth / 2;
+
+        var floorColors = new[]
+        {
+            "AAfde692",
+            "AAffc788",
+            "AAffb7c2",
+            "AAffba43",
+            "AAff917b",
+            "AA00ddff",
+            "AAff006f",
+            "AA98ffb2",
+            "AAd677ff",
+        };
+
+        var floorNames = new[]
+        {
+            "HOTEL",
+            "CASINO",
+            "ARENA",
+            "MUSEUM",
+            "OFFICES",
+            "LABORATORY",
+            "THE CORE",
+            "CORRUPTION",
+            "POTG",
+        };
+
+        var amountOfSplits = 0;
+
+        if (recentSplits.All(x => x > 0))
+        {
+            amountOfSplits = goldSplits.Length;
+        }
+        else
+        {
+            for (var i = 0; i < goldSplits.Length; i++)
+            {
+                if (goldSplits[i] == 0)
+                {
+                    amountOfSplits = i + 1;
+
+                    break;
+                }
+            }
+        }
+
+        splitsImageWidth = (rectWidth * amountOfSplits) - 6;
+
+        using var surface = SKSurface.Create(new SKImageInfo(splitsImageWidth, height, SKColorType.Bgra8888, SKAlphaType.Unpremul));
+
+        bool notReached = false;
+
+        for (var i = 0; i < goldSplits.Length; i++)
+        {
+            var split = goldSplits[i];
+
+            var backgroundPaint = new SKPaint
+            {
+                Color = SKColor.Parse(floorColors[i]),
+                Style = SKPaintStyle.Fill,
+                FakeBoldText = true,
+                IsAntialias = true,
+            };
+
+            var blackOverlayPaint = new SKPaint
+            {
+                Color = SKColor.Parse("AA000000"),
+                Style = SKPaintStyle.Fill,
+                FakeBoldText = true,
+                IsAntialias = true,
+            };
+
+            var time = TimeSpan.FromMilliseconds(split);
+
+            var isRecentSplitsEmpty = recentSplits.All(x => x == 0);
+
+            var recentTime = recentSplits[i] == 0 ? TimeSpan.FromMilliseconds(0) : TimeSpan.FromMilliseconds(recentSplits[i] - split);
+
+            if (isRecentSplitsEmpty)
+            {
+                if (careerBestSplits.Any(x => x != 0))
+                {
+                    isRecentSplitsEmpty = false;
+                }
+
+                recentTime = TimeSpan.FromMilliseconds(careerBestSplits[i] - split);
+            }
+
+            var isSlower = recentTime.TotalMilliseconds > 0;
+            var prefix = isSlower ? "+" : "-";
+
+            if (split == 0)
+            {
+                surface.Canvas.DrawRect(0 + (i * rectWidth), 0, rectWidth - 6, 85, backgroundPaint);
+                surface.Canvas.DrawRect(3 + (i * rectWidth), 3, rectWidth - 12, 79, blackOverlayPaint);
+
+                DrawTextWithShadow(surface, $"{floorNames[i]}", rectWidthHalf + (i * rectWidth), 25, smallTextPain, smallShadowPaint);
+                DrawTextWithShadow(surface, "DNF", rectWidthHalf + (i * rectWidth), 55, textPaint, shawdowPaint);
+
+                break;
+            }
+
+            surface.Canvas.DrawRect(0 + (i * rectWidth), 0, rectWidth - 6, 85, backgroundPaint);
+            surface.Canvas.DrawRect(3 + (i * rectWidth), 3, rectWidth - 12, 79, blackOverlayPaint);
+
+            DrawTextWithShadow(surface, $"{floorNames[i]}", rectWidthHalf + (i * rectWidth), 25, smallTextPain, smallShadowPaint);
+            DrawTextWithShadow(surface, time.ToString(@"m\:ss\.fff"), rectWidthHalf + (i * rectWidth), 55, textPaint, shawdowPaint);
+
+            smallTextPain.Color = isSlower ? SKColor.Parse("EE005B") : SKColor.Parse("00EE00");
+
+            if(recentTime.TotalMilliseconds != 0 && !isRecentSplitsEmpty)
+                DrawTextWithShadow(surface, prefix + recentTime.ToString(@"s\.fff"), rectWidthHalf + (i * rectWidth), 75, smallTextPain, smallShadowPaint);
+            else if(!notReached)
+            {
+                smallTextPain.Color = SKColors.DarkGray;
+
+                DrawTextWithShadow(surface, "NOT REACHED", rectWidthHalf + (i * rectWidth), 75, smallTextPain, smallShadowPaint);
+
+                notReached = true;
+            }
+
+            smallTextPain.Color = SKColor.Parse("FFFFFF");
+        }
+
+
+        var image = surface.Snapshot();
+
+        return image;
     }
 
     #endregion

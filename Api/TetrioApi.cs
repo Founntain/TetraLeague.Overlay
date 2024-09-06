@@ -6,22 +6,27 @@ namespace TetraLeagueOverlay.Api;
 
 public class TetrioApi : ApiBase
 {
-    private static ConcurrentDictionary<string, (DateTimeOffset, TetraLeague?)> _leagueCache = new();
-    private static ConcurrentDictionary<string, (DateTimeOffset, Sprint?)> _sprintCache = new();
-    private static ConcurrentDictionary<string, (DateTimeOffset, Blitz?)> _blitzCache = new();
-    private static ConcurrentDictionary<string, (DateTimeOffset, QuickPlay?)> _zenithCache = new();
-    private static ConcurrentDictionary<string, (DateTimeOffset, QuickPlay?)> _zenithExpertCache = new();
+    private static readonly ConcurrentDictionary<string, (DateTimeOffset, TetraLeague?)> LeagueCache = new();
+    private static readonly ConcurrentDictionary<string, (DateTimeOffset, Sprint?)> SprintCache = new();
+    private static readonly ConcurrentDictionary<string, (DateTimeOffset, Blitz?)> BlitzCache = new();
+    private static readonly ConcurrentDictionary<string, (DateTimeOffset, QuickPlay?)> ZenithCache = new();
+    private static readonly ConcurrentDictionary<string, (DateTimeOffset, QuickPlay?)> ZenithExpertCache = new();
+
+    private static readonly ConcurrentDictionary<string, (DateTimeOffset, ZenithRecords)> RecentZenithCache = new();
+    private static readonly ConcurrentDictionary<string, (DateTimeOffset, ZenithRecords)> RecentZenithExpertCache = new();
 
     private string LeagueUrl => ApiBaseUrl + "users/{0}/summaries/league";
     private string SprintUrl => ApiBaseUrl + "users/{0}/summaries/40l";
     private string BlitzUrl => ApiBaseUrl + "users/{0}/summaries/blitz";
     private string ZenithUrl => ApiBaseUrl + "users/{0}/summaries/zenith";
     private string ZenithExpertUrl => ApiBaseUrl + "users/{0}/summaries/zenithex";
+    private string RecentZenithUrl => ApiBaseUrl + "users/{0}/records/zenith/recent?limit=100";
+    private string RecentZenithExpertUrl => ApiBaseUrl + "users/{0}/records/zenithex/recent?limit=100";
 
     public async Task<TetraLeague?> GetTetraLeagueStats(string username)
     {
         // Let's check the cache first
-        if (_leagueCache.TryGetValue(username, out var data))
+        if (LeagueCache.TryGetValue(username, out var data))
         {
             Console.WriteLine($"[TL] Found {username} in cache");
 
@@ -51,9 +56,9 @@ public class TetrioApi : ApiBase
             {
                 Console.WriteLine("[TL] Cache hit... returning cache");
 
-                _leagueCache.TryGetValue(username, out var result);
+                LeagueCache.TryGetValue(username, out var result);
 
-                if(result.Item2 != null) return result.Item2;
+                if (result.Item2 != null) return result.Item2;
 
                 Console.WriteLine("[TL] Cache hit, but nothing in there, fetching data again...");
             }
@@ -65,14 +70,14 @@ public class TetrioApi : ApiBase
             // var cacheValidUntil = DateTimeOffset.FromUnixTimeMilliseconds(apiResponse.Cache.CacheUntil);
             var cacheValidUntil = DateTimeOffset.UtcNow.AddSeconds(30);
 
-            if (_leagueCache.ContainsKey(username))
+            if (LeagueCache.ContainsKey(username))
             {
-                _leagueCache[username] = (cacheValidUntil, apiResponse.Data);
+                LeagueCache[username] = (cacheValidUntil, apiResponse.Data);
 
-                return _leagueCache[username].Item2;
+                return LeagueCache[username].Item2;
             }
 
-            _leagueCache.TryAdd(username, (cacheValidUntil, apiResponse.Data));
+            LeagueCache.TryAdd(username, (cacheValidUntil, apiResponse.Data));
 
             return apiResponse.Data;
         }
@@ -85,7 +90,7 @@ public class TetrioApi : ApiBase
     public async Task<Sprint?> GetSprintStats(string username)
     {
         // Let's check the cache first
-        if (_sprintCache.TryGetValue(username, out var data))
+        if (SprintCache.TryGetValue(username, out var data))
         {
             Console.WriteLine($"[40L] Found {username} in cache");
 
@@ -115,9 +120,9 @@ public class TetrioApi : ApiBase
             {
                 Console.WriteLine("[40L] Cache hit... returning cache");
 
-                _sprintCache.TryGetValue(username, out var result);
+                SprintCache.TryGetValue(username, out var result);
 
-                if(result.Item2 != null) return result.Item2;
+                if (result.Item2 != null) return result.Item2;
 
                 Console.WriteLine("[40L] Cache hit, but nothing in there, fetching data again...");
             }
@@ -128,14 +133,14 @@ public class TetrioApi : ApiBase
 
             var cacheValidUntil = DateTimeOffset.FromUnixTimeMilliseconds(apiResponse.Cache.CacheUntil);
 
-            if (_sprintCache.ContainsKey(username))
+            if (SprintCache.ContainsKey(username))
             {
-                _sprintCache[username] = (cacheValidUntil, apiResponse.Data);
+                SprintCache[username] = (cacheValidUntil, apiResponse.Data);
 
-                return _sprintCache[username].Item2;
+                return SprintCache[username].Item2;
             }
 
-            _sprintCache.TryAdd(username, (cacheValidUntil, apiResponse.Data));
+            SprintCache.TryAdd(username, (cacheValidUntil, apiResponse.Data));
 
             return apiResponse.Data;
         }
@@ -148,7 +153,7 @@ public class TetrioApi : ApiBase
     public async Task<Blitz?> GetBlitzStats(string username)
     {
         // Let's check the cache first
-        if (_blitzCache.TryGetValue(username, out var data))
+        if (BlitzCache.TryGetValue(username, out var data))
         {
             Console.WriteLine($"[BLITZ] Found {username} in cache");
 
@@ -178,9 +183,9 @@ public class TetrioApi : ApiBase
             {
                 Console.WriteLine("[BLITZ] Cache hit... returning cache");
 
-                _blitzCache.TryGetValue(username, out var result);
+                BlitzCache.TryGetValue(username, out var result);
 
-                if(result.Item2 != null) return result.Item2;
+                if (result.Item2 != null) return result.Item2;
 
                 Console.WriteLine("[BLITZ] Cache hit, but nothing in there, fetching data again...");
             }
@@ -191,14 +196,14 @@ public class TetrioApi : ApiBase
 
             var cacheValidUntil = DateTimeOffset.FromUnixTimeMilliseconds(apiResponse.Cache.CacheUntil);
 
-            if (_blitzCache.ContainsKey(username))
+            if (BlitzCache.ContainsKey(username))
             {
-                _blitzCache[username] = (cacheValidUntil, apiResponse.Data);
+                BlitzCache[username] = (cacheValidUntil, apiResponse.Data);
 
-                return _blitzCache[username].Item2;
+                return BlitzCache[username].Item2;
             }
 
-            _blitzCache.TryAdd(username, (cacheValidUntil, apiResponse.Data));
+            BlitzCache.TryAdd(username, (cacheValidUntil, apiResponse.Data));
 
             return apiResponse.Data;
         }
@@ -208,12 +213,12 @@ public class TetrioApi : ApiBase
         }
     }
 
-     public async Task<QuickPlay?> GetZenithStats(string username, bool expert = false)
-     {
-         var prefix = expert ? "QP EX" : "QP";
-             ;
+    public async Task<QuickPlay?> GetZenithStats(string username, bool expert = false)
+    {
+        var prefix = expert ? "QP EX" : "QP";
+        ;
         // Let's check the cache first
-        if (!expert && _zenithCache.TryGetValue(username, out var normalData))
+        if (!expert && ZenithCache.TryGetValue(username, out var normalData))
         {
             Console.WriteLine($"[{prefix}] Found {username} in cache");
 
@@ -226,7 +231,7 @@ public class TetrioApi : ApiBase
             }
         }
 
-        if (expert && _zenithExpertCache.TryGetValue(username, out var expertData))
+        if (expert && ZenithExpertCache.TryGetValue(username, out var expertData))
         {
             Console.WriteLine($"[{prefix}] Found {username} in cache");
 
@@ -258,15 +263,15 @@ public class TetrioApi : ApiBase
 
                 if (!expert)
                 {
-                    _zenithCache.TryGetValue(username, out var result);
+                    ZenithCache.TryGetValue(username, out var result);
 
-                    if(result.Item2 != null) return result.Item2;
+                    if (result.Item2 != null) return result.Item2;
                 }
                 else
                 {
-                    _zenithExpertCache.TryGetValue(username, out var result);
+                    ZenithExpertCache.TryGetValue(username, out var result);
 
-                    if(result.Item2 != null) return result.Item2;
+                    if (result.Item2 != null) return result.Item2;
                 }
 
                 Console.WriteLine($"[{prefix}] Cache hit, but nothing in there, fetching data again...");
@@ -281,25 +286,127 @@ public class TetrioApi : ApiBase
 
             if (!expert)
             {
-                if (_zenithCache.ContainsKey(username))
+                if (ZenithCache.ContainsKey(username))
                 {
-                    _zenithCache[username] = (cacheValidUntil, apiResponse.Data);
+                    ZenithCache[username] = (cacheValidUntil, apiResponse.Data);
 
-                    return _zenithCache[username].Item2;
+                    return ZenithCache[username].Item2;
                 }
 
-                _zenithCache.TryAdd(username, (cacheValidUntil, apiResponse.Data));
+                ZenithCache.TryAdd(username, (cacheValidUntil, apiResponse.Data));
             }
             else
             {
-                if (_zenithExpertCache.ContainsKey(username))
+                if (ZenithExpertCache.ContainsKey(username))
                 {
-                    _zenithExpertCache[username] = (cacheValidUntil, apiResponse.Data);
+                    ZenithExpertCache[username] = (cacheValidUntil, apiResponse.Data);
 
-                    return _zenithExpertCache[username].Item2;
+                    return ZenithExpertCache[username].Item2;
                 }
 
-                _zenithExpertCache.TryAdd(username, (cacheValidUntil, apiResponse.Data));
+                ZenithExpertCache.TryAdd(username, (cacheValidUntil, apiResponse.Data));
+            }
+
+            return apiResponse.Data;
+        }
+        catch (Exception _)
+        {
+            return default;
+        }
+    }
+
+    public async Task<ZenithRecords?> GetRecentZenithRecords(string username, bool expert = false)
+    {
+        var prefix = expert ? "QP EX" : "QP";
+        ;
+        // Let's check the cache first
+        if (!expert && RecentZenithCache.TryGetValue(username, out var normalData))
+        {
+            Console.WriteLine($"[{prefix}] Found {username} in cache");
+
+            // If the cache is still valid we return that
+            if (normalData.Item1 >= DateTimeOffset.UtcNow)
+            {
+                Console.WriteLine($"[{prefix}] Found valid cache data to return");
+
+                return normalData.Item2;
+            }
+        }
+
+        if (expert && RecentZenithExpertCache.TryGetValue(username, out var expertData))
+        {
+            Console.WriteLine($"[{prefix}] Found {username} in cache");
+
+            // If the cache is still valid we return that
+            if (expertData.Item1 >= DateTimeOffset.UtcNow)
+            {
+                Console.WriteLine($"[{prefix}] Found valid cache data to return");
+
+                return expertData.Item2;
+            }
+        }
+
+        Console.WriteLine($"[{prefix}] Getting Zenith stats for {username}, as nothing was found in the cache");
+
+        try
+        {
+            var responseFromApi = await GetString(string.Format(expert ? RecentZenithExpertUrl : RecentZenithUrl, username));
+
+            if (responseFromApi == null) return default;
+
+            var apiResponse = JsonSerializer.Deserialize<ApiResponse<ZenithRecords?>>(responseFromApi, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (apiResponse == null) return default;
+            if (!apiResponse.Success) return default;
+
+            if (apiResponse.Cache.Status == "hit")
+            {
+                Console.WriteLine($"[{prefix}] Cache hit... returning cache");
+
+                if (!expert)
+                {
+                    RecentZenithCache.TryGetValue(username, out var result);
+
+                    if (result.Item2 != null) return result.Item2;
+                }
+                else
+                {
+                    RecentZenithExpertCache.TryGetValue(username, out var result);
+
+                    if (result.Item2 != null) return result.Item2;
+                }
+
+                Console.WriteLine($"[{prefix}] Cache hit, but nothing in there, fetching data again...");
+            }
+
+            if (apiResponse.Data == default) return default;
+
+            Console.WriteLine($"[{prefix}] Updating cache and returning");
+
+            // var cacheValidUntil = DateTimeOffset.FromUnixTimeMilliseconds(apiResponse.Cache.CacheUntil);
+            var cacheValidUntil = DateTimeOffset.UtcNow.AddSeconds(30);
+
+            if (!expert)
+            {
+                if (RecentZenithCache.ContainsKey(username))
+                {
+                    RecentZenithCache[username] = (cacheValidUntil, apiResponse.Data);
+
+                    return RecentZenithCache[username].Item2;
+                }
+
+                RecentZenithCache.TryAdd(username, (cacheValidUntil, apiResponse.Data));
+            }
+            else
+            {
+                if (RecentZenithExpertCache.ContainsKey(username))
+                {
+                    RecentZenithExpertCache[username] = (cacheValidUntil, apiResponse.Data);
+
+                    return RecentZenithExpertCache[username].Item2;
+                }
+
+                RecentZenithExpertCache.TryAdd(username, (cacheValidUntil, apiResponse.Data));
             }
 
             return apiResponse.Data;
