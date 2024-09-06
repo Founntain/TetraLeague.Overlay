@@ -855,7 +855,6 @@ public static class ImageGenerator
 
                 surface.Canvas.DrawImage(personalBestModsImage, 3 * (center / 2) - modCanvasWidthPersonalBest / 2, 130 + offset);
             }
-
         }
 
         using var data = surface.Snapshot().Encode(SKEncodedImageFormat.Png, 80);
