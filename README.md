@@ -26,27 +26,6 @@ To use the overlay, simply use one of the following URLs:
 - **Live View**: `https://tetrio.founntain.dev/blitz/<username>/web`
 - **Static Image**: `https://tetrio.founntain.dev/blitz/<username>`
 
-## Slide
-
-The slide is a the same as the other browser source, the difference is that it cycles through the modes. Just one browser source to rule them all!
-To use the slide you can use the url of any mode it doesn't matter. Just replace `/web` with `/slide`. By default the slide shows all available modes if you just want to display specific modes, you can use the `modes=` parameter.
-Here are some examples of how to use the `modes=` parameter:
-- `modes=tetraleague,zenith`
-- `modes=sprint,blitz`
-
-#### Available Modes
-| Mode         | parameter     |
-|--------------|---------------|
-| Tetra League | `tetraLeague` |
-| Quick Play   | `zenith`      |
-| 40 Lines     | `sprint`      |
-| Blitz        | `blitz`       |
-
-*Example URL that displays a slide for `founntain` with the modes `tetreaLeague` and `zenith`: `https://tetrio.founntain.dev/zenith/founntain/slide?modes=tetraleague,zenith`*
-
-> [!CAUTION]
-> The parameters need to be seperated by a single `comma` (`,`) otherwise you will receive an error.
-
 ## 📽️ OBS Setup
 
 For OBS, it is recommended to use the live view URL. To set it up:
@@ -69,8 +48,35 @@ You can put any parameters at the end of the url. ***The order does not matter, 
 - **`backgroundColor`**: Adjusts the background color (useful if you don’t want a transparent background). Default is `00FFFFFF`.
 - **`textColor`**: Changes the text color and the color of the progress bar. Default is `FFFFFF`.
 - **`displayUsername`**: This only works for 40L, Blitz and Quick Play if set to `false` it will hide the username.
+- **`modes`**: See [Slide section](#slide).
 
 > **Example:** `https://tetrio.founntain.dev/tetraleague/founntain/web?backgroundColor=FF0000&textColor=00FF00`
+
+## Slide
+
+> [!IMPORTANT]  
+> The slide has `displayUsername` set to `false` as the username is always visible on the Tetra League overlay so on other pages the mode is shown instead. However you can use `displayUsername` and set it to `true` to display the username instead of modes
+
+The slide is a the same as the other browser source, the difference is that it cycles through the modes. Just one browser source to rule them all!
+To use the slide you can use the url of any mode it doesn't matter. Just replace `/web` with `/slide`. By default the slide shows all available modes if you just want to display specific modes, you can use the `modes=` parameter.  
+Here are some examples of how to use the `modes=` parameter:
+- `modes=tetraleague,zenith`
+- `modes=sprint,blitz`
+
+#### Available Modes
+| Mode         | parameter     |
+|--------------|---------------|
+| Tetra League | `tetraLeague` |
+| Quick Play   | `zenith`      |
+| 40 Lines     | `sprint`      |
+| Blitz        | `blitz`       |
+
+*Example URL that displays a slide for `founntain` with the modes `tetreaLeague` and `zenith`: `https://tetrio.founntain.dev/zenith/founntain/slide?modes=tetraleague,zenith`*
+
+> [!NOTE]  
+> The duration how long something is visible can't be changed, the duration depends on how many modes you display the slide takes 30 seconds to get back to its starting point. The more modes, the faster it switches, the less the longer. This is to prevent API spam. *if you use the slide for a single overlay it has the same update time as the single one, just more overhead. Only use the slide if you want to display more than one*
+> [!CAUTION]
+> The parameters need to be seperated by a single `comma` (`,`) otherwise you will receive an error.
 
 ## 🏠 Running Locally
 
