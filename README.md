@@ -73,6 +73,8 @@ Here are some examples of how to use the `modes=` parameter:
 
 *Example URL that displays a slide for `founntain` with the modes `tetreaLeague` and `zenith`: `https://tetrio.founntain.dev/zenith/founntain/slide?modes=tetraleague,zenith`*
 
+> [!NOTE]  
+> The duration how long something is visible can't be changed, the duration depends on how many modes you display the slide takes 30 seconds to get back to its starting point. The more modes, the faster it switches, the less the longer. This is to prevent API spam. *if you use the slide for a single overlay it has the same update time as the single one, just more overhead. Only use the slide if you want to display more than one*
 > [!CAUTION]
 > The parameters need to be seperated by a single `comma` (`,`) otherwise you will receive an error.
 
