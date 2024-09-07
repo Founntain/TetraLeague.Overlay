@@ -119,6 +119,9 @@ Contributions are welcome! Feel free to open issues, request features, provide f
 #### Quick Play
 ![founntain](https://github.com/user-attachments/assets/8c6cd129-5a58-4d05-a00a-8ea995d8080f)
 
+#### Speedrun splits
+![blink](https://github.com/user-attachments/assets/592daaf8-0e03-412f-be87-7de6274f5a15)
+
 #### Sprint
 ![founntain](https://github.com/user-attachments/assets/d7f00e47-326a-477f-9d74-0f8c46f66845)
 
