@@ -26,6 +26,11 @@ To use the overlay, simply use one of the following URLs:
 - **Live View**: `https://tetrio.founntain.dev/blitz/<username>/web`
 - **Static Image**: `https://tetrio.founntain.dev/blitz/<username>`
 
+### QP Speedrun Splits
+- **Live View**: `https://tetrio.founntain.dev/zenith/splits/<username>/web`
+- **Static Image**: `https://tetrio.founntain.dev/zenith/splits/<username>`
+> for more info check the [splits section](#speedrun).
+
 ## 📽️ OBS Setup
 
 For OBS, it is recommended to use the live view URL. To set it up:
@@ -38,6 +43,7 @@ For OBS, it is recommended to use the live view URL. To set it up:
    - Quick Play: 900 x 300
    - 40 Lines: 700 x 225
    - Blitz: 700 x 225
+   - Speedrun splits: 1500 x 200
 
 > [!NOTE]  
 > Ensure you use the URL ending with `/web` for live updates. The data is cached and refreshes every 30 seconds. For 40 Lines and Blitz the default cache is used which is **5 minutes**.
@@ -54,29 +60,38 @@ You can put any parameters at the end of the url. ***The order does not matter, 
 
 ## Slide
 
-> [!IMPORTANT]  
-> The slide has `displayUsername` set to `false` as the username is always visible on the Tetra League overlay so on other pages the mode is shown instead. However you can use `displayUsername` and set it to `true` to display the username instead of modes
+> [!IMPORTANT]
+> The slide has `displayUsername` set to `false` because the username is always visible on the Tetra League overlay. On other pages, the mode is shown instead. However, you can set `displayUsername` to `true` to display the username instead of the modes.
 
-The slide is a the same as the other browser source, the difference is that it cycles through the modes. Just one browser source to rule them all!
-To use the slide you can use the url of any mode it doesn't matter. Just replace `/web` with `/slide`. By default the slide shows all available modes if you just want to display specific modes, you can use the `modes=` parameter.  
+The slide functions similarly to the other browser source, but it cycles through the modes. It essentially acts as one browser source to rule them all! To use the slide, you can use the URL of any mode—just replace `/web` with `/slide`. By default, the slide shows all available modes, but if you want to display specific modes, you can use the `modes=` parameter.  
 Here are some examples of how to use the `modes=` parameter:
 - `modes=tetraleague,zenith`
 - `modes=sprint,blitz`
 
 #### Available Modes
-| Mode         | parameter     |
+| Mode         | Parameter     |
 |--------------|---------------|
 | Tetra League | `tetraLeague` |
 | Quick Play   | `zenith`      |
 | 40 Lines     | `sprint`      |
 | Blitz        | `blitz`       |
 
-*Example URL that displays a slide for `founntain` with the modes `tetreaLeague` and `zenith`: `https://tetrio.founntain.dev/zenith/founntain/slide?modes=tetraleague,zenith`*
+*Example URL that displays a slide for `founntain` with the modes `tetraLeague` and `zenith`: `https://tetrio.founntain.dev/zenith/founntain/slide?modes=tetraleague,zenith`*
 
-> [!NOTE]  
-> The duration how long something is visible can't be changed, the duration depends on how many modes you display the slide takes 30 seconds to get back to its starting point. The more modes, the faster it switches, the less the longer. This is to prevent API spam. *if you use the slide for a single overlay it has the same update time as the single one, just more overhead. Only use the slide if you want to display more than one*
+> [!NOTE]
+> The duration for which something is visible can't be changed. The duration depends on how many modes you display; the slide takes 30 seconds to return to its starting point. The more modes, the faster it switches; the fewer modes, the longer each is displayed. This is to prevent API spam. If you use the slide for a single overlay, it has the same update time as the single overlay, with just more overhead. Only use the slide if you want to display more than one mode.
+
 > [!CAUTION]
-> The parameters need to be seperated by a single `comma` (`,`) otherwise you will receive an error.
+> Parameters need to be separated by a single `comma` (`,`) otherwise you will receive an error.
+
+## Splits
+
+Ever wanted to know how fast you clear floors without hitting hyperspeed, or not able to hit hyperspeed ever, to see the splits in general? We have you covered. With the splits overlay, you can compare your times with your gold splits from this week.  
+The splits overlay uses your last 100 games from the current week; all games past that aren't counted. We chose this limit because we don't want to make excessive API calls, and the last 100 games is enough to compare your performance this week. If you haven't played this week yet, we use your career best splits for display.
+
+> [!CAUTION]
+> The splits overlay is still very early and pretty complex. If something does not work as intended, or is not working at all, please let me know so I can look into it!  
+> ***The splits overlay is not supported in slide mode, because it is quite large. Maybe in the future.***
 
 ## 🏠 Running Locally
 
