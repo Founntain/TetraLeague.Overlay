@@ -1170,7 +1170,7 @@ public static class ImageGenerator
 
         var amountOfSplits = 0;
 
-        if (recentSplits.All(x => x > 0))
+        if (goldSplits.All(x => x > 0))
         {
             amountOfSplits = goldSplits.Length;
         }
