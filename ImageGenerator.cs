@@ -1251,7 +1251,7 @@ public static class ImageGenerator
 
             smallTextPain.Color = isSlower ? SKColor.Parse("EE005B") : SKColor.Parse("00EE00");
 
-            if(recentTime.TotalMilliseconds != 0 && !isRecentSplitsEmpty)
+            if((recentTime.TotalMilliseconds != 0 || ( recentTime.TotalMilliseconds == 0 && split != 0 && recentSplits[i] != 0) && !isRecentSplitsEmpty))
                 DrawTextWithShadow(surface, prefix + recentTime.ToString(@"s\.fff"), rectWidthHalf + (i * rectWidth), 75, smallTextPain, smallShadowPaint);
             else if(!notReached)
             {
