@@ -22,7 +22,7 @@ public class ZenithController : BaseController
         var stats = await _api.GetZenithStats(username);
         var expert = await _api.GetZenithStats(username, true);
 
-        MemoryStream? notFoundImage = null;
+        MemoryStream? notFoundImage;
 
         switch (stats)
         {
@@ -62,19 +62,16 @@ public class ZenithController : BaseController
 
     [HttpGet]
     [Route("splits/{username}")]
-    public async Task<ActionResult> Split(string username, string? textColor = null, string? backgroundColor = null, bool displayUsername = true)
+    public async Task<ActionResult> Split(string username, string? textColor = null, string? backgroundColor = null, bool displayUsername = true, bool expert = false)
     {
         username = username.ToLower();
 
-        var normal = await _api.GetRecentZenithRecords(username);
-        var normalPb = await _api.GetZenithStats(username);
+        var recentGames = await _api.GetRecentZenithRecords(username, expert);
+        var personalBest = await _api.GetZenithStats(username, expert);
 
-        var expert = await _api.GetRecentZenithRecords(username, true);
-        var expertPb = await _api.GetZenithStats(username);
+        MemoryStream? notFoundImage;
 
-        MemoryStream? notFoundImage = null;
-
-        switch (normal)
+        switch (recentGames)
         {
             case null:
                 notFoundImage = ImageGenerator.GenerateUserNotFound();
@@ -82,7 +79,7 @@ public class ZenithController : BaseController
                 return File(notFoundImage.ToArray(), "image/png");
             default:
             {
-                if (normal.Entries?.Any() == false)
+                if (recentGames.Entries.Any() == false || personalBest == null)
                 {
                     // If the user didn't play this week yet, but played before we show the pb instead
                     notFoundImage = ImageGenerator.GenerateUserNotFound();
@@ -91,7 +88,7 @@ public class ZenithController : BaseController
 
                 }
 
-                var statsImage = ImageGenerator.GenerateZenithSplitsImage(username, normal, normalPb, textColor, backgroundColor, displayUsername);
+                var statsImage = ImageGenerator.GenerateZenithSplitsImage(username, recentGames, personalBest, textColor, backgroundColor, displayUsername);
 
                 return File(statsImage.ToArray(), "image/png");
             }

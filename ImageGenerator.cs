@@ -271,11 +271,11 @@ public static class ImageGenerator
 
         SetBackground(surface, width, height, "0f160d");
 
-        DrawTextWithShadow(surface, "No such user / record", (float) width / 2, 60, bigTextPaint, bigTextShadowPaint);
-        DrawTextWithShadow(surface, $"Either you mistyped something", (float) width / 2, 100, normalTextPaint, normalTextShadowPaint);
-        DrawTextWithShadow(surface, $"or the account no longer exists.", (float) width / 2, 130, normalTextPaint, normalTextShadowPaint);
+        DrawTextWithShadow(surface, "No such user / record", width / 2, 60, bigTextPaint, bigTextShadowPaint);
+        DrawTextWithShadow(surface, $"Either you mistyped something", width / 2, 100, normalTextPaint, normalTextShadowPaint);
+        DrawTextWithShadow(surface, $"or the account no longer exists.", width / 2, 130, normalTextPaint, normalTextShadowPaint);
 
-        surface.Canvas.DrawBitmap(errorBitmap, (float) ((width / 2) - (errorBitmap.Width / 2)), 140);
+        surface.Canvas.DrawBitmap(errorBitmap, (width / 2) - (errorBitmap.Width / 2), 140);
 
         using var data = surface.Snapshot().Encode(SKEncodedImageFormat.Png, 80);
 
@@ -346,10 +346,10 @@ public static class ImageGenerator
         SetBackground(surface, width, height, "0f160d");
 
         DrawTextWithShadow(surface, title, (float) width / 2, 60, bigTextPaint, bigTextShadowPaint);
-        DrawTextWithShadow(surface, subText1, (float) width / 2, 100, normalTextPaint, normalTextShadowPaint);
-        DrawTextWithShadow(surface, subText2, (float) width / 2, 130, normalTextPaint, normalTextShadowPaint);
+        if(subText1 != null) DrawTextWithShadow(surface, subText1, (float) width / 2, 100, normalTextPaint, normalTextShadowPaint);
+        if(subText2 != null) DrawTextWithShadow(surface, subText2, (float) width / 2, 130, normalTextPaint, normalTextShadowPaint);
 
-        surface.Canvas.DrawBitmap(errorBitmap, (float) ((width / 2) - (errorBitmap.Width / 2)), 140);
+        surface.Canvas.DrawBitmap(errorBitmap, (width / 2) - (errorBitmap.Width / 2), 140);
 
         using var data = surface.Snapshot().Encode(SKEncodedImageFormat.Png, 80);
 
@@ -417,58 +417,6 @@ public static class ImageGenerator
             TextAlign = SKTextAlign.Center,
         };
 
-        var smallTextPaint = new SKPaint
-        {
-            Color = SKColor.Parse(textColor),
-            Style = SKPaintStyle.Fill,
-            TextSize = 20,
-            FakeBoldText = true,
-            IsAntialias = true,
-            Typeface = typeFace,
-            TextAlign = SKTextAlign.Right,
-        };
-
-        var smallTextShadowPaint = new SKPaint
-        {
-            Color = SKColors.Black,
-            Style = SKPaintStyle.Fill,
-            TextSize = 20,
-            FakeBoldText = true,
-            IsAntialias = true,
-            Typeface = typeFace,
-            TextAlign = SKTextAlign.Right,
-        };
-
-        var statsPaintAlt = new SKPaint
-        {
-            Color = SKColor.Parse(textColor),
-            Style = SKPaintStyle.Fill,
-            TextSize = 32,
-            FakeBoldText = true,
-            IsAntialias = true,
-            Typeface = typeFace
-        };
-
-        var progressBarBg = new SKPaint
-        {
-            Color = SKColor.Parse("DD000000"),
-            Style = SKPaintStyle.Fill,
-            TextSize = 32,
-            FakeBoldText = true,
-            IsAntialias = true,
-            Typeface = typeFace
-        };
-
-        var progressBarBgAlt = new SKPaint
-        {
-            Color = SKColor.Parse($"FF{textColor}"),
-            Style = SKPaintStyle.Fill,
-            TextSize = 32,
-            FakeBoldText = true,
-            IsAntialias = true,
-            Typeface = typeFace
-        };
-
         #endregion
 
         using var surface = SKSurface.Create(new SKImageInfo(width, height, SKColorType.Bgra8888, SKAlphaType.Unpremul));
@@ -491,7 +439,7 @@ public static class ImageGenerator
         var pps = $"{stats.Record!.Results.Aggregatestats.Pps!.Value:#.##}  PPS";
         var kpp = $"{(double) stats.Record.Results.Stats.Inputs! / (double) stats.Record.Results.Stats.Piecesplaced!:F2}  KPP";
         var kps = $"{stats.Record.Results.Stats.Inputs / (stats.Record.Results.Stats.Finaltime / 1000):F2}  KPS";
-        var finesse = $"{stats.Record.Results.Stats.Finesse.Faults}F";
+        var finesse = $"{stats.Record.Results.Stats.Finesse!.Faults}F";
 
         // TIME
         DrawTextWithShadow(surface, TimeSpan.FromMilliseconds(Math.Round(stats.Record.Results.Stats.Finaltime!.Value, MidpointRounding.ToEven)).ToString(@"m\:ss\.fff"), center, 65 + offset, bigTextPaint, bigTextShadowPaint);
@@ -566,58 +514,6 @@ public static class ImageGenerator
             TextAlign = SKTextAlign.Center,
         };
 
-        var smallTextPaint = new SKPaint
-        {
-            Color = SKColor.Parse(textColor),
-            Style = SKPaintStyle.Fill,
-            TextSize = 20,
-            FakeBoldText = true,
-            IsAntialias = true,
-            Typeface = typeFace,
-            TextAlign = SKTextAlign.Right,
-        };
-
-        var smallTextShadowPaint = new SKPaint
-        {
-            Color = SKColors.Black,
-            Style = SKPaintStyle.Fill,
-            TextSize = 20,
-            FakeBoldText = true,
-            IsAntialias = true,
-            Typeface = typeFace,
-            TextAlign = SKTextAlign.Right,
-        };
-
-        var statsPaintAlt = new SKPaint
-        {
-            Color = SKColor.Parse(textColor),
-            Style = SKPaintStyle.Fill,
-            TextSize = 32,
-            FakeBoldText = true,
-            IsAntialias = true,
-            Typeface = typeFace
-        };
-
-        var progressBarBg = new SKPaint
-        {
-            Color = SKColor.Parse("DD000000"),
-            Style = SKPaintStyle.Fill,
-            TextSize = 32,
-            FakeBoldText = true,
-            IsAntialias = true,
-            Typeface = typeFace
-        };
-
-        var progressBarBgAlt = new SKPaint
-        {
-            Color = SKColor.Parse($"FF{textColor}"),
-            Style = SKPaintStyle.Fill,
-            TextSize = 32,
-            FakeBoldText = true,
-            IsAntialias = true,
-            Typeface = typeFace
-        };
-
         #endregion
 
         using var surface = SKSurface.Create(new SKImageInfo(width, height, SKColorType.Bgra8888, SKAlphaType.Unpremul));
@@ -643,7 +539,7 @@ public static class ImageGenerator
         var finesse = $"{(stats.Record.Results.Stats.Finesse?.Faults.ToString() ?? "na")} F";
 
         // SCORE
-        DrawTextWithShadow(surface, stats.Record.Results.Stats.Score!.Value.ToString("###,###")!, center, 65 + offset, bigTextPaint, bigTextShadowPaint);
+        DrawTextWithShadow(surface, stats.Record.Results.Stats.Score!.Value.ToString("###,###"), center, 65 + offset, bigTextPaint, bigTextShadowPaint);
         // STATS
         DrawTextWithShadow(surface, $"{pps} | {kpp} | {sps} | {finesse}", center, 105 + offset, normalTextPaint, normalTextShadowPaint);
         // PLACEMENTS
@@ -734,36 +630,6 @@ public static class ImageGenerator
             TextAlign = SKTextAlign.Center,
         };
 
-        var statsPaintAlt = new SKPaint
-        {
-            Color = SKColor.Parse(textColor),
-            Style = SKPaintStyle.Fill,
-            TextSize = 32,
-            FakeBoldText = true,
-            IsAntialias = true,
-            Typeface = typeFace
-        };
-
-        var progressBarBg = new SKPaint
-        {
-            Color = SKColor.Parse("DD000000"),
-            Style = SKPaintStyle.Fill,
-            TextSize = 32,
-            FakeBoldText = true,
-            IsAntialias = true,
-            Typeface = typeFace
-        };
-
-        var progressBarBgAlt = new SKPaint
-        {
-            Color = SKColor.Parse($"FF{textColor}"),
-            Style = SKPaintStyle.Fill,
-            TextSize = 32,
-            FakeBoldText = true,
-            IsAntialias = true,
-            Typeface = typeFace
-        };
-
         #endregion
 
         using var surface = SKSurface.Create(new SKImageInfo(width, height, SKColorType.Bgra8888, SKAlphaType.Unpremul));
@@ -784,19 +650,20 @@ public static class ImageGenerator
 
         offset += 65;
 
-        var normalCenterValue = expert.Record == null ? center : center / 2;
+        var normalCenterValue = expert?.Record == null ? center : center / 2;
 
         // NORMAL
-        var currentWeekPps = $"{stats.Record.Results.Aggregatestats.Pps:F2} PPS";
+        var currentWeekPps = $"{stats.Record!.Results.Aggregatestats.Pps:F2} PPS";
         var currentWeekApm = $"{stats.Record.Results.Aggregatestats.Apm:F2} APM";
         var currentWeekVs = $"{stats.Record.Results.Aggregatestats.Vsscore:F2} VS";
 
         // We only draw the NORMAL text if we have an expert record as well
-        if(expert.Record != null)
+        if(expert?.Record != null)
             DrawTextWithShadow(surface, $"NORMAL", normalCenterValue, 15 + offset, smallTextPaint, smallTextShadowPaint);
 
         DrawTextWithShadow(surface, $"{stats.Record!.Results.Stats.Zenith.Altitude:F2} m", normalCenterValue, 65 + offset, bigTextPaint, bigTextShadowPaint);
         DrawTextWithShadow(surface, $"{currentWeekPps} | {currentWeekApm} | {currentWeekVs}", normalCenterValue, 88 + offset, smallTextPaint, smallTextShadowPaint);
+
         // We only draw the personal best when it exists AND is better than the current week
         if (stats.Best?.Record != null && stats.Best.Record.Results.Stats.Zenith.Altitude != stats.Record.Results.Stats.Zenith.Altitude)
         {
@@ -826,7 +693,7 @@ public static class ImageGenerator
             offset += 30;
         }
 
-        if(expert.Record != null)
+        if(expert?.Record != null)
         {
             var modsExpert = expert.Record.Extras.Zenith.Mods;
             int modCanvasWidthPersonalBest = (modSize * modsExpert.Length) + (10 * (modsExpert.Length - 1));
@@ -942,36 +809,6 @@ public static class ImageGenerator
             TextAlign = SKTextAlign.Center,
         };
 
-        var statsPaintAlt = new SKPaint
-        {
-            Color = SKColor.Parse(textColor),
-            Style = SKPaintStyle.Fill,
-            TextSize = 32,
-            FakeBoldText = true,
-            IsAntialias = true,
-            Typeface = typeFace
-        };
-
-        var progressBarBg = new SKPaint
-        {
-            Color = SKColor.Parse("DD000000"),
-            Style = SKPaintStyle.Fill,
-            TextSize = 32,
-            FakeBoldText = true,
-            IsAntialias = true,
-            Typeface = typeFace
-        };
-
-        var progressBarBgAlt = new SKPaint
-        {
-            Color = SKColor.Parse($"FF{textColor}"),
-            Style = SKPaintStyle.Fill,
-            TextSize = 32,
-            FakeBoldText = true,
-            IsAntialias = true,
-            Typeface = typeFace
-        };
-
         #endregion
 
         if (!displayUsername)
@@ -995,25 +832,31 @@ public static class ImageGenerator
 
         foreach (var entry in stats.Entries)
         {
-            var splits = entry.Results.Stats.Zenith.Splits;
+            List<double?> splits = entry.Results.Stats.Zenith.Splits;
 
-            for (int i = 0; i < splits.Count; i++)
+            for (var i = 0; i < splits.Count; i++)
             {
+                var split = splits[i];
+
+                if(split == null) continue;
+
                 if (goldSplits[i] == 0)
                 {
-                    goldSplits[i] = (int) splits[i];
+
+                    goldSplits[i] = (int) split;
+
                     continue;
                 }
 
-                if (goldSplits[i] > splits[i] && splits[i] != 0)
+                if (goldSplits[i] > split && split != 0)
                 {
-                    goldSplits[i] = (int) splits[i];
+                    goldSplits[i] = (int) split;
                 }
             }
         }
 
         var recentSplits = stats.Entries.First().Results.Stats.Zenith.Splits.Select(x => (int) (x ?? 0)).ToArray();
-        var careerBestSplits = careerBest.Best.Record.Results.Stats.Zenith.Splits.Select(x => (int) (x ?? 0)).ToArray();
+        var careerBestSplits = careerBest.Best!.Record!.Results.Stats.Zenith.Splits.Select(x => (int) (x ?? 0)).ToArray();
 
         var splitsImageWidth = 0;
 

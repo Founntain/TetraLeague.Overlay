@@ -87,7 +87,8 @@ Here are some examples of how to use the `modes=` parameter:
 ## Splits
 
 Ever wanted to know how fast you clear floors without hitting hyperspeed, or not able to hit hyperspeed ever, to see the splits in general? We have you covered. With the splits overlay, you can compare your times with your gold splits from this week.  
-The splits overlay uses your last 100 games from the current week; all games past that aren't counted. We chose this limit because we don't want to make excessive API calls, and the last 100 games is enough to compare your performance this week. If you haven't played this week yet, we use your career best splits for display.
+The splits overlay uses your last 100 games from the current week; all games past that aren't counted. We chose this limit because we don't want to make excessive API calls, and the last 100 games is enough to compare your performance this week. If you haven't played this week yet, we use your career best splits for display.  
+With the `expert` parameter you can show the splits for expert or normal, default value is `false`
 
 > [!CAUTION]
 > The splits overlay is still very early and pretty complex. If something does not work as intended, or is not working at all, please let me know so I can look into it!  
