@@ -116,7 +116,7 @@ Contributions are welcome! Feel free to open issues, request features, provide f
 - **[PixelAtc](https://www.twitch.tv/pixelatc)**: providing feedback, ideas and spreading the word
 - **[ZaptorZap](https://zaptorz.app/)**: for giving feedback and some incredible ideas
 
-## Example
+## Examples
 > *added for all examples a simple transparent dark background so those are readable for light github users aswell Parameter used `backgroundColor=AA000000`*
 #### Tetra League
 ![founntain](https://github.com/user-attachments/assets/ee8e60e9-de03-4b89-b197-cee5d3e7f8c8)
