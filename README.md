@@ -6,6 +6,7 @@ If you find this overlay useful, please consider giving it a ⭐ to show your su
 
 ## 🎖️ Usage
 
+For screenshots and examples look at the [examples section](#examples) at the bottom
 To use the overlay, simply use one of the following URLs:
 
 **Base URL**: `https://tetrio.founntain.dev/<mode>/<username>/web`
@@ -29,9 +30,10 @@ To use the overlay, simply use one of the following URLs:
 ### QP Speedrun Splits
 - **Live View**: `https://tetrio.founntain.dev/zenith/splits/<username>/web`
 - **Static Image**: `https://tetrio.founntain.dev/zenith/splits/<username>`
-> for more info check the [splits section](#speedrun).
+> for more info check the [splits section](#Splits).
 
-## 📽️ OBS Setup
+
+### 📽️ OBS Setup
 
 For OBS, it is recommended to use the live view URL. To set it up:
 
