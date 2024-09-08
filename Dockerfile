@@ -7,15 +7,16 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["TetraLeague.Overlay/TetraLeagueOverlay.csproj", "./"]
+COPY ["TetraLeague.Overlay/TetraLeague.Overlay.csproj", "./"]
+COPY ["TetraLeague.Overlay.Network/TetraLeague.Overlay.Network.csproj", "./"]
 RUN dotnet restore "TetraLeague.Overlay.csproj"
 COPY . .
 WORKDIR "/src/"
-RUN dotnet build "TetraLeague.Overlay.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "TetraLeague.Overlay/TetraLeague.Overlay.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "TetraLeague.Overlay.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false -r linux-x64
+RUN dotnet publish "TetraLeague.Overlay/TetraLeague.Overlay.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false -r linux-x64
 
 FROM base AS final
 
