@@ -6,6 +6,7 @@ If you find this overlay useful, please consider giving it a ⭐ to show your su
 
 ## 🎖️ Usage
 
+For screenshots and examples look at the [examples section](#examples) at the bottom.  
 To use the overlay, simply use one of the following URLs:
 
 **Base URL**: `https://tetrio.founntain.dev/<mode>/<username>/web`
@@ -29,9 +30,10 @@ To use the overlay, simply use one of the following URLs:
 ### QP Speedrun Splits
 - **Live View**: `https://tetrio.founntain.dev/zenith/splits/<username>/web`
 - **Static Image**: `https://tetrio.founntain.dev/zenith/splits/<username>`
-> for more info check the [splits section](#speedrun).
+> for more info check the [splits section](#Splits).
 
-## 📽️ OBS Setup
+
+### 📽️ OBS Setup
 
 For OBS, it is recommended to use the live view URL. To set it up:
 
@@ -90,6 +92,8 @@ Ever wanted to know how fast you clear floors without hitting hyperspeed, or not
 The splits overlay uses your last 100 games from the current week; all games past that aren't counted. We chose this limit because we don't want to make excessive API calls, and the last 100 games is enough to compare your performance this week. If you haven't played this week yet, we use your career best splits for display.  
 With the `expert` parameter you can show the splits for expert or normal, default value is `false`
 
+![blink](https://github.com/user-attachments/assets/592daaf8-0e03-412f-be87-7de6274f5a15)
+
 > [!CAUTION]
 > The splits overlay is still very early and pretty complex. If something does not work as intended, or is not working at all, please let me know so I can look into it!  
 > ***The splits overlay is not supported in slide mode, because it is quite large. Maybe in the future.***
@@ -112,7 +116,7 @@ Contributions are welcome! Feel free to open issues, request features, provide f
 - **[PixelAtc](https://www.twitch.tv/pixelatc)**: providing feedback, ideas and spreading the word
 - **[ZaptorZap](https://zaptorz.app/)**: for giving feedback and some incredible ideas
 
-## Example
+## Examples
 > *added for all examples a simple transparent dark background so those are readable for light github users aswell Parameter used `backgroundColor=AA000000`*
 #### Tetra League
 ![founntain](https://github.com/user-attachments/assets/ee8e60e9-de03-4b89-b197-cee5d3e7f8c8)
