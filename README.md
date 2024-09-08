@@ -90,6 +90,8 @@ Ever wanted to know how fast you clear floors without hitting hyperspeed, or not
 The splits overlay uses your last 100 games from the current week; all games past that aren't counted. We chose this limit because we don't want to make excessive API calls, and the last 100 games is enough to compare your performance this week. If you haven't played this week yet, we use your career best splits for display.  
 With the `expert` parameter you can show the splits for expert or normal, default value is `false`
 
+![blink](https://github.com/user-attachments/assets/592daaf8-0e03-412f-be87-7de6274f5a15)
+
 > [!CAUTION]
 > The splits overlay is still very early and pretty complex. If something does not work as intended, or is not working at all, please let me know so I can look into it!  
 > ***The splits overlay is not supported in slide mode, because it is quite large. Maybe in the future.***
