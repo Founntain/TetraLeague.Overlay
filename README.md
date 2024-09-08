@@ -6,7 +6,7 @@ If you find this overlay useful, please consider giving it a ⭐ to show your su
 
 ## 🎖️ Usage
 
-For screenshots and examples look at the [examples section](#examples) at the bottom
+For screenshots and examples look at the [examples section](#examples) at the bottom.  
 To use the overlay, simply use one of the following URLs:
 
 **Base URL**: `https://tetrio.founntain.dev/<mode>/<username>/web`
