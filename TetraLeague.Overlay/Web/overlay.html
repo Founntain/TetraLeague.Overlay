@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Live for {username}</title>
+
+    <style>
+        body{
+            background: transparent;
+        }
+
+        img{
+            image-rendering: high-quality;
+        }
+
+        .hidden{
+            position: absolute;
+            color: transparent;
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+    <img id="imagecontainer" alt="{username} {mode} stats" src="" />
+    <p class="hidden" id="mode">{mode}</p>
+    <p class="hidden" id="username">{username}</p>
+    <p class="hidden" id="backgroundColor">{backgroundColor}</p>
+    <p class="hidden" id="textColor">{textColor}</p>
+    <p class="hidden" id="displayUsername">{displayUsername}</p>
+</body>
+
+<footer>
+    <script>
+        console.log("starting update...")
+
+        let mode = document.getElementById("mode").innerText;
+        let username = document.getElementById("username").innerText;
+        let textColor = document.getElementById("textColor").innerText;
+        let backgroundColor = document.getElementById("backgroundColor").innerText;
+        let displayUsername = document.getElementById("displayUsername").innerText;
+
+        const isLeagueOrZenith = mode === "TetraLeague" || mode === "Zenith";
+        const interval = isLeagueOrZenith ? 15000 : 30000;
+
+        let image = document.getElementById("imagecontainer")
+
+        function updateImg(){
+            let url = `https://tetrio.founntain.dev/{mode}/{username}?backgroundColor={backgroundColor}&textColor={textColor}&displayUsername={displayUsername}`;
+
+            console.log(url)
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    return response.blob();
+                })
+                .then(blob => {
+                    image.src = URL.createObjectURL(blob);
+                })
+                .catch(error => {
+                    console.error('There has been a problem with your fetch operation:', error);
+                });
+        }
+
+        updateImg();
+
+        setInterval(updateImg, interval);
+    </script>
+</footer>
+</html>

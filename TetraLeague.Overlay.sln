@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TetraLeague.Overlay", "TetraLeague.Overlay\TetraLeague.Overlay.csproj", "{E5CE37FD-F7A5-45B8-B8D3-EDD20241300A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TetraLeague.Overlay.Network", "TetraLeague.Overlay.Network\TetraLeague.Overlay.Network.csproj", "{CCD2ED82-68D5-476E-BD4F-19B701207533}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E5CE37FD-F7A5-45B8-B8D3-EDD20241300A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5CE37FD-F7A5-45B8-B8D3-EDD20241300A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5CE37FD-F7A5-45B8-B8D3-EDD20241300A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5CE37FD-F7A5-45B8-B8D3-EDD20241300A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCD2ED82-68D5-476E-BD4F-19B701207533}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCD2ED82-68D5-476E-BD4F-19B701207533}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCD2ED82-68D5-476E-BD4F-19B701207533}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCD2ED82-68D5-476E-BD4F-19B701207533}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
