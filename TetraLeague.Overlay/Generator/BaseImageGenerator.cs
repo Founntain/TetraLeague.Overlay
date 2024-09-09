@@ -223,4 +223,9 @@ public class BaseImageGenerator
 
         surface.Canvas.DrawRect(0, 0, width, height, backgroundColorPaint);
     }
+
+    public SKBitmap DecodeImage(byte[] imageData)
+    {
+        return SKBitmap.Decode(imageData);
+    }
 }

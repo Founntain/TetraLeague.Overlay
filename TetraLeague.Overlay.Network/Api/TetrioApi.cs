@@ -6,6 +6,7 @@ namespace TetraLeague.Overlay.Network.Api;
 
 public class TetrioApi : ApiBase
 {
+    private static readonly ConcurrentDictionary<string, (DateTimeOffset, TetrioUser?)> UserCache = new();
     private static readonly ConcurrentDictionary<string, (DateTimeOffset, Models.TetraLeague?)> LeagueCache = new();
     private static readonly ConcurrentDictionary<string, (DateTimeOffset, Sprint?)> SprintCache = new();
     private static readonly ConcurrentDictionary<string, (DateTimeOffset, Blitz?)> BlitzCache = new();
@@ -15,6 +16,7 @@ public class TetrioApi : ApiBase
     private static readonly ConcurrentDictionary<string, (DateTimeOffset, ZenithRecords)> RecentZenithCache = new();
     private static readonly ConcurrentDictionary<string, (DateTimeOffset, ZenithRecords)> RecentZenithExpertCache = new();
 
+    private string UserUrl => ApiBaseUrl + "users/{0}";
     private string LeagueUrl => ApiBaseUrl + "users/{0}/summaries/league";
     private string SprintUrl => ApiBaseUrl + "users/{0}/summaries/40l";
     private string BlitzUrl => ApiBaseUrl + "users/{0}/summaries/blitz";
@@ -22,6 +24,71 @@ public class TetrioApi : ApiBase
     private string ZenithExpertUrl => ApiBaseUrl + "users/{0}/summaries/zenithex";
     private string RecentZenithUrl => ApiBaseUrl + "users/{0}/records/zenith/recent?limit=100";
     private string RecentZenithExpertUrl => ApiBaseUrl + "users/{0}/records/zenithex/recent?limit=100";
+
+    public async Task<TetrioUser?> GetUserInformation(string username)
+    {
+        // Let's check the cache first
+        if (UserCache.TryGetValue(username, out var data))
+        {
+            Console.WriteLine($"[USER] Found {username} in cache");
+
+            // If the cache is still valid we return that
+            if (data.Item1 >= DateTimeOffset.UtcNow)
+            {
+                Console.WriteLine("[USER] Found valid cache data to return");
+
+                return data.Item2;
+            }
+        }
+
+        Console.WriteLine($"[USER] Getting league stats for {username}, as nothing was found in the cache");
+
+        try
+        {
+            var responseFromApi = await GetString(string.Format(UserUrl, username));
+
+            if (responseFromApi == null) return default;
+
+            var apiResponse = JsonSerializer.Deserialize<ApiResponse<TetrioUser>>(responseFromApi, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (apiResponse == null) return default;
+            if (!apiResponse.Success) return default;
+
+            if (apiResponse.Cache.Status == "hit")
+            {
+                Console.WriteLine("[USER] Cache hit... returning cache");
+
+                UserCache.TryGetValue(username, out var result);
+
+                if (result.Item2 != null) return result.Item2;
+
+                Console.WriteLine("[USER] Cache hit, but nothing in there, fetching data again...");
+            }
+
+            if (apiResponse.Data == default) return default;
+
+            Console.WriteLine("[USER] Updating cache and returning");
+
+            var cacheValidUntil = DateTimeOffset.FromUnixTimeMilliseconds(apiResponse.Cache.CacheUntil);
+
+            if (UserCache.ContainsKey(username))
+            {
+                UserCache[username] = (cacheValidUntil, apiResponse.Data);
+
+                return UserCache[username].Item2;
+            }
+
+            UserCache.TryAdd(username, (cacheValidUntil, apiResponse.Data));
+
+            return apiResponse.Data;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[USER] ERROR: {ex.Message}");
+
+            return default;
+        }
+    }
 
     public async Task<Models.TetraLeague?> GetTetraLeagueStats(string username)
     {
@@ -81,8 +148,10 @@ public class TetrioApi : ApiBase
 
             return apiResponse.Data;
         }
-        catch (Exception _)
+        catch (Exception ex)
         {
+            Console.WriteLine($"[TL] ERROR: {ex.Message}");
+
             return default;
         }
     }
@@ -144,8 +213,10 @@ public class TetrioApi : ApiBase
 
             return apiResponse.Data;
         }
-        catch (Exception _)
+        catch (Exception ex)
         {
+            Console.WriteLine($"[40L] ERROR: {ex.Message}");
+
             return default;
         }
     }
@@ -207,8 +278,10 @@ public class TetrioApi : ApiBase
 
             return apiResponse.Data;
         }
-        catch (Exception _)
+        catch (Exception ex)
         {
+            Console.WriteLine($"[BLITZ] ERROR: {ex.Message}");
+
             return default;
         }
     }
@@ -309,8 +382,10 @@ public class TetrioApi : ApiBase
 
             return apiResponse.Data;
         }
-        catch (Exception _)
+        catch (Exception ex)
         {
+            Console.WriteLine($"[{prefix}] ERROR: {ex.Message}");
+
             return default;
         }
     }
@@ -411,8 +486,10 @@ public class TetrioApi : ApiBase
 
             return apiResponse.Data;
         }
-        catch (Exception _)
+        catch (Exception ex)
         {
+            Console.WriteLine($"[{prefix}] ERROR: {ex.Message}");
+
             return default;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using SkiaSharp;
+using TetraLeague.Overlay.Network.Api.Models;
 
 namespace TetraLeague.Overlay.Generator;
 
@@ -7,12 +8,12 @@ public class TetraLeagueImageGenerator : BaseImageGenerator
     /// <summary>
     /// Generates an image containing the statistics for a specified user.
     /// </summary>
-    /// <param name="username">The username of the player whose statistics are to be displayed.</param>
+    /// <param name="user">The user of the player whose statistics are to be displayed.</param>
     /// <param name="stats">An object containing the player's TetraLeague statistics.</param>
     /// <param name="textColor">Optional. The color of the text in the image. Defaults to null.</param>
     /// <param name="backgroundColor">Optional. The background color of the image. Defaults to null.</param>
     /// <returns>A memory stream containing the generated image with the player's statistics.</returns>
-    public MemoryStream GenerateTetraLeagueImage(string username, TetraLeague.Overlay.Network.Api.Models.TetraLeague stats, string? textColor = null, string? backgroundColor = null)
+    public async Task<MemoryStream> GenerateTetraLeagueImage(TetrioUser user, TetraLeague.Overlay.Network.Api.Models.TetraLeague stats, string? textColor = null, string? backgroundColor = null)
     {
         var width = 900;
         var height = 300;
@@ -135,7 +136,7 @@ public class TetraLeagueImageGenerator : BaseImageGenerator
         surface.Canvas.DrawBitmap(ResizeBitmap(rankBitmap, 200, 200), 40, 40);
 
         // Username
-        DrawTextWithShadow(surface, username.ToUpper(), 275, 75, bigTextPaint, bigTextShadowPaint);
+        DrawTextWithShadow(surface, user.Username.ToUpper(), 275, 75, bigTextPaint, bigTextShadowPaint);
 
         // TR
         if(!unranked)
@@ -161,12 +162,24 @@ public class TetraLeagueImageGenerator : BaseImageGenerator
             var globalRank = stats.StandingGlobal == -1 ? "UNRANKED" : $"# {stats.StandingGlobal!.Value}";
             var localRank = unranked ? "UNRANKED" : stats.StandingLocal!.Value == -1 ? "HIDDEN" : $"# {stats.StandingLocal!.Value}";
             DrawTextWithShadow(surface, $"GLOBAL", 475, 185, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, globalRank, 630, 185, normalTextPaint, normalTextShadowPaint);
-           DrawTextWithShadow(surface, $"COUNTRY", 475, 215, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, localRank, 630, 215, normalTextPaint, normalTextShadowPaint);
+            DrawTextWithShadow(surface, $"COUNTRY", 475, 215, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, localRank, 630, 215, normalTextPaint, normalTextShadowPaint);
 
-           if (!unranked)
-           {
-               DrawTextWithShadow(surface, $"TOP RANK", 475, 245, normalTextPaint, normalTextShadowPaint); surface.Canvas.DrawBitmap(ResizeBitmap(toprankBitmap, 32, 32), 630, 218);
-           }
+            if (!string.IsNullOrWhiteSpace(user.Country) && stats.StandingLocal!.Value > 0)
+            {
+                using (var client = new HttpClient())
+                {
+                    var countryData = await client.GetByteArrayAsync($"https://tetr.io/res/flags/{user.Country.ToLower()}.png");
+
+                    var bitmap = ResizeBitmap(DecodeImage(countryData), 36, 22);
+
+                    surface.Canvas.DrawBitmap(bitmap, 680 + (stats.StandingLocal.ToString()!.Length - 1) * 25, 195);
+                }
+            }
+
+            if (!unranked)
+            {
+                DrawTextWithShadow(surface, $"TOP RANK", 475, 245, normalTextPaint, normalTextShadowPaint); surface.Canvas.DrawBitmap(ResizeBitmap(toprankBitmap, 32, 32), 630, 218);
+            }
         }
 
         // Progressbar
