@@ -16,14 +16,14 @@ public class TetraLeagueController : BaseController
 
     [HttpGet]
     [Route("stats/{username}")]
-    public async Task<ActionResult> Stats(string username, string? textcolor = null, string? backgroundColor = null)
+    public async Task<ActionResult> Stats(string username, string? textcolor = null, string? backgroundColor = null,  bool displayUsername = true)
     {
-        return await StatsNew(username, textcolor, backgroundColor);
+        return await StatsNew(username, textcolor, backgroundColor, displayUsername);
     }
 
     [HttpGet]
     [Route("{username}")]
-    public async Task<ActionResult> StatsNew(string username, string? textcolor = null, string? backgroundColor = null)
+    public async Task<ActionResult> StatsNew(string username, string? textcolor = null, string? backgroundColor = null, bool displayUsername = true)
     {
         username = username.ToLower();
 
@@ -46,7 +46,7 @@ public class TetraLeagueController : BaseController
                 return File(notFoundImage.ToArray(), "image/png");
             default:
             {
-                var statsImage = await new TetraLeagueImageGenerator().GenerateTetraLeagueImage(user, stats, textcolor, backgroundColor);
+                var statsImage = await new TetraLeagueImageGenerator().GenerateTetraLeagueImage(user, stats, textcolor, backgroundColor, displayUsername);
 
                 return File(statsImage.ToArray(), "image/png");
             }

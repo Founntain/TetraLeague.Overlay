@@ -12,8 +12,9 @@ public class TetraLeagueImageGenerator : BaseImageGenerator
     /// <param name="stats">An object containing the player's TetraLeague statistics.</param>
     /// <param name="textColor">Optional. The color of the text in the image. Defaults to null.</param>
     /// <param name="backgroundColor">Optional. The background color of the image. Defaults to null.</param>
+    /// <param name="displayUsername"></param>
     /// <returns>A memory stream containing the generated image with the player's statistics.</returns>
-    public async Task<MemoryStream> GenerateTetraLeagueImage(TetrioUser user, TetraLeague.Overlay.Network.Api.Models.TetraLeague stats, string? textColor = null, string? backgroundColor = null)
+    public async Task<MemoryStream> GenerateTetraLeagueImage(TetrioUser user, Network.Api.Models.TetraLeague stats, string? textColor = null, string? backgroundColor = null, bool displayUsername = true)
     {
         var width = 900;
         var height = 300;
@@ -136,7 +137,8 @@ public class TetraLeagueImageGenerator : BaseImageGenerator
         surface.Canvas.DrawBitmap(ResizeBitmap(rankBitmap, 200, 200), 40, 40);
 
         // Username
-        DrawTextWithShadow(surface, user.Username.ToUpper(), 275, 75, bigTextPaint, bigTextShadowPaint);
+        if(displayUsername)
+            DrawTextWithShadow(surface, user.Username.ToUpper(), 275, 75, bigTextPaint, bigTextShadowPaint);
 
         // TR
         if(!unranked)
