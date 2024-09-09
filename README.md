@@ -38,7 +38,7 @@ To use the overlay, simply use one of the following URLs:
 For OBS, it is recommended to use the live view URL. To set it up:
 
 1. Create a new Browser Source in OBS.
-2. Paste the live view URL into the Browser Source settings, replacing `<username>` with your Tetr.io username (make sure to remove the `<` and `>`), the same goes for `<mode>`.
+2. Paste the live view URL into the Browser Source settings, replacing `<username>` with your tetr.io username (make sure to remove the `<` and `>`), the same goes for `<mode>`.
 3. Make sure the width and height is correct check below what sizes are best for each overlay:
    - Slide: 900 x 300
    - Tetra League: 900 x 300
@@ -111,7 +111,7 @@ Contributions are welcome! Feel free to open issues, request features, provide f
 
 ## 🧡Special Thanks
 
-- **[osk](https://tetr.io)**: for creating Tetr.io and providing an amazing, well-structured API.
+- **[osk](https://tetr.io)**: for creating tetr.io and providing an amazing, well-structured API.
 - **[Veggie_Dog](https://www.twitch.tv/theveggiedog)**: motivating to make this project a reality, testing and feedback
 - **[PixelAtc](https://www.twitch.tv/pixelatc)**: providing feedback, ideas and spreading the word
 - **[ZaptorZap](https://zaptorz.app/)**: for giving feedback and some incredible ideas
