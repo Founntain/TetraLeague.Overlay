@@ -6,6 +6,7 @@ namespace TetraLeague.Overlay.Network.Api;
 
 public class TetrioApi : ApiBase
 {
+    private static readonly ConcurrentDictionary<string, (DateTimeOffset, Summary?)> SummaryCache = new();
     private static readonly ConcurrentDictionary<string, (DateTimeOffset, TetrioUser?)> UserCache = new();
     private static readonly ConcurrentDictionary<string, (DateTimeOffset, Models.TetraLeague?)> LeagueCache = new();
     private static readonly ConcurrentDictionary<string, (DateTimeOffset, Sprint?)> SprintCache = new();
@@ -17,6 +18,7 @@ public class TetrioApi : ApiBase
     private static readonly ConcurrentDictionary<string, (DateTimeOffset, ZenithRecords)> RecentZenithExpertCache = new();
 
     private string UserUrl => ApiBaseUrl + "users/{0}";
+    private string SummariesUrl => ApiBaseUrl + "users/{0}/summaries";
     private string LeagueUrl => ApiBaseUrl + "users/{0}/summaries/league";
     private string SprintUrl => ApiBaseUrl + "users/{0}/summaries/40l";
     private string BlitzUrl => ApiBaseUrl + "users/{0}/summaries/blitz";
@@ -24,6 +26,73 @@ public class TetrioApi : ApiBase
     private string ZenithExpertUrl => ApiBaseUrl + "users/{0}/summaries/zenithex";
     private string RecentZenithUrl => ApiBaseUrl + "users/{0}/records/zenith/recent?limit=100";
     private string RecentZenithExpertUrl => ApiBaseUrl + "users/{0}/records/zenithex/recent?limit=100";
+
+    public async Task<Summary?> GetUserSummaries(string username)
+    {
+        // Let's check the cache first
+        if (SummaryCache.TryGetValue(username, out var data))
+        {
+            Console.WriteLine($"[SUMMARY] Found {username} in cache");
+
+            // If the cache is still valid we return that
+            if (data.Item1 >= DateTimeOffset.UtcNow)
+            {
+                Console.WriteLine("[SUMMARY] Found valid cache data to return");
+
+                return data.Item2;
+            }
+        }
+
+        Console.WriteLine($"[SUMMARY] Getting league stats for {username}, as nothing was found in the cache");
+
+        try
+        {
+            var responseFromApi = await GetString(string.Format(SummariesUrl, username));
+
+            if (responseFromApi == null) return default;
+
+            var apiResponse = JsonSerializer.Deserialize<ApiResponse<Summary>>(responseFromApi, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (apiResponse == null) return default;
+            if (!apiResponse.Success) return default;
+
+            if (apiResponse.Cache.Status == "hit")
+            {
+                Console.WriteLine("[SUMMARY] Cache hit... returning cache");
+
+                SummaryCache.TryGetValue(username, out var result);
+
+                if (result.Item2 != null) return result.Item2;
+
+                Console.WriteLine("[SUMMARY] Cache hit, but nothing in there, fetching data again...");
+            }
+
+            if (apiResponse.Data == default) return default;
+
+            Console.WriteLine("[SUMMARY] Updating cache and returning");
+
+            // var cacheValidUntil = DateTimeOffset.FromUnixTimeMilliseconds(apiResponse.Cache.CacheUntil);
+            var cacheValidUntil = DateTimeOffset.UtcNow.AddSeconds(30);
+
+            if (SummaryCache.ContainsKey(username))
+            {
+                SummaryCache[username] = (cacheValidUntil, apiResponse.Data);
+
+                return SummaryCache[username].Item2;
+            }
+
+            SummaryCache.TryAdd(username, (cacheValidUntil, apiResponse.Data));
+
+            return apiResponse.Data;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[SUMMARY] ERROR: {ex.Message}");
+
+            return default;
+        }
+    }
+
 
     public async Task<TetrioUser?> GetUserInformation(string username)
     {

@@ -205,6 +205,7 @@ public class BaseImageGenerator
     public void DrawTextWithShadow(SKSurface surface, string text, float x, float y, SKPaint textPaint, SKPaint shawdowPaint)
     {
         surface.Canvas.DrawText(text, x + 2, y + 2, shawdowPaint);
+        surface.Canvas.DrawText(text, x + 3, y + 3, shawdowPaint);
         surface.Canvas.DrawText(text, x, y, textPaint);
     }
 

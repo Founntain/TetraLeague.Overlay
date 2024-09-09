@@ -20,8 +20,7 @@ public class ZenithController : BaseController
     {
         username = username.ToLower();
 
-        var stats = await _api.GetZenithStats(username);
-        var expert = await _api.GetZenithStats(username, true);
+        var stats = await _api.GetUserSummaries(username);
 
         MemoryStream? notFoundImage;
 
@@ -33,12 +32,12 @@ public class ZenithController : BaseController
                 return File(notFoundImage.ToArray(), "image/png");
             default:
             {
-                if (stats.Record == null)
+                if (stats.Zenith?.Record == null)
                 {
                     // If the user didn't play this week yet, but played before we show the pb instead
-                    if (stats.Record == null && stats.Best?.Record != null)
+                    if (stats.Zenith?.Record == null && stats.Zenith?.Best?.Record != null)
                     {
-                        stats.Record = stats.Best.Record;
+                        stats.Zenith.Record = stats.Zenith.Best.Record;
                     }
                     else
                     {
@@ -49,12 +48,12 @@ public class ZenithController : BaseController
                 }
 
                 // Same for expert as well
-                if (expert?.Record == null && expert?.Best?.Record != null)
+                if (stats.ZenithExpert?.Record == null && stats.ZenithExpert?.Best?.Record != null)
                 {
-                    expert.Record = expert.Best.Record;
+                    stats.ZenithExpert.Record = stats.ZenithExpert.Best.Record;
                 }
 
-                var statsImage = new ZenithImageGenerator().GenerateZenithImage(username, stats, expert, textColor, backgroundColor, displayUsername);
+                var statsImage = new ZenithImageGenerator().GenerateZenithImage(username, stats.Zenith, stats.ZenithExpert, textColor, backgroundColor, displayUsername);
 
                 return File(statsImage.ToArray(), "image/png");
             }
