@@ -16,7 +16,7 @@ public class TetraLeagueController : BaseController
 
     [HttpGet]
     [Route("stats/{username}")]
-    public async Task<ActionResult> Stats(string username, string? textcolor = null, string? backgroundColor = null,  bool displayUsername = true)
+    public async Task<ActionResult> Stats(string username, string? textcolor = null, string? backgroundColor = null, bool displayUsername = true)
     {
         return await StatsNew(username, textcolor, backgroundColor, displayUsername);
     }
