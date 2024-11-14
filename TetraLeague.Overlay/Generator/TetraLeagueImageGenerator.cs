@@ -21,7 +21,8 @@ public class TetraLeagueImageGenerator : BaseImageGenerator
         var stream = new MemoryStream();
         var typeFace = SKTypeface.FromFile("Resources/cr.ttf");
 
-        var unranked = stats.Gamesplayed < 10;
+        var placements = stats.Gamesplayed < 10;
+        var unranked = placements || stats.Rank == "z";
 
         #region Paints
 
@@ -127,8 +128,8 @@ public class TetraLeagueImageGenerator : BaseImageGenerator
 
         SetBackground(surface, width, height, backgroundColor);
 
-        var rankBitmap = unranked ? GetBitmap($"Resources/z.png") : GetBitmap($"Resources/{stats.Rank}.png");
-        var toprankBitmap = unranked ? GetBitmap($"Resources/z.png") : GetBitmap($"Resources/{stats.TopRank}.png");
+        var rankBitmap = unranked ? GetBitmap("Resources/z.png") : GetBitmap($"Resources/{stats.Rank}.png");
+        var toprankBitmap = unranked ? GetBitmap("Resources/z.png") : GetBitmap($"Resources/{stats.TopRank}.png");
 
         var prevRank = stats.PrevRank == null ? null : GetBitmap($"Resources/{stats.PrevRank}.png");
         var nextRank = stats.NextRank == null ? GetBitmap("Resources/leaderboard1.png") : GetBitmap($"Resources/{stats.NextRank}.png");
@@ -141,7 +142,7 @@ public class TetraLeagueImageGenerator : BaseImageGenerator
             DrawTextWithShadow(surface, user.Username.ToUpper(), 275, 75, bigTextPaint, bigTextShadowPaint);
 
         // TR
-        if(!unranked)
+        if(!placements)
             DrawTextWithShadow(surface, $"{stats.Tr:#.##} TR", 275, 140, bigTextPaint, bigTextShadowPaint);
         else
             DrawTextWithShadow(surface, $"{stats.Gamesplayed} / 10 placements", 275, 140, bigTextPaint, bigTextShadowPaint);
@@ -156,15 +157,15 @@ public class TetraLeagueImageGenerator : BaseImageGenerator
 
         if (stats.Gamesplayed > 0)
         {
-            DrawTextWithShadow(surface, $"{apm}", 275, 185, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"APM", 385, 185, statsPaintAlt, normalTextShadowPaint);
-            DrawTextWithShadow(surface, $"{pps}", 275, 215, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"PPS", 385, 215, statsPaintAlt, normalTextShadowPaint);
-            DrawTextWithShadow(surface, $"{vs}", 275, 245, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, $"VS", 385, 245, statsPaintAlt, normalTextShadowPaint);
+            DrawTextWithShadow(surface, $"{apm}", 275, 185, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, "APM", 385, 185, statsPaintAlt, normalTextShadowPaint);
+            DrawTextWithShadow(surface, $"{pps}", 275, 215, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, "PPS", 385, 215, statsPaintAlt, normalTextShadowPaint);
+            DrawTextWithShadow(surface, $"{vs}", 275, 245, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, "VS", 385, 245, statsPaintAlt, normalTextShadowPaint);
 
             // Right Side
             var globalRank = stats.StandingGlobal == -1 ? "UNRANKED" : $"# {stats.StandingGlobal!.Value}";
             var localRank = unranked ? "UNRANKED" : stats.StandingLocal!.Value == -1 ? "HIDDEN" : $"# {stats.StandingLocal!.Value}";
-            DrawTextWithShadow(surface, $"GLOBAL", 475, 185, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, globalRank, 630, 185, normalTextPaint, normalTextShadowPaint);
-            DrawTextWithShadow(surface, $"COUNTRY", 475, 215, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, localRank, 630, 215, normalTextPaint, normalTextShadowPaint);
+            DrawTextWithShadow(surface, "GLOBAL", 475, 185, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, globalRank, 630, 185, normalTextPaint, normalTextShadowPaint);
+            DrawTextWithShadow(surface, "COUNTRY", 475, 215, normalTextPaint, normalTextShadowPaint); DrawTextWithShadow(surface, localRank, 630, 215, normalTextPaint, normalTextShadowPaint);
 
             if (!string.IsNullOrWhiteSpace(user.Country) && stats.StandingLocal!.Value > 0)
             {
@@ -179,9 +180,7 @@ public class TetraLeagueImageGenerator : BaseImageGenerator
             }
 
             if (!unranked)
-            {
-                DrawTextWithShadow(surface, $"TOP RANK", 475, 245, normalTextPaint, normalTextShadowPaint); surface.Canvas.DrawBitmap(ResizeBitmap(toprankBitmap, 32, 32), 630, 218);
-            }
+                DrawTextWithShadow(surface, "TOP RANK", 475, 245, normalTextPaint, normalTextShadowPaint); surface.Canvas.DrawBitmap(ResizeBitmap(toprankBitmap, 32, 32), 630, 218);
         }
 
         // Progressbar
@@ -204,9 +203,7 @@ public class TetraLeagueImageGenerator : BaseImageGenerator
                 surface.Canvas.DrawBitmap(ResizeBitmap(prevRank, 32, 32), 60, 265);
 
             if (stats.Rank == "d" && stats.PrevAt != -1)
-            {
                 DrawTextWithShadow(surface, $"#{stats.PrevAt}", 90, 286, smallTextPaint, smallTextShadowPaint);
-            }
 
             if (stats.NextRank == null )
                 surface.Canvas.DrawBitmap(ResizeBitmap(nextRank, 32, 32), width - 90, 262);

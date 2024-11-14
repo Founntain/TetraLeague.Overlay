@@ -112,7 +112,7 @@ public class ZenithImageGenerator : BaseImageGenerator
 
         // We only draw the NORMAL text if we have an expert record as well
         if(expert?.Record != null)
-            DrawTextWithShadow(surface, $"NORMAL", normalCenterValue, 15 + offset, smallTextPaint, smallTextShadowPaint);
+            DrawTextWithShadow(surface, "NORMAL", normalCenterValue, 15 + offset, smallTextPaint, smallTextShadowPaint);
 
         DrawTextWithShadow(surface, $"{stats.Record!.Results.Stats.Zenith.Altitude:F2} m", normalCenterValue, 65 + offset, bigTextPaint, bigTextShadowPaint);
         DrawTextWithShadow(surface, $"{currentWeekPps} | {currentWeekApm} | {currentWeekVs}", normalCenterValue, 88 + offset, smallTextPaint, smallTextShadowPaint);
@@ -155,7 +155,7 @@ public class ZenithImageGenerator : BaseImageGenerator
             var expertApm = $"{expert.Record.Results.Aggregatestats.Apm:F2} APM";
             var expertVs = $"{expert.Record.Results.Aggregatestats.Vsscore:F2} VS";
 
-            DrawTextWithShadow(surface, $"EXPERT", (normalCenterValue) * 3, 15 + offset, smallTextPaint, smallTextShadowPaint);
+            DrawTextWithShadow(surface, "EXPERT", (normalCenterValue) * 3, 15 + offset, smallTextPaint, smallTextShadowPaint);
             DrawTextWithShadow(surface, $"{expert.Record.Results.Stats.Zenith.Altitude:F2} m", (normalCenterValue) * 3, 65 + offset, bigTextPaint, bigTextShadowPaint);
             DrawTextWithShadow(surface, $"{expertPps} | {expertApm} | {expertVs}", (normalCenterValue) * 3, 88 + offset, smallTextPaint, smallTextShadowPaint);
 

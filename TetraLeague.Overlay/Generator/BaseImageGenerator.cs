@@ -66,8 +66,8 @@ public class BaseImageGenerator
         SetBackground(surface, width, height, "0f160d");
 
         DrawTextWithShadow(surface, "No such user / record", width / 2, 60, bigTextPaint, bigTextShadowPaint);
-        DrawTextWithShadow(surface, $"Either you mistyped something", width / 2, 100, normalTextPaint, normalTextShadowPaint);
-        DrawTextWithShadow(surface, $"or the account no longer exists.", width / 2, 130, normalTextPaint, normalTextShadowPaint);
+        DrawTextWithShadow(surface, "Either you mistyped something", width / 2, 100, normalTextPaint, normalTextShadowPaint);
+        DrawTextWithShadow(surface, "or the account no longer exists.", width / 2, 130, normalTextPaint, normalTextShadowPaint);
 
         surface.Canvas.DrawBitmap(errorBitmap, (width / 2) - (errorBitmap.Width / 2), 140);
 
