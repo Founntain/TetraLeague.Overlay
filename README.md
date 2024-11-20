@@ -9,11 +9,8 @@ If you find this overlay useful, please consider giving it a ⭐ to show your su
 For screenshots and examples look at the [examples section](#examples) at the bottom.  
 To use the overlay, simply use one of the following URLs:
 
-**Base URL**: `https://tetrio.founntain.dev/<mode>/<username>/web`
-
 ### Tetra League
-- **Live View**: `https://tetrio.founntain.dev/tetraleague/<username>/web`
-- **Static Image**: `https://tetrio.founntain.dev/tetraleague/<username>`
+- **Live View**: `https://tetrio.founntain.dev/tetraleague/<username>`
 
 ### Quick Play
 - **Live View**: `https://tetrio.founntain.dev/zenith/<username>/web`
@@ -32,7 +29,6 @@ To use the overlay, simply use one of the following URLs:
 - **Static Image**: `https://tetrio.founntain.dev/zenith/splits/<username>`
 > for more info check the [splits section](#Splits).
 
-
 ### 📽️ OBS Setup
 
 For OBS, it is recommended to use the live view URL. To set it up:
@@ -41,7 +37,7 @@ For OBS, it is recommended to use the live view URL. To set it up:
 2. Paste the live view URL into the Browser Source settings, replacing `<username>` with your tetr.io username (make sure to remove the `<` and `>`), the same goes for `<mode>`.
 3. Make sure the width and height is correct check below what sizes are best for each overlay:
    - Slide: 900 x 300
-   - Tetra League: 900 x 300
+   - Tetra League: 850 x 300
    - Quick Play: 900 x 300
    - 40 Lines: 700 x 225
    - Blitz: 700 x 225
@@ -81,7 +77,7 @@ Here are some examples of how to use the `modes=` parameter:
 *Example URL that displays a slide for `founntain` with the modes `tetraLeague` and `zenith`: `https://tetrio.founntain.dev/zenith/founntain/slide?modes=tetraleague,zenith`*
 
 > [!NOTE]
-> The duration for which something is visible can't be changed. The duration depends on how many modes you display; the slide takes 30 seconds to return to its starting point. The more modes, the faster it switches; the fewer modes, the longer each is displayed. This is to prevent API spam. If you use the slide for a single overlay, it has the same update time as the single overlay, with just more overhead. Only use the slide if you want to display more than one mode.
+> The duration for which something is visible can't be changed. The duration depends on how many modes you display; the slide takes 30 seconds to return to its starting point. The more modes, the faster it switches; the fewer modes, the longer each is displayed. This is to prevent API spam. If you use the slide for a single overlay, it has the same update time as the single overlay, with just more overhead. Only use the slide if you want to display more than one mode. For TetraLeague, the old image generation is used than the new web view (for now)
 
 > [!CAUTION]
 > Parameters need to be separated by a single `comma` (`,`) otherwise you will receive an error.
@@ -118,7 +114,10 @@ Contributions are welcome! Feel free to open issues, request features, provide f
 
 ## Examples
 > *added for all examples a simple transparent dark background so those are readable for light github users aswell Parameter used `backgroundColor=AA000000`*
-#### Tetra League
+#### Tetra League (NEW)
+![founntain](https://github.com/user-attachments/assets/b867218b-de57-4a44-85d3-1a5721878720)
+
+#### Tetra League (LEGACY)
 ![founntain](https://github.com/user-attachments/assets/ee8e60e9-de03-4b89-b197-cee5d3e7f8c8)
 
 #### Quick Play
