@@ -37,7 +37,7 @@ For OBS, it is recommended to use the live view URL. To set it up:
 2. Paste the live view URL into the Browser Source settings, replacing `<username>` with your tetr.io username (make sure to remove the `<` and `>`), the same goes for `<mode>`.
 3. Make sure the width and height is correct check below what sizes are best for each overlay:
    - Slide: 900 x 300
-   - Tetra League: 850 x 300
+   - Tetra League: 800 x 350
    - Quick Play: 900 x 300
    - 40 Lines: 700 x 225
    - Blitz: 700 x 225
