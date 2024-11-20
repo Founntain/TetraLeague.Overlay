@@ -14,7 +14,7 @@ public class SinglePlayerImageGenerator : BaseImageGenerator
 
         var stream = new MemoryStream();
 
-        var typeFace = SKTypeface.FromFile("Resources/cr.ttf");
+        var typeFace = SKTypeface.FromFile("wwwroot/web/res/fonts/cr.ttf");
 
         #region Paints
 
@@ -111,7 +111,7 @@ public class SinglePlayerImageGenerator : BaseImageGenerator
 
         var stream = new MemoryStream();
 
-        var typeFace = SKTypeface.FromFile("Resources/cr.ttf");
+        var typeFace = SKTypeface.FromFile("wwwroot/web/res/fonts/cr.ttf");
 
         #region Paints
 
