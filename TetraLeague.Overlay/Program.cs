@@ -36,8 +36,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-    app.UseCors("AllowAnyOrigin");
+app.UseCors("AllowAnyOrigin");
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.MapControllers();
 

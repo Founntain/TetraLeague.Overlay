@@ -27,36 +27,77 @@ public class TetraLeagueController : BaseController
     {
         username = username.ToLower();
 
-        var user = await _api.GetUserInformation(username);
+        var html = await System.IO.File.ReadAllTextAsync("wwwroot/web/league.html");
 
-        if (user == null)
-        {
-            var notFoundImage = new BaseImageGenerator().GenerateUserNotFound();
+        html = html.Replace("{mode}", ControllerContext.ActionDescriptor.ControllerName);
 
-            return File(notFoundImage.ToArray(), "image/png");
-        }
+        html = html.Replace("{username}", username);
+        html = html.Replace("{textColor}", textcolor ?? "FFFFFF");
+        html = html.Replace("{backgroundColor}", backgroundColor ?? "00FFFFFF");
 
-        var stats = await _api.GetTetraLeagueStats(username);
+        return Content(html, "text/html");
 
-        switch (stats)
-        {
-            case null:
-                var notFoundImage = new BaseImageGenerator().GenerateUserNotFound();
-
-                return File(notFoundImage.ToArray(), "image/png");
-            default:
-            {
-                var statsImage = await new TetraLeagueImageGenerator().GenerateTetraLeagueImage(user, stats, textcolor, backgroundColor, displayUsername);
-
-                return File(statsImage.ToArray(), "image/png");
-            }
-        }
+        // username = username.ToLower();
+        //
+        // var user = await _api.GetUserInformation(username);
+        //
+        // if (user == null)
+        // {
+        //     var notFoundImage = new BaseImageGenerator().GenerateUserNotFound();
+        //
+        //     return File(notFoundImage.ToArray(), "image/png");
+        // }
+        //
+        // var stats = await _api.GetTetraLeagueStats(username);
+        //
+        // switch (stats)
+        // {
+        //     case null:
+        //         var notFoundImage = new BaseImageGenerator().GenerateUserNotFound();
+        //
+        //         return File(notFoundImage.ToArray(), "image/png");
+        //     default:
+        //     {
+        //         var statsImage = await new TetraLeagueImageGenerator().GenerateTetraLeagueImage(user, stats, textcolor, backgroundColor, displayUsername);
+        //
+        //         return File(statsImage.ToArray(), "image/png");
+        //     }
+        // }
     }
 
     [HttpGet]
     [Route("stats/{username}/web")]
     public async Task<ActionResult> WebAlt(string username, string? textcolor = null, string? backgroundColor = null)
     {
-        return await Web(username, textcolor, backgroundColor);
+        return await StatsNew(username, textcolor, backgroundColor);
+    }
+
+    [HttpGet]
+    [Route("{username}/stats")]
+    public async Task<ActionResult> GetStats(string username)
+    {
+        username = username.ToLower();
+
+        var user = await _api.GetUserInformation(username);
+        var stats = await _api.GetTetraLeagueStats(username);
+
+        return Ok(new
+        {
+            Username= user.Username,
+            Country = user.Country,
+            Tr = stats.Tr,
+            Rank = stats.Rank,
+            Apm = stats.Apm,
+            Pps = stats.Pps,
+            Vs = stats.Vs,
+            GlobalRank = stats.StandingGlobal,
+            CountryRank = stats.StandingLocal,
+            TopRank = stats.TopRank,
+            PrevRank = stats.PrevRank,
+            PrevAt = stats.PrevAt,
+            NextRank = stats.NextRank,
+            NextAt = stats.NextAt,
+            GamesPlayed = stats.Gamesplayed
+        });
     }
 }

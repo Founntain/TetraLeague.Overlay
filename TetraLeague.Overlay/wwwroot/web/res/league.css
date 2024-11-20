@@ -1,0 +1,146 @@
+﻿@font-face {
+    font-family: 'CB';
+    /*src: url('fonts/cb.ttf');*/
+    src: url('/web/res/fonts/cb.ttf');
+}
+
+html{
+    font-family: 'CB';
+    font-size: 24pt;
+
+    /*background: gray;*/
+}
+
+body {
+    background: transparent;
+    color:white;
+}
+
+img {
+    image-rendering: high-quality;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+
+.bigRank {
+    max-width: 256px;
+    max-height: 256px;
+    filter: drop-shadow(2px 2px 3px black);
+}
+
+.hidden {
+    position: absolute;
+    color: transparent;
+    left: 0;
+    top: 0;
+}
+
+.container {
+    display: inline-grid;
+    flex-direction: row;
+}
+
+.statsContainer{
+    width: 100%;
+    display: flex;
+}
+
+.imageContainer {
+    display: flex;
+    align-items: center;
+}
+
+.statsContainer{
+    text-shadow: 2px 2px 3px black;
+}
+
+.prevRankContainer{
+    display: flex;
+}
+
+#lastRank{
+    font-size: 16pt;
+    text-shadow: 2px 2px 2px black;
+}
+
+.bigText{
+    font-size: 2em;
+    margin: 0;
+}
+
+table {
+    width: auto;
+    margin: 0;
+    display: flex;
+}
+
+td:first-child{
+    text-align: left;
+}
+
+.td{
+    vertical-align: middle;
+}
+
+.rankImage{
+    width: 32px;
+    height: 32px;
+    align-self: center;
+    filter: drop-shadow(2px 2px 3px black);
+}
+
+.countryImage{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    filter: drop-shadow(2px 2px 3px black);
+}
+
+td img.rankImage, td img.countryImage {
+    display: block;
+    margin: 0 auto;
+}
+
+.progressContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.box{
+    display: block;
+    height: 10px;
+}
+
+.progressBarContainer {
+    position: relative;
+    width: 100%; /* Adjust the width as needed */
+    height: 10px; /* Ensure the height matches the height of the boxes */
+    margin: 10px;
+}
+
+.progressBar,
+.progressBarAccent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* Adjust as necessary */
+}
+
+.progressBar {
+    background-color: rgba(0, 0, 0, 0.75);
+    z-index: 1;
+}
+
+.progressBarAccent {
+    background-color: rgba(255, 255, 255, 1);
+    transition: width 1s ease-in-out;
+    width: 0;
+    z-index: 2;
+}
+
+table tr td:nth-child(2) {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}

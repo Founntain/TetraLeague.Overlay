@@ -9,7 +9,7 @@ public class BaseImageGenerator
         var width = 900;
         var height = 300;
         var stream = new MemoryStream();
-        var typeFace = SKTypeface.FromFile("Resources/cr.ttf");
+        var typeFace = SKTypeface.FromFile("wwwroot/web/res/fonts/cr.ttf");
 
         #region Paints
 
@@ -61,7 +61,7 @@ public class BaseImageGenerator
 
         using var surface = SKSurface.Create(new SKImageInfo(width, height, SKColorType.Bgra8888, SKAlphaType.Unpremul));
 
-        var errorBitmap = GetBitmap("Resources/error.png");
+        var errorBitmap = GetBitmap("wwwroot/web/res/img/error.png");
 
         SetBackground(surface, width, height, "0f160d");
 
@@ -83,7 +83,7 @@ public class BaseImageGenerator
         var width = 900;
         var height = 300;
         var stream = new MemoryStream();
-        var typeFace = SKTypeface.FromFile("Resources/cr.ttf");
+        var typeFace = SKTypeface.FromFile("wwwroot/web/res/fonts/cr.ttf");
 
         #region Paints
 
@@ -135,7 +135,7 @@ public class BaseImageGenerator
 
         using var surface = SKSurface.Create(new SKImageInfo(width, height, SKColorType.Bgra8888, SKAlphaType.Unpremul));
 
-        var errorBitmap = GetBitmap("Resources/error.png");
+        var errorBitmap = GetBitmap("wwwroot/web/res/img/error.png");
 
         SetBackground(surface, width, height, "0f160d");
 

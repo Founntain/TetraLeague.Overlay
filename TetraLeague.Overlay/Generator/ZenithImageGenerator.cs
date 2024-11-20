@@ -11,7 +11,7 @@ public class ZenithImageGenerator : BaseImageGenerator
         var height = 300;
         var center = (float) width / 2;
         var stream = new MemoryStream();
-        var typeFace = SKTypeface.FromFile("Resources/cr.ttf");
+        var typeFace = SKTypeface.FromFile("wwwroot/web/res/fonts/cr.ttf");
 
         #region Paints
 
@@ -190,7 +190,7 @@ public class ZenithImageGenerator : BaseImageGenerator
         var height = 200;
         var center = (float) width / 2;
         var stream = new MemoryStream();
-        var typeFace = SKTypeface.FromFile("Resources/cr.ttf");
+        var typeFace = SKTypeface.FromFile("wwwroot/web/res/fonts/cr.ttf");
 
         #region Paints
 
@@ -336,7 +336,7 @@ public class ZenithImageGenerator : BaseImageGenerator
         for (var i = 0; i < mods.Length; i++)
         {
             var mod = mods[i];
-            var modBitmap = ResizeBitmap(GetBitmap($"Resources/{mod}.png"), modSize, modSize);
+            var modBitmap = ResizeBitmap(GetBitmap($"wwwroot/web/res/img/{mod}.png"), modSize, modSize);
 
             if (i >= 4)
             {

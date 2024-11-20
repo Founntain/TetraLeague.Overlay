@@ -19,7 +19,7 @@ public class TetraLeagueImageGenerator : BaseImageGenerator
         var width = 900;
         var height = 300;
         var stream = new MemoryStream();
-        var typeFace = SKTypeface.FromFile("Resources/cr.ttf");
+        var typeFace = SKTypeface.FromFile("wwwroot/web/res/fonts/cr.ttf");
 
         var placements = stats.Gamesplayed < 10;
         var unranked = placements || stats.Rank == "z";
@@ -128,11 +128,11 @@ public class TetraLeagueImageGenerator : BaseImageGenerator
 
         SetBackground(surface, width, height, backgroundColor);
 
-        var rankBitmap = unranked ? GetBitmap("Resources/z.png") : GetBitmap($"Resources/{stats.Rank}.png");
-        var toprankBitmap = unranked ? GetBitmap("Resources/z.png") : GetBitmap($"Resources/{stats.TopRank}.png");
+        var rankBitmap = unranked ? GetBitmap("wwwroot/web/res/img/z.png") : GetBitmap($"wwwroot/web/res/img/{stats.Rank}.png");
+        var toprankBitmap = placements ? GetBitmap("wwwroot/web/res/img/z.png") : GetBitmap($"wwwroot/web/res/img/{stats.TopRank}.png");
 
-        var prevRank = stats.PrevRank == null ? null : GetBitmap($"Resources/{stats.PrevRank}.png");
-        var nextRank = stats.NextRank == null ? GetBitmap("Resources/leaderboard1.png") : GetBitmap($"Resources/{stats.NextRank}.png");
+        var prevRank = stats.PrevRank == null ? null : GetBitmap($"wwwroot/web/res/img/{stats.PrevRank}.png");
+        var nextRank = stats.NextRank == null ? GetBitmap("wwwroot/web/res/img/leaderboard1.png") : GetBitmap($"wwwroot/web/res/img/{stats.NextRank}.png");
 
         // Big Rank Letter
         surface.Canvas.DrawBitmap(ResizeBitmap(rankBitmap, 200, 200), 40, 40);
@@ -179,8 +179,11 @@ public class TetraLeagueImageGenerator : BaseImageGenerator
                 }
             }
 
-            if (!unranked)
-                DrawTextWithShadow(surface, "TOP RANK", 475, 245, normalTextPaint, normalTextShadowPaint); surface.Canvas.DrawBitmap(ResizeBitmap(toprankBitmap, 32, 32), 630, 218);
+            if (!placements)
+            {
+                DrawTextWithShadow(surface, "TOP RANK", 475, 245, normalTextPaint, normalTextShadowPaint);
+                surface.Canvas.DrawBitmap(ResizeBitmap(toprankBitmap, 32, 32), 630, 218);
+            }
         }
 
         // Progressbar

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Tetra League Overlay Web</title>
+    <link rel="stylesheet" href="/web/res/league.css">
+</head>
+<body>
+<p class="hidden" id="usernameInfo">{username}</p>
+<p class="hidden" id="displayUsername">{displayUsername}</p>
+
+<div class="container">
+    <div class="statsContainer">
+        <div class="imageContainer">
+            <img id="bigRankImage" class="bigRank" alt="rank image">
+        </div>
+        <div>
+            <div>
+                <p id="username" class="bigText"></p>
+                <p id="tr" class="bigText">0</p>
+            </div>
+
+            <table>
+                <tr>
+                    <td id="apm">0</td>
+                    <td>APM</td>
+                    <td id="globalText">GLOBAL</td>
+                    <td id="globalRank">0</td>
+                </tr>
+                <tr>
+                    <td id="pps">0</td>
+                    <td>PPS</td>
+                    <td><img id="countryImage" class="countryImage"/></td>
+                    <td id="localRank">0</td>
+                </tr>
+                <tr>
+                    <td id="vs">0</td>
+                    <td>VS</td>
+                    <td id="topRankText">TOP RANK</td>
+                    <td><img id="topRankImage" class="rankImage" /></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="progressContainer">
+        <div class="prevRankContainer">
+            <a id="lastRank">0</a>
+            <img id="prevRankImage" class="rankImage prevRank" />
+        </div>
+        <div class="progressBarContainer">
+            <div id="progressBarBackground" class="box progressBar"></div>
+            <div id="progressBar" class="box progressBarAccent"></div>
+        </div>
+        <img id="nextRankImage" class="rankImage nextRank" src="/web/resources/img/ss.png"/>
+    </div>
+</div>
+</body>
+
+<script src="/web/res/league.js"></script>
+</html>
