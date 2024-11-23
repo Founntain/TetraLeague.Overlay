@@ -20,44 +20,11 @@ public class ZenithController : BaseController
     {
         username = username.ToLower();
 
-        var stats = await _api.GetUserSummaries(username);
+        var html = await System.IO.File.ReadAllTextAsync("wwwroot/web/zenith.html");
 
-        MemoryStream? notFoundImage;
+        html = html.Replace("{username}", username);
 
-        switch (stats)
-        {
-            case null:
-                notFoundImage = new BaseImageGenerator().GenerateUserNotFound();
-
-                return File(notFoundImage.ToArray(), "image/png");
-            default:
-            {
-                if (stats.Zenith?.Record == null)
-                {
-                    // If the user didn't play this week yet, but played before we show the pb instead
-                    if (stats.Zenith?.Record == null && stats.Zenith?.Best?.Record != null)
-                    {
-                        stats.Zenith.Record = stats.Zenith.Best.Record;
-                    }
-                    else
-                    {
-                        notFoundImage = new BaseImageGenerator().GenerateUserNotFound();
-
-                        return File(notFoundImage.ToArray(), "image/png");
-                    }
-                }
-
-                // Same for expert as well
-                if (stats.ZenithExpert?.Record == null && stats.ZenithExpert?.Best?.Record != null)
-                {
-                    stats.ZenithExpert.Record = stats.ZenithExpert.Best.Record;
-                }
-
-                var statsImage = new ZenithImageGenerator().GenerateZenithImage(username, stats.Zenith, stats.ZenithExpert, textColor, backgroundColor, displayUsername);
-
-                return File(statsImage.ToArray(), "image/png");
-            }
-        }
+        return Content(html, "text/html");
     }
 
     [HttpGet]
@@ -111,5 +78,39 @@ public class ZenithController : BaseController
         html = html.Replace("{displayUsername}", displayUsername.ToString());
 
         return Content(html, "text/html");
+    }
+
+    [HttpGet]
+    [Route("{username}/stats")]
+    public async Task<ActionResult> GetStats(string username)
+    {
+        username = username.ToLower();
+
+        var stats = await _api.GetUserSummaries(username);
+
+        return Ok(new
+        {
+            Zenith = new
+            {
+                Altitude = stats.Zenith.Record.Results.Stats.Zenith.Altitude,
+                Best = stats.Zenith.Best.Record.Results.Stats.Zenith.Altitude,
+
+                Pps = stats.Zenith.Record.Results.Aggregatestats.Pps,
+                Apm = stats.Zenith.Record.Results.Aggregatestats.Apm,
+                Vs = stats.Zenith.Record.Results.Aggregatestats.Vsscore,
+
+                Mods = stats.Zenith.Record.Extras.Zenith.Mods
+            },
+            ZenithExpert = new {
+                Altitude = stats.ZenithExpert.Record.Results.Stats.Zenith.Altitude,
+                Best = stats.ZenithExpert.Best.Record.Results.Stats.Zenith.Altitude,
+
+                Pps = stats.ZenithExpert.Record.Results.Aggregatestats.Pps,
+                Apm = stats.ZenithExpert.Record.Results.Aggregatestats.Apm,
+                Vs = stats.ZenithExpert.Record.Results.Aggregatestats.Vsscore,
+
+                Mods = stats.ZenithExpert.Record.Extras.Zenith.Mods
+            }
+        });
     }
 }
