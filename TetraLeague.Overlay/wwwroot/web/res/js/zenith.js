@@ -15,6 +15,8 @@ let vsExpert = document.getElementById("vsExpert");
 let expertPersonalBest = document.getElementById("expertPersonalBest");
 let modsExpert = document.getElementById("modsExpert");
 
+let expertContainer = document.getElementById("expertContainer");
+
 const imgUrl = "/web/res/img/";
 
 const animationDuration = 500;
@@ -85,7 +87,7 @@ function updateStats() {
 
             mods.innerHTML = "";
 
-            data.zenith.mods.forEach(mod => {
+            data.zenith.mods?.forEach(mod => {
                 const img = document.createElement('img');
                 img.classList.add("mod");
                 img.src = `${imgUrl}${mod}.png`;
@@ -93,22 +95,29 @@ function updateStats() {
             });
 
             // EXPERT
-            animateValue(thisWeeksExpertScore, parseFloat(thisWeeksExpertScore.innerText), data.zenithExpert.altitude, animationDuration, false, "", " M");
 
-            animateValue(ppsExpert, parseFloat(ppsExpert.innerText), data.zenithExpert.pps, animationDuration, false, "", " PPS");
-            animateValue(apmExpert, parseFloat(apmExpert.innerText), data.zenithExpert.apm, animationDuration, false, "", " APM");
-            animateValue(vsExpert, parseFloat(vsExpert.innerText), data.zenithExpert.vs, animationDuration, false, "", " VS");
+            if(data.expertPlayed == false){
+                expertContainer.style.display = "none";
+            }else{
+                expertContainer.style.display = "block";
 
-            animateValue(expertPersonalBest, parseFloat(expertPersonalBest.innerText), data.zenithExpert.best, animationDuration, false, "", " M");
+                animateValue(thisWeeksExpertScore, parseFloat(thisWeeksExpertScore.innerText), data.zenithExpert.altitude, animationDuration, false, "", " M");
 
-            modsExpert.innerHTML = "";
+                animateValue(ppsExpert, parseFloat(ppsExpert.innerText), data.zenithExpert.pps, animationDuration, false, "", " PPS");
+                animateValue(apmExpert, parseFloat(apmExpert.innerText), data.zenithExpert.apm, animationDuration, false, "", " APM");
+                animateValue(vsExpert, parseFloat(vsExpert.innerText), data.zenithExpert.vs, animationDuration, false, "", " VS");
 
-            data.zenithExpert.mods.forEach(mod => {
-                const img = document.createElement('img');
-                img.classList.add("mod");
-                img.src = `${imgUrl}${mod}.png`;
-                modsExpert.appendChild(img);
-            });
+                animateValue(expertPersonalBest, parseFloat(expertPersonalBest.innerText), data.zenithExpert.best, animationDuration, false, "", " M");
+
+                modsExpert.innerHTML = "";
+
+                data.zenithExpert.mods.forEach(mod => {
+                    const img = document.createElement('img');
+                    img.classList.add("mod");
+                    img.src = `${imgUrl}${mod}.png`;
+                    modsExpert.appendChild(img);
+                });
+            }
         })
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);

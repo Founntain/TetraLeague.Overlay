@@ -88,29 +88,42 @@ public class ZenithController : BaseController
 
         var stats = await _api.GetUserSummaries(username);
 
+        if (stats.Zenith.Record == null)
+        {
+            stats.Zenith.Record = stats.Zenith.Best.Record;
+        }
+
+        if (stats.ZenithExpert.Record == null)
+        {
+            stats.ZenithExpert.Record = stats.ZenithExpert.Best.Record;
+        }
+
+        var expertPlayed = stats.ZenithExpert.Record != null && stats.ZenithExpert.Best.Record != null;
+
         return Ok(new
         {
             Zenith = new
             {
-                Altitude = stats.Zenith.Record.Results.Stats.Zenith.Altitude,
-                Best = stats.Zenith.Best.Record.Results.Stats.Zenith.Altitude,
+                Altitude = stats.Zenith.Record?.Results.Stats.Zenith.Altitude,
+                Best = stats.Zenith.Best?.Record?.Results.Stats.Zenith.Altitude,
 
-                Pps = stats.Zenith.Record.Results.Aggregatestats.Pps,
-                Apm = stats.Zenith.Record.Results.Aggregatestats.Apm,
-                Vs = stats.Zenith.Record.Results.Aggregatestats.Vsscore,
+                Pps = stats.Zenith.Record?.Results.Aggregatestats.Pps,
+                Apm = stats.Zenith.Record?.Results.Aggregatestats.Apm,
+                Vs = stats.Zenith.Record?.Results.Aggregatestats.Vsscore,
 
-                Mods = stats.Zenith.Record.Extras.Zenith.Mods
+                Mods = stats.Zenith.Record?.Extras.Zenith.Mods
             },
             ZenithExpert = new {
-                Altitude = stats.ZenithExpert.Record.Results.Stats.Zenith.Altitude,
-                Best = stats.ZenithExpert.Best.Record.Results.Stats.Zenith.Altitude,
+                Altitude = stats.ZenithExpert?.Record?.Results.Stats.Zenith.Altitude,
+                Best = stats.ZenithExpert?.Best?.Record?.Results.Stats.Zenith.Altitude,
 
-                Pps = stats.ZenithExpert.Record.Results.Aggregatestats.Pps,
-                Apm = stats.ZenithExpert.Record.Results.Aggregatestats.Apm,
-                Vs = stats.ZenithExpert.Record.Results.Aggregatestats.Vsscore,
+                Pps = stats.ZenithExpert?.Record?.Results.Aggregatestats.Pps,
+                Apm = stats.ZenithExpert?.Record?.Results.Aggregatestats.Apm,
+                Vs = stats.ZenithExpert?.Record?.Results.Aggregatestats.Vsscore,
 
-                Mods = stats.ZenithExpert.Record.Extras.Zenith.Mods
-            }
+                Mods = stats.ZenithExpert?.Record?.Extras.Zenith.Mods
+            },
+            ExpertPlayed = expertPlayed
         });
     }
 }
