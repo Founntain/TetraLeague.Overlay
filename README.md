@@ -86,7 +86,7 @@ Contributions are welcome! Feel free to open issues, request features, provide f
 
 ## Examples
 > *added for all examples a simple transparent dark background so those are readable for light github users aswell Parameter used `backgroundColor=AA000000`*
-#### Tetra League (NEW)
+#### Tetra League
 ![founntain](https://github.com/user-attachments/assets/b867218b-de57-4a44-85d3-1a5721878720)
 
 #### Quick Play
