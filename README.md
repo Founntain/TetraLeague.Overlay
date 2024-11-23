@@ -13,8 +13,7 @@ To use the overlay, simply use one of the following URLs:
 - **Live View**: `https://tetrio.founntain.dev/tetraleague/<username>`
 
 ### Quick Play
-- **Live View**: `https://tetrio.founntain.dev/zenith/<username>/web`
-- **Static Image**: `https://tetrio.founntain.dev/zenith/<username>`
+- **Live View**: `https://tetrio.founntain.dev/zenith/<username>/`
 
 ### 40 Lines
 - **Live View**: `https://tetrio.founntain.dev/sprint/<username>/web`
@@ -36,15 +35,14 @@ For OBS, it is recommended to use the live view URL. To set it up:
 1. Create a new Browser Source in OBS.
 2. Paste the live view URL into the Browser Source settings, replacing `<username>` with your tetr.io username (make sure to remove the `<` and `>`), the same goes for `<mode>`.
 3. Make sure the width and height is correct check below what sizes are best for each overlay:
-   - Slide: 900 x 300
    - Tetra League: 800 x 350
-   - Quick Play: 900 x 300
+   - Quick Play: 900 x 350
    - 40 Lines: 700 x 225
    - Blitz: 700 x 225
    - Speedrun splits: 1500 x 200
 
 > [!NOTE]  
-> Ensure you use the URL ending with `/web` for live updates. The data is cached and refreshes every 30 seconds. For 40 Lines and Blitz the default cache is used which is **5 minutes**.
+> The data is cached and refreshes every 30 seconds. For 40 Lines and Blitz the default cache is used which is **5 minutes**.
 
 ### 🛠️ Customization Parameters
 You can put any parameters at the end of the url. ***The order does not matter, however spelling is!***
@@ -55,32 +53,6 @@ You can put any parameters at the end of the url. ***The order does not matter, 
 - **`modes`**: See [Slide section](#slide).
 
 > **Example:** `https://tetrio.founntain.dev/tetraleague/founntain/web?backgroundColor=FF0000&textColor=00FF00`
-
-## Slide
-
-> [!IMPORTANT]
-> The slide has `displayUsername` set to `false` because the username is always visible on the Tetra League overlay. On other pages, the mode is shown instead. However, you can set `displayUsername` to `true` to display the username instead of the modes.
-
-The slide functions similarly to the other browser source, but it cycles through the modes. It essentially acts as one browser source to rule them all! To use the slide, you can use the URL of any mode—just replace `/web` with `/slide`. By default, the slide shows all available modes, but if you want to display specific modes, you can use the `modes=` parameter.  
-Here are some examples of how to use the `modes=` parameter:
-- `modes=tetraleague,zenith`
-- `modes=sprint,blitz`
-
-#### Available Modes
-| Mode         | Parameter     |
-|--------------|---------------|
-| Tetra League | `tetraLeague` |
-| Quick Play   | `zenith`      |
-| 40 Lines     | `sprint`      |
-| Blitz        | `blitz`       |
-
-*Example URL that displays a slide for `founntain` with the modes `tetraLeague` and `zenith`: `https://tetrio.founntain.dev/zenith/founntain/slide?modes=tetraleague,zenith`*
-
-> [!NOTE]
-> The duration for which something is visible can't be changed. The duration depends on how many modes you display; the slide takes 30 seconds to return to its starting point. The more modes, the faster it switches; the fewer modes, the longer each is displayed. This is to prevent API spam. If you use the slide for a single overlay, it has the same update time as the single overlay, with just more overhead. Only use the slide if you want to display more than one mode. For TetraLeague, the old image generation is used than the new web view (for now)
-
-> [!CAUTION]
-> Parameters need to be separated by a single `comma` (`,`) otherwise you will receive an error.
 
 ## Splits
 
@@ -117,11 +89,8 @@ Contributions are welcome! Feel free to open issues, request features, provide f
 #### Tetra League (NEW)
 ![founntain](https://github.com/user-attachments/assets/b867218b-de57-4a44-85d3-1a5721878720)
 
-#### Tetra League (LEGACY)
-![founntain](https://github.com/user-attachments/assets/ee8e60e9-de03-4b89-b197-cee5d3e7f8c8)
-
 #### Quick Play
-![founntain](https://github.com/user-attachments/assets/8c6cd129-5a58-4d05-a00a-8ea995d8080f)
+![image](https://github.com/user-attachments/assets/e91f4eb6-0fd8-4b9a-aa6c-8f0fdce8a43d)
 
 #### Speedrun splits
 ![blink](https://github.com/user-attachments/assets/592daaf8-0e03-412f-be87-7de6274f5a15)
