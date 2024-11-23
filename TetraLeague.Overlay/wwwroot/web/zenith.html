@@ -1,0 +1,62 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Tetra League Overlay Web</title>
+    <link rel="stylesheet" href="/web/res/css/base.css">
+    <link rel="stylesheet" href="/web/res/css/zenith.css">
+</head>
+<body>
+<p class="hidden" id="usernameInfo">{username}</p>
+
+<div class="container">
+    <div class="normalContainer">
+        <p class="modeText background">NORMAL</p>
+        <div class="background">
+            WEEK <a id="thisWeeksNormalScore" class="scoreText">0</a>
+        </div>
+
+        <div id="mods" class="modsContainer background"></div>
+
+        <table>
+            <tr>
+                <td id="pps" class="background">0</td>
+                <td id="apm" class="background">0</td>
+                <td id="vs" class="background">0</td>
+            </tr>
+        </table>
+
+        <div class="background">
+            PB <a id="normalPersonalBest" class="scoreText">0</a>
+        </div>
+
+    </div>
+    <div class="expertContainer">
+        <p class="modeText background">EXPERT</p>
+
+        <div class="background">
+            WEEK <a id="thisWeeksExpertScore" class="scoreText">0</a>
+        </div>
+
+        <div id="modsExpert" class="modsContainer background"></div>
+
+
+        <table>
+            <tr>
+                <td id="ppsExpert" class="background">0</td>
+                <td id="apmExpert" class="background">0</td>
+                <td id="vsExpert" class="background">0</td>
+            </tr>
+        </table>
+
+        <div class="background">
+            PB <a id="expertPersonalBest" class="scoreText">0</a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+<script src="/web/res/js/zenith.js"></script>
+</html>

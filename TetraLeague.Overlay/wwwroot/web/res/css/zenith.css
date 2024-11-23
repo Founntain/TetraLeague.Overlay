@@ -1,0 +1,58 @@
+﻿.mod{
+    max-width: 42px;
+    max-height: 42px;
+    margin: 5px;
+}
+
+.modsContainer{
+    margin-top: 2px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.container{
+    display: flex;
+}
+
+.modeText{
+    font-size: 24pt;
+    margin-bottom: 2px;
+}
+
+.scoreText{
+    font-size: 48pt;
+}
+
+.background{
+    background: rgba(0,0,0,0.25);
+}
+
+p{
+    margin: 0;
+}
+
+.normalContainer, .expertContainer{
+    text-align: center;
+    margin: 0px 10px 0px 10px;
+}
+
+table{
+    width: 100%;
+    font-size: 24pt;
+    border-spacing: 0;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+td{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    margin: 0;
+
+    background: rgba(0,0,0,0.25);
+}
