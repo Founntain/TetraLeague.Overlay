@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TetraLeague.Overlay.Generator;
 using TetraLeague.Overlay.Network.Api;
+using TetraLeague.Overlay.Network.Api.Models;
 
 namespace TetraLeague.Overlay.Controllers;
 
@@ -129,13 +130,14 @@ public class ZenithController : BaseController
     }
 
     [HttpGet]
-    [Route("/splits/{username}/stats")]
+    [Route("splits/{username}/stats")]
     public async Task<ActionResult> GetSplitStats(string username, bool expert = false)
     {
         var stats = await _api.GetRecentZenithRecords(username, expert);
         var careerBest = await _api.GetZenithStats(username, expert);
 
         var goldSplits = new int[9];
+        var secondGoldSplit = new double[9];
 
         foreach (var entry in stats.Entries)
         {
@@ -149,7 +151,6 @@ public class ZenithController : BaseController
 
                 if (goldSplits[i] == 0)
                 {
-
                     goldSplits[i] = (int) split;
 
                     continue;
@@ -162,9 +163,101 @@ public class ZenithController : BaseController
             }
         }
 
+        var avgTimes = new double[9];
+
+        for (int i = 0; i < goldSplits.Length; i++)
+        {
+            var iSplits = stats.Entries.Select(x => x.Results.Stats.Zenith.Splits[i]);
+
+            var orderedSplits = iSplits.Where(y => y > 0).Order().ToArray();
+
+            avgTimes[i] = orderedSplits.Average() ?? 0;
+
+            var x = orderedSplits.Length < 2 ? 0 : orderedSplits[1];
+
+            secondGoldSplit[i] = x ?? 0;
+        }
+
+        var result = new List<dynamic>();
+
         var recentSplits = stats.Entries.First().Results.Stats.Zenith.Splits.Select(x => (int) (x ?? 0)).ToArray();
         var careerBestSplits = careerBest.Best!.Record!.Results.Stats.Zenith.Splits.Select(x => (int) (x ?? 0)).ToArray();
 
-        return Ok(stats);
+        var notReached = false;
+
+        var floorColors = new[]
+        {
+            "AAfde692",
+            "AAffc788",
+            "AAffb7c2",
+            "AAffba43",
+            "AAff917b",
+            "AA00ddff",
+            "AAff006f",
+            "AA98ffb2",
+            "AAd677ff",
+        };
+
+        var floorNames = new[]
+        {
+            "HOTEL",
+            "CASINO",
+            "ARENA",
+            "MUSEUM",
+            "OFFICES",
+            "LABORATORY",
+            "THE CORE",
+            "CORRUPTION",
+            "POTG",
+        };
+
+        for (var i = 0; i < goldSplits.Length; i++)
+        {
+
+            var split = goldSplits[i];
+            var secondSplit = secondGoldSplit[i];
+            var isRecentSplitsEmpty = recentSplits.All(y => y == 0);
+            var differenceToGold = recentSplits[i] - split;
+            var differenceToSecondGold = secondGoldSplit[i] - split;
+            var timeDifferenceToGold = recentSplits[i] == 0 ? TimeSpan.FromMilliseconds(0) : TimeSpan.FromMilliseconds(recentSplits[i] - split);
+            var timeDifferenceToSecondGold = recentSplits[i] == 0 ? TimeSpan.FromMilliseconds(0) : TimeSpan.FromMilliseconds(secondGoldSplit[i] - split);
+
+            if (isRecentSplitsEmpty)
+            {
+                if (careerBestSplits.Any(x => x != 0))
+                {
+                    isRecentSplitsEmpty = false;
+                }
+
+                timeDifferenceToGold = TimeSpan.FromMilliseconds(careerBestSplits[i] - split);
+            }
+
+            var isSlower = timeDifferenceToGold.TotalMilliseconds > 0;
+
+            if ((timeDifferenceToGold.TotalMilliseconds == 0 && ((timeDifferenceToGold.TotalMilliseconds != 0 || split == 0 || recentSplits[i] == 0) || isRecentSplitsEmpty)) && !notReached)
+            {
+                notReached = true;
+            }
+
+            var o = new
+            {
+                Floor = floorNames[i],
+                FloorColor = floorColors[i],
+                Split = split,
+                SecondSplit = secondSplit,
+                IsRecentSplitEmpty = isRecentSplitsEmpty,
+                DifferenceToGold = differenceToGold,
+                DifferenceToSecondGold = differenceToSecondGold,
+                TimeDifferenceToGold = timeDifferenceToGold,
+                TimeDifferenceToSecondGold = timeDifferenceToSecondGold,
+                IsSlower = isSlower,
+                NotReached = notReached,
+                AvgTime = TimeSpan.FromMilliseconds(avgTimes[i]),
+            };
+
+            result.Add(o);
+        }
+
+        return Ok(result);
     }
 }
