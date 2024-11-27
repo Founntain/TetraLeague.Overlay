@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using TetraLeague.Overlay.Generator;
 using TetraLeague.Overlay.Network.Api;
 
@@ -125,5 +126,45 @@ public class ZenithController : BaseController
             },
             ExpertPlayed = expertPlayed
         });
+    }
+
+    [HttpGet]
+    [Route("/splits/{username}/stats")]
+    public async Task<ActionResult> GetSplitStats(string username, bool expert = false)
+    {
+        var stats = await _api.GetRecentZenithRecords(username, expert);
+        var careerBest = await _api.GetZenithStats(username, expert);
+
+        var goldSplits = new int[9];
+
+        foreach (var entry in stats.Entries)
+        {
+            List<double?> splits = entry.Results.Stats.Zenith.Splits;
+
+            for (var i = 0; i < splits.Count; i++)
+            {
+                var split = splits[i];
+
+                if(split == null) continue;
+
+                if (goldSplits[i] == 0)
+                {
+
+                    goldSplits[i] = (int) split;
+
+                    continue;
+                }
+
+                if (goldSplits[i] > split && split != 0)
+                {
+                    goldSplits[i] = (int) split;
+                }
+            }
+        }
+
+        var recentSplits = stats.Entries.First().Results.Stats.Zenith.Splits.Select(x => (int) (x ?? 0)).ToArray();
+        var careerBestSplits = careerBest.Best!.Record!.Results.Stats.Zenith.Splits.Select(x => (int) (x ?? 0)).ToArray();
+
+        return Ok(stats);
     }
 }
