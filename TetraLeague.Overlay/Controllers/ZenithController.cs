@@ -244,12 +244,13 @@ public class ZenithController : BaseController
                 Floor = floorNames[i],
                 FloorColor = floorColors[i],
                 Split = split,
+                SplitTime = TimeSpan.FromMilliseconds(split).ToString(@"m\:ss\.fff"),
                 SecondSplit = secondSplit,
                 IsRecentSplitEmpty = isRecentSplitsEmpty,
                 DifferenceToGold = differenceToGold,
                 DifferenceToSecondGold = differenceToSecondGold,
-                TimeDifferenceToGold = timeDifferenceToGold,
-                TimeDifferenceToSecondGold = timeDifferenceToSecondGold,
+                TimeDifferenceToGold = timeDifferenceToGold.ToString(@"ss\.fff"),
+                TimeDifferenceToSecondGold = timeDifferenceToSecondGold.ToString(@"ss\.fff"),
                 IsSlower = isSlower,
                 NotReached = notReached,
                 AvgTime = TimeSpan.FromMilliseconds(avgTimes[i]),
@@ -259,5 +260,19 @@ public class ZenithController : BaseController
         }
 
         return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("splits/{username}/webtest")]
+    public async Task<ActionResult> WebTest(string username, bool expert = false)
+    {
+        username = username.ToLower();
+
+        var html = await System.IO.File.ReadAllTextAsync("wwwroot/web/splits.html");
+
+        html = html.Replace("{username}", username);
+        html = html.Replace("{expert}", expert.ToString());
+
+        return Content(html, "text/html");
     }
 }
