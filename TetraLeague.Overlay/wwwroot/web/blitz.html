@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>BLITZ OVERLAY</title>
+    <link href="/web/res/css/base.css" rel="stylesheet">
+    <link href="/web/res/css/blitz.css" rel="stylesheet">
+</head>
+<body>
+<p class="hidden" id="usernameInfo">{username}</p>
+
+<div class="container">
+    <div class="modeContainer">
+        <p class="statsText background" id="username"></p>
+        <p class="statsText background" id="finalTime"> 00:00.000</p>
+        <div class="statContainer background">
+            <div class="stat">
+                <a class="statsText" id="pps">0</a>
+                <a class="suffix">PPS</a>
+            </div>
+            <div class="stat">
+                <a class="statsText" id="kpp">0</a>
+                <a class="suffix">KPP</a>
+            </div>
+            <div class="stat">
+                <a class="statsText" id="kps">0</a>
+                <a class="suffix">KPS</a>
+            </div>
+            <div class="stat">
+                <a class="statsText" id="finesse">0</a>
+                <a class="suffix">F</a>
+            </div>
+        </div>
+        <div class="statContainer background">
+            <div class="stat">
+                <a class="prefix">#</a>
+                <a class="statsText" id="globalRank">0</a>
+            </div>
+            <div class="stat">
+                <img id="countryImage" src="" class="countryImage" />
+                <a class="prefix">#</a>
+                <a class="statsText" id="localRank">0</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script src="/web/res/js/base.js"></script>
+<script src="/web/res/js/blitz.js"></script>
+</html>

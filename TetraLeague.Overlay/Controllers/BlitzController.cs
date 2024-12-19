@@ -46,4 +46,27 @@ public class BlitzController : BaseController
             }
         }
     }
+
+    [HttpGet]
+    [Route("{username}/stats")]
+    public async Task<ActionResult> GetStats(string username)
+    {
+        username = username.ToLower();
+
+        var userStats = _api.GetUserInformation(username);
+        var stats = _api.GetBlitzStats(username);
+
+        return Ok(new
+        {
+            Country = userStats.Result.Country,
+            Time = stats.Result.Record.Results.Stats.Finaltime,
+            TimeString = TimeSpan.FromMilliseconds(stats.Result.Record.Results.Stats.Finaltime.Value).ToString(@"mm\:ss\.fff"),
+            Pps = stats.Result.Record.Results.Aggregatestats.Pps,
+            Kpp = (double)stats.Result.Record.Results.Stats.Inputs! / (double)stats.Result.Record.Results.Stats.Piecesplaced!,
+            Sps = (stats.Result.Record.Results.Stats.Inputs / (stats.Result.Record.Results.Stats.Finaltime / 1000)),
+            Finesse = stats.Result.Record.Results.Stats.Finesse.Faults,
+            GlobalRank = stats.Result.Rank,
+            LocalRank = stats.Result.RankLocal
+        });
+    }
 }

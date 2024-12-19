@@ -3,49 +3,8 @@ let expertInfo = document.getElementById("expertInfo").innerText;
 
 let containers = document.getElementsByClassName("floorBoxWrapper")
 
-const animationDuration = 500;
-
-function lerp(a, b, t) {
-    return a + (b - a) * t;
-}
-
-function lerpInt(a, b, t) {
-    return (a + (b - a) * t).toFixed(0);
-}
-
-function animateValue(element, start, end, duration, isInt = false, prefix = "", suffix = "") {
-    let startTime = null;
-
-    function animation(currentTime) {
-        if (!startTime) startTime = currentTime;
-        const elapsed = currentTime - startTime;
-
-        // Calculate the progress (0 to 1)
-        const progress = Math.min(elapsed / duration, 1);
-
-        // Interpolate the current value
-        const currentValue = isInt ? lerpInt(start, end, progress) : lerp(start, end, progress);
-
-        // Update the element's text content
-        if (isInt)
-            element.innerText = prefix + currentValue + suffix;
-        else
-            element.innerText = prefix + currentValue.toFixed(2) + suffix;
-
-        // Continue the animation if not yet complete
-        if (progress < 1) {
-            requestAnimationFrame(animation);
-        }
-    }
-
-    // Start the animation
-    requestAnimationFrame(animation);
-}
-
 function updateStats() {
-    const {protocol, hostname, port} = window.location;
-
-    let url = `${protocol}//${hostname}${port ? `:${port}` : ''}/zenith/splits/${usernameInfo}/stats?expert=${expertInfo}`
+    let url = `${baseUrl}/zenith/splits/${usernameInfo}/stats?expert=${expertInfo}`
 
     console.log(url)
 

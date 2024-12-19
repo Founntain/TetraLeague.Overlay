@@ -1,5 +1,4 @@
 ﻿let usernameInfo = document.getElementById("usernameInfo").innerText;
-let displayUsername = document.getElementById("displayUsername").innerText;
 
 //get all fields
 let rankImage = document.getElementById("bigRankImage");
@@ -20,51 +19,8 @@ let topRankText = document.getElementById("topRankText");
 let progressBarBackgrounds = document.getElementById("progressBarBackground");
 let lastRank = document.getElementById("lastRank");
 
-const imgUrl = "/web/res/img/";
-
-const animationDuration = 500;
-
-function lerp(a, b, t) {
-    return a + (b - a) * t;
-}
-
-function lerpInt(a, b, t) {
-    return (a + (b - a) * t).toFixed(0);
-}
-
-function animateValue(element, start, end, duration, isInt = false, prefix = "", suffix = "") {
-    let startTime = null;
-
-    function animation(currentTime) {
-        if (!startTime) startTime = currentTime;
-        const elapsed = currentTime - startTime;
-
-        // Calculate the progress (0 to 1)
-        const progress = Math.min(elapsed / duration, 1);
-
-        // Interpolate the current value
-        const currentValue = isInt ? lerpInt(start, end, progress) : lerp(start, end, progress);
-
-        // Update the element's text content
-        if (isInt)
-            element.innerText = prefix + currentValue + suffix;
-        else
-            element.innerText = prefix + currentValue.toFixed(2) + suffix;
-
-        // Continue the animation if not yet complete
-        if (progress < 1) {
-            requestAnimationFrame(animation);
-        }
-    }
-
-    // Start the animation
-    requestAnimationFrame(animation);
-}
-
 function updateStats() {
-    const { protocol, hostname, port } = window.location;
-
-    let url = `${protocol}//${hostname}${port ? `:${port}` : ''}/tetraleague/${usernameInfo}/stats`
+    let url = `${baseUrl}/tetraleague/${usernameInfo}/stats`
 
     console.log(url)
 
@@ -95,7 +51,7 @@ function updateStats() {
             if (data.rank == "d") {
                 prevRankImage.src = null;
                 prevRankImage.style.display = "none";
-                animateValue(lastRank, parseInt(lastRank.innerText.replace('#', '')), data.prevAt, animationDuration, true, "#", "");
+                animateValue(lastRank, parseInt(lastRank.innerText.replace('#', '')), data.prevAt, animationDuration, 1, "#", "");
             } else {
                 lastRank.style.display = "none";
                 prevRankImage.style.display = "block";
@@ -156,14 +112,14 @@ function updateStats() {
             if (placements && data.tr < 0) {
                 tr.innerText = `${data.gamesPlayed} / 10 PLACEMENTS`;
             } else {
-                animateValue(tr, parseFloat(tr.innerText), data.tr, animationDuration, false, "", " TR");
+                animateValue(tr, parseFloat(tr.innerText), data.tr, animationDuration, 0, "", " TR");
             }
 
             animateValue(apm, parseFloat(apm.innerText), data.apm, animationDuration);
             animateValue(pps, parseFloat(pps.innerText), data.pps, animationDuration);
             animateValue(vs, parseFloat(vs.innerText), data.vs, animationDuration);
-            animateValue(globalRank, parseInt(globalRank.innerText.replace('#', '')), data.globalRank, animationDuration, true, "# ", "");
-            animateValue(localRank, parseInt(localRank.innerText.replace('#', '')), data.countryRank, animationDuration, true, "# ", "");
+            animateValue(globalRank, parseInt(globalRank.innerText.replace('#', '')), data.globalRank, animationDuration, 1, "# ", "");
+            animateValue(localRank, parseInt(localRank.innerText.replace('#', '')), data.countryRank, animationDuration, 1, "# ", "");
 
 
             let range = data.prevAt - data.nextAt;
