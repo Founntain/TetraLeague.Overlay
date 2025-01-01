@@ -16,8 +16,7 @@ To use the overlay, simply use one of the following URLs:
 - **Live View**: `https://tetrio.founntain.dev/zenith/<username>/`
 
 ### 40 Lines
-- **Live View**: `https://tetrio.founntain.dev/sprint/<username>/web`
-- **Static Image**: `https://tetrio.founntain.dev/sprint/<username>`
+- **Live View**: `https://tetrio.founntain.dev/sprint/<username>`
 
 ### Blitz
 - **Live View**: `https://tetrio.founntain.dev/blitz/<username>/web`
