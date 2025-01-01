@@ -13,7 +13,7 @@ To use the overlay, simply use one of the following URLs:
 - **Live View**: `https://tetrio.founntain.dev/tetraleague/<username>`
 
 ### Quick Play
-- **Live View**: `https://tetrio.founntain.dev/zenith/<username>/`
+- **Live View**: `https://tetrio.founntain.dev/zenith/<username>`
 
 ### 40 Lines
 - **Live View**: `https://tetrio.founntain.dev/sprint/<username>`
