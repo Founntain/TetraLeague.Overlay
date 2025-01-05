@@ -4,7 +4,7 @@ let username = document.getElementById("username");
 let finalScore = document.getElementById("finalScore");
 let pps = document.getElementById("pps");
 let kpp = document.getElementById("kpp");
-let kps = document.getElementById("kps");
+let sps = document.getElementById("sps");
 let finesse = document.getElementById("finesse");
 let globalRank = document.getElementById("globalRank");
 let localRank = document.getElementById("localRank");
@@ -28,11 +28,11 @@ function updateStats() {
         .then(data => {
             console.log(data);
 
-            animateValue(finalScore, parseInt(finalScore.innerText), data.finalScore, animationDuration, 1, "", "")
+            animateValue(finalScore, parseInt(finalScore.innerText), data.score, animationDuration, 1, "", "")
 
             animateValue(pps, parseFloat(pps.innerText), data.pps, animationDuration, 0, "", "");
             animateValue(kpp, parseFloat(kpp.innerText), data.kpp, animationDuration, 0, "", "");
-            animateValue(kps, parseFloat(kps.innerText), data.kps, animationDuration, 0, "", "");
+            animateValue(sps, parseFloat(sps.innerText), data.sps, animationDuration, 0, "", "");
             animateValue(finesse, parseFloat(finesse.innerText), data.finesse, animationDuration, 0, "", "");
 
             animateValue(globalRank, parseInt(globalRank.innerText), data.globalRank, animationDuration, 1, "", "");

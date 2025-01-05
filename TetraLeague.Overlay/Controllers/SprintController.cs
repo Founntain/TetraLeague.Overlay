@@ -17,39 +17,7 @@ public class SprintController : BaseController
 
     [HttpGet]
     [Route("{username}")]
-    public async Task<ActionResult> StaticImage(string username, string? textcolor = null, string? backgroundColor = null, bool displayUsername = true)
-    {
-        username = username.ToLower();
-
-        var stats = await _api.GetSprintStats(username);
-
-        MemoryStream? notFoundImage = null;
-
-        switch (stats)
-        {
-            case null:
-                notFoundImage = new BaseImageGenerator().GenerateUserNotFound();
-
-                return File(notFoundImage.ToArray(), "image/png");
-            default:
-            {
-                if (stats.Record == null)
-                {
-                    notFoundImage = new BaseImageGenerator().GenerateUserNotFound();
-
-                    return File(notFoundImage.ToArray(), "image/png");
-                }
-
-                var statsImage = new SinglePlayerImageGenerator().GenerateSprintImage(username, stats, textcolor, backgroundColor, displayUsername);
-
-                return File(statsImage.ToArray(), "image/png");
-            }
-        }
-    }
-
-    [HttpGet]
-    [Route("{username}/webtest")]
-    public async Task<ActionResult> WebTest(string username)
+    public async Task<ActionResult> Web(string username)
     {
         username = username.ToLower();
 

@@ -17,34 +17,17 @@ public class BlitzController : BaseController
 
     [HttpGet]
     [Route("{username}")]
-    public async Task<ActionResult> StaticImage(string username, string? textcolor = null, string? backgroundColor = null, bool displayUsername = true)
+    public async Task<ActionResult> Web(string username)
     {
         username = username.ToLower();
 
-        var stats = await _api.GetBlitzStats(username);
+        var html = await System.IO.File.ReadAllTextAsync("wwwroot/web/blitz.html");
 
-        MemoryStream? notFoundImage = null;
+        html = html.Replace("{mode}", ControllerContext.ActionDescriptor.ControllerName);
 
-        switch (stats)
-        {
-            case null:
-                notFoundImage = new BaseImageGenerator().GenerateUserNotFound();
+        html = html.Replace("{username}", username);
 
-                return File(notFoundImage.ToArray(), "image/png");
-            default:
-            {
-                if (stats.Record == null)
-                {
-                    notFoundImage = new BaseImageGenerator().GenerateUserNotFound();
-
-                    return File(notFoundImage.ToArray(), "image/png");
-                }
-
-                var statsImage = new SinglePlayerImageGenerator().GenerateBlitzImage(username, stats, textcolor, backgroundColor, displayUsername);
-
-                return File(statsImage.ToArray(), "image/png");
-            }
-        }
+        return Content(html, "text/html");
     }
 
     [HttpGet]
@@ -59,11 +42,10 @@ public class BlitzController : BaseController
         return Ok(new
         {
             Country = userStats.Result.Country,
-            Time = stats.Result.Record.Results.Stats.Finaltime,
-            TimeString = TimeSpan.FromMilliseconds(stats.Result.Record.Results.Stats.Finaltime.Value).ToString(@"mm\:ss\.fff"),
+            Score = stats.Result.Record.Results.Stats.Score,
             Pps = stats.Result.Record.Results.Aggregatestats.Pps,
             Kpp = (double)stats.Result.Record.Results.Stats.Inputs! / (double)stats.Result.Record.Results.Stats.Piecesplaced!,
-            Sps = (stats.Result.Record.Results.Stats.Inputs / (stats.Result.Record.Results.Stats.Finaltime / 1000)),
+            Sps = (double)stats.Result.Record.Results.Stats.Score! / (double)stats.Result.Record.Results.Stats.Piecesplaced,
             Finesse = stats.Result.Record.Results.Stats.Finesse.Faults,
             GlobalRank = stats.Result.Rank,
             LocalRank = stats.Result.RankLocal

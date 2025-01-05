@@ -42,10 +42,10 @@ function animateValue(element, start, end, duration, lerpType = 0, prefix = "", 
 
         switch (lerpType) {
             case 0:
-                currentValue = lerp(start, end, progress).toFixed(2);
+                currentValue = parseFloat(lerp(start, end, progress).toFixed(2)).toLocaleString();
                 break;
             case 1:
-                currentValue = lerpInt(start, end, progress);
+                currentValue = parseInt(lerpInt(start, end, progress)).toLocaleString();
                 break;
             case 2:
                 currentValue = lerpText(start, end, progress);
