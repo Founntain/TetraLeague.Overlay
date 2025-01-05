@@ -29,40 +29,9 @@ public class TetraLeagueController : BaseController
 
         var html = await System.IO.File.ReadAllTextAsync("wwwroot/web/league.html");
 
-        html = html.Replace("{mode}", ControllerContext.ActionDescriptor.ControllerName);
-
         html = html.Replace("{username}", username);
-        html = html.Replace("{textColor}", textcolor ?? "FFFFFF");
-        html = html.Replace("{backgroundColor}", backgroundColor ?? "00FFFFFF");
 
         return Content(html, "text/html");
-
-        // username = username.ToLower();
-        //
-        // var user = await _api.GetUserInformation(username);
-        //
-        // if (user == null)
-        // {
-        //     var notFoundImage = new BaseImageGenerator().GenerateUserNotFound();
-        //
-        //     return File(notFoundImage.ToArray(), "image/png");
-        // }
-        //
-        // var stats = await _api.GetTetraLeagueStats(username);
-        //
-        // switch (stats)
-        // {
-        //     case null:
-        //         var notFoundImage = new BaseImageGenerator().GenerateUserNotFound();
-        //
-        //         return File(notFoundImage.ToArray(), "image/png");
-        //     default:
-        //     {
-        //         var statsImage = await new TetraLeagueImageGenerator().GenerateTetraLeagueImage(user, stats, textcolor, backgroundColor, displayUsername);
-        //
-        //         return File(statsImage.ToArray(), "image/png");
-        //     }
-        // }
     }
 
     [HttpGet]

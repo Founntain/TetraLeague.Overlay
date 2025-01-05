@@ -4,16 +4,10 @@ using TetraLeague.Overlay.Network.Api;
 
 namespace TetraLeague.Overlay.Controllers;
 
-[ApiController]
-[Produces("application/json")]
-[Route("[controller]")]
-public class BaseController : ControllerBase
+public class BaseController : MinControllerBase
 {
-    protected readonly TetrioApi _api;
-
-    public BaseController(TetrioApi api)
+    public BaseController(TetrioApi api) : base(api)
     {
-        _api = api;
     }
 
     [HttpGet]

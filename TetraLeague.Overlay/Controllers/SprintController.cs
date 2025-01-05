@@ -17,33 +17,39 @@ public class SprintController : BaseController
 
     [HttpGet]
     [Route("{username}")]
-    public async Task<ActionResult> StaticImage(string username, string? textcolor = null, string? backgroundColor = null, bool displayUsername = true)
+    public async Task<ActionResult> Web(string username)
     {
         username = username.ToLower();
 
-        var stats = await _api.GetSprintStats(username);
+        var html = await System.IO.File.ReadAllTextAsync("wwwroot/web/sprint.html");
 
-        MemoryStream? notFoundImage = null;
+        html = html.Replace("{mode}", ControllerContext.ActionDescriptor.ControllerName);
 
-        switch (stats)
+        html = html.Replace("{username}", username);
+
+        return Content(html, "text/html");
+    }
+
+    [HttpGet]
+    [Route("{username}/stats")]
+    public async Task<ActionResult> GetStats(string username)
+    {
+        username = username.ToLower();
+
+        var userStats = _api.GetUserInformation(username);
+        var stats = _api.GetSprintStats(username);
+
+        return Ok(new
         {
-            case null:
-                notFoundImage = new BaseImageGenerator().GenerateUserNotFound();
-
-                return File(notFoundImage.ToArray(), "image/png");
-            default:
-            {
-                if (stats.Record == null)
-                {
-                    notFoundImage = new BaseImageGenerator().GenerateUserNotFound();
-
-                    return File(notFoundImage.ToArray(), "image/png");
-                }
-
-                var statsImage = new SinglePlayerImageGenerator().GenerateSprintImage(username, stats, textcolor, backgroundColor, displayUsername);
-
-                return File(statsImage.ToArray(), "image/png");
-            }
-        }
+            Country = userStats.Result.Country,
+            Time = stats.Result.Record.Results.Stats.Finaltime,
+            TimeString = TimeSpan.FromMilliseconds(stats.Result.Record.Results.Stats.Finaltime.Value).ToString(@"mm\:ss\.fff"),
+            Pps = stats.Result.Record.Results.Aggregatestats.Pps,
+            Kpp = (double)stats.Result.Record.Results.Stats.Inputs! / (double)stats.Result.Record.Results.Stats.Piecesplaced!,
+            kps = (stats.Result.Record.Results.Stats.Inputs / (stats.Result.Record.Results.Stats.Finaltime / 1000)),
+            Finesse = stats.Result.Record.Results.Stats.Finesse.Faults,
+            GlobalRank = stats.Result.Rank,
+            LocalRank = stats.Result.RankLocal
+        });
     }
 }
