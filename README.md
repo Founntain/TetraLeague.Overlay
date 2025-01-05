@@ -19,12 +19,10 @@ To use the overlay, simply use one of the following URLs:
 - **Live View**: `https://tetrio.founntain.dev/sprint/<username>`
 
 ### Blitz
-- **Live View**: `https://tetrio.founntain.dev/blitz/<username>/web`
-- **Static Image**: `https://tetrio.founntain.dev/blitz/<username>`
+- **Live View**: `https://tetrio.founntain.dev/blitz/<username>`
 
 ### QP Speedrun Splits
-- **Live View**: `https://tetrio.founntain.dev/zenith/splits/<username>/web`
-- **Static Image**: `https://tetrio.founntain.dev/zenith/splits/<username>`
+- **Live View**: `https://tetrio.founntain.dev/zenith/splits/<username>`
 > for more info check the [splits section](#Splits).
 
 ### 📽️ OBS Setup
