@@ -34,13 +34,23 @@ function updateStats() {
             console.log(data);
 
             // NORMAL
-            animateValue(thisWeeksNormalScore, parseFloat(thisWeeksNormalScore.innerText), data.zenith.altitude, animationDuration, 0, "", " M");
+
+
+            let normalString = thisWeeksNormalScore.innerText;
+            let cleanNormalString = normalString.replace(/[^0-9.]/g, '');
+            cleanNormalString = cleanNormalString.replace(/,/g, '');
+
+            animateValue(thisWeeksNormalScore, parseFloat(cleanNormalString), data.zenith.altitude, animationDuration, 0, "", " M");
 
             animateValue(pps, parseFloat(pps.innerText), data.zenith.pps, animationDuration, 0, "", " PPS");
             animateValue(apm, parseFloat(apm.innerText), data.zenith.apm, animationDuration, 0, "", " APM");
             animateValue(vs, parseFloat(vs.innerText), data.zenith.vs, animationDuration, 0, "", " VS");
 
-            animateValue(normalPersonalBest, parseFloat(normalPersonalBest.innerText), data.zenith.best, animationDuration, 0, "", " M");
+            normalString = normalPersonalBest.innerText;
+            cleanNormalString = normalString.replace(/[^0-9.]/g, '');
+            cleanNormalString = cleanNormalString.replace(/,/g, '');
+
+            animateValue(normalPersonalBest, parseFloat(cleanNormalString), data.zenith.best, animationDuration, 0, "", " M");
 
             mods.innerHTML = "";
 
@@ -52,19 +62,26 @@ function updateStats() {
             });
 
             // EXPERT
-
             if(data.expertPlayed == false){
                 expertContainer.style.display = "none";
             }else{
                 expertContainer.style.display = "block";
 
-                animateValue(thisWeeksExpertScore, parseFloat(thisWeeksExpertScore.innerText), data.zenithExpert.altitude, animationDuration, 0, "", " M");
+                let expertString = thisWeeksExpertScore.innerText;
+                let cleanExpertString = expertString.replace(/[^0-9.]/g, '');
+                cleanExpertString = cleanExpertString.replace(/,/g, '');
+
+                animateValue(thisWeeksExpertScore, parseFloat(cleanExpertString), data.zenithExpert.altitude, animationDuration, 0, "", " M");
 
                 animateValue(ppsExpert, parseFloat(ppsExpert.innerText), data.zenithExpert.pps, animationDuration, 0, "", " PPS");
                 animateValue(apmExpert, parseFloat(apmExpert.innerText), data.zenithExpert.apm, animationDuration, 0, "", " APM");
                 animateValue(vsExpert, parseFloat(vsExpert.innerText), data.zenithExpert.vs, animationDuration, 0, "", " VS");
 
-                animateValue(expertPersonalBest, parseFloat(expertPersonalBest.innerText), data.zenithExpert.best, animationDuration, 0, "", " M");
+                expertString = expertPersonalBest.innerText;
+                cleanExpertString = expertString.replace(/[^0-9.]/g, '');
+                cleanExpertString = cleanExpertString.replace(/,/g, '');
+
+                animateValue(expertPersonalBest, parseFloat(cleanExpertString), data.zenithExpert.best, animationDuration, 0, "", " M");
 
                 modsExpert.innerHTML = "";
 

@@ -27,6 +27,25 @@ function lerpText(start, end, t) {
 }
 
 function animateValue(element, start, end, duration, lerpType = 0, prefix = "", suffix = "") {
+    let currentValue;
+
+    console.log(start, end);
+
+    if(start === end){
+
+        switch (lerpType) {
+            case 0:
+                currentValue = parseFloat(start.toFixed(2)).toLocaleString('en-US');
+                break;
+            case 1:
+                currentValue = parseInt(start).toLocaleString('en-US');
+                break;
+        }
+
+        element.innerText = `${prefix}${currentValue}${suffix}`
+        return;
+    }
+
     let startTime = null;
 
     function animation(currentTime) {
@@ -36,16 +55,12 @@ function animateValue(element, start, end, duration, lerpType = 0, prefix = "", 
         // Calculate the progress (0 to 1)
         const progress = Math.min(elapsed / duration, 1);
 
-        // Interpolate the current value
-
-        var currentValue;
-
         switch (lerpType) {
             case 0:
-                currentValue = parseFloat(lerp(start, end, progress).toFixed(2)).toLocaleString();
+                currentValue = parseFloat(lerp(start, end, progress).toFixed(2)).toLocaleString('en-US');
                 break;
             case 1:
-                currentValue = parseInt(lerpInt(start, end, progress)).toLocaleString();
+                currentValue = parseInt(lerpInt(start, end, progress)).toLocaleString('en-US');
                 break;
             case 2:
                 currentValue = lerpText(start, end, progress);

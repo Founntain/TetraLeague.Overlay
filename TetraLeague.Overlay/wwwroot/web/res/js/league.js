@@ -112,7 +112,11 @@ function updateStats() {
             if (placements && data.tr < 0) {
                 tr.innerText = `${data.gamesPlayed} / 10 PLACEMENTS`;
             } else {
-                animateValue(tr, parseFloat(tr.innerText), data.tr, animationDuration, 0, "", " TR");
+                let trString = tr.innerText;
+                let cleanTrString = trString.replace(/[^0-9.]/g, '');
+                cleanTrString = cleanTrString.replace(/,/g, '');
+
+                animateValue(tr, parseFloat(cleanTrString), data.tr, animationDuration, 0, "", " TR");
             }
 
             animateValue(apm, parseFloat(apm.innerText), data.apm, animationDuration);
