@@ -29,8 +29,6 @@ function lerpText(start, end, t) {
 function animateValue(element, start, end, duration, lerpType = 0, prefix = "", suffix = "") {
     let currentValue;
 
-    console.log(start, end);
-
     if(start === end){
 
         switch (lerpType) {
