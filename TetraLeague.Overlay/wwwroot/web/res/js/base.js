@@ -38,6 +38,9 @@ function animateValue(element, start, end, duration, lerpType = 0, prefix = "", 
             case 1:
                 currentValue = parseInt(start).toLocaleString('en-US');
                 break;
+            default:
+                currentValue = start;
+                break;
         }
 
         element.innerText = `${prefix}${currentValue}${suffix}`
