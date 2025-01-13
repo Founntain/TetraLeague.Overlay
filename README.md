@@ -93,7 +93,8 @@ Contributions are welcome! Feel free to open issues, request features, provide f
 ![blink](https://github.com/user-attachments/assets/592daaf8-0e03-412f-be87-7de6274f5a15)
 
 #### Sprint
-![founntain](https://github.com/user-attachments/assets/d7f00e47-326a-477f-9d74-0f8c46f66845)
+![image](https://github.com/user-attachments/assets/1eaae399-546e-470a-b108-360d5a34818b)
 
 #### Blitz
-![founntain](https://github.com/user-attachments/assets/51ac5ca5-27be-465d-8b48-07b1e4e029e3)
+![image](https://github.com/user-attachments/assets/90fc37f2-2a7d-408b-a60a-f412e38c3378)
+
