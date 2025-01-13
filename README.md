@@ -57,7 +57,7 @@ Ever wanted to know how fast you clear floors without hitting hyperspeed, or not
 The splits overlay uses your last 100 games from the current week; all games past that aren't counted. We chose this limit because we don't want to make excessive API calls, and the last 100 games is enough to compare your performance this week. If you haven't played this week yet, we use your career best splits for display.  
 With the `expert` parameter you can show the splits for expert or normal, default value is `false`
 
-![blink](https://github.com/user-attachments/assets/592daaf8-0e03-412f-be87-7de6274f5a15)
+![image](https://github.com/user-attachments/assets/5f20844a-9fef-4559-a6b6-48e8852b7ebe)
 
 > [!CAUTION]
 > The splits overlay is still very early and pretty complex. If something does not work as intended, or is not working at all, please let me know so I can look into it!  
@@ -90,7 +90,7 @@ Contributions are welcome! Feel free to open issues, request features, provide f
 ![image](https://github.com/user-attachments/assets/e91f4eb6-0fd8-4b9a-aa6c-8f0fdce8a43d)
 
 #### Speedrun splits
-![blink](https://github.com/user-attachments/assets/592daaf8-0e03-412f-be87-7de6274f5a15)
+![image](https://github.com/user-attachments/assets/314b1ab6-98b7-4a5f-aad7-aa447ceb7f2b)
 
 #### Sprint
 ![image](https://github.com/user-attachments/assets/1eaae399-546e-470a-b108-360d5a34818b)
